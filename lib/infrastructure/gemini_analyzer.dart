@@ -76,21 +76,31 @@ URL: ${repository.url}
       final text = parts.first['text'] as String;
       final decoded = jsonDecode(_cleanJson(text));
 
-      final Map<String, dynamic> responseJson;
-      if (decoded is List) {
-        responseJson = decoded.first as Map<String, dynamic>;
+      Map<String, dynamic> responseJson;
+      if (decoded is List && decoded.isNotEmpty) {
+        final first = decoded.first;
+        if (first is Map) {
+          responseJson = Map<String, dynamic>.from(first);
+        } else {
+          throw Exception('List element is not a Map: $first');
+        }
       } else if (decoded is Map) {
-        responseJson = decoded as Map<String, dynamic>;
+        responseJson = Map<String, dynamic>.from(decoded);
       } else {
         throw Exception('Unexpected JSON structure from Gemini: $decoded');
       }
 
+      final techStackData = responseJson['techStack'];
+      final List<String> techStack = (techStackData is List)
+          ? techStackData.map((e) => e.toString()).toList()
+          : [];
+
       return Success(JapaneseSummary(
         repository: repository,
-        summary: responseJson['summary'] as String? ?? 'No summary',
-        background: responseJson['background'] as String? ?? 'No background',
-        techStack: List<String>.from(responseJson['techStack'] as List? ?? []),
-        whyHot: responseJson['whyHot'] as String? ?? 'No reason provided',
+        summary: responseJson['summary']?.toString() ?? 'No summary',
+        background: responseJson['background']?.toString() ?? 'No background',
+        techStack: techStack,
+        whyHot: responseJson['whyHot']?.toString() ?? 'No reason provided',
       ));
     } catch (e) {
       return Failure(e is Exception ? e : Exception(e.toString()));
