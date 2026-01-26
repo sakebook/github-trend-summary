@@ -61,20 +61,47 @@ URL: ${repository.url}
             'Gemini API error: ${response.statusCode} - ${response.body}'));
       }
 
-      final data = jsonDecode(response.body) as Map<String, dynamic>;
-      final candidates = data['candidates'] as List<dynamic>;
-      if (candidates.isEmpty) {
-        return Failure(Exception('No candidates returned from Gemini'));
+      print('DEBUG: Response body: ${response.body}');
+      final dynamic decodedResponse = jsonDecode(response.body);
+      if (decodedResponse is! Map) {
+        return Failure(Exception(
+            'Root response is not a Map. Type: ${decodedResponse.runtimeType}'));
+      }
+      final data = Map<String, dynamic>.from(decodedResponse);
+
+      final candidates = data['candidates'];
+      if (candidates is! List || candidates.isEmpty) {
+        return Failure(Exception('No candidates found or not a list'));
       }
 
-      final content = candidates.first['content'] as Map<String, dynamic>;
-      final parts = content['parts'] as List<dynamic>;
-      if (parts.isEmpty) {
-        return Failure(Exception('No parts returned from Gemini'));
+      final candidate = candidates.first;
+      if (candidate is! Map) {
+        return Failure(Exception('Candidate is not a Map'));
       }
 
-      final text = parts.first['text'] as String;
-      final decoded = jsonDecode(_cleanJson(text));
+      final content = candidate['content'];
+      if (content is! Map) {
+        return Failure(Exception('Content is not a Map'));
+      }
+
+      final parts = content['parts'];
+      if (parts is! List || parts.isEmpty) {
+        return Failure(Exception('Parts is not a List or empty'));
+      }
+
+      final part = parts.first;
+      if (part is! Map) {
+        return Failure(Exception('Part is not a Map'));
+      }
+
+      final text = part['text'];
+      if (text is! String) {
+        return Failure(Exception('Text part is not a String'));
+      }
+
+      print('DEBUG: Generated text: $text');
+      final dynamic decoded = jsonDecode(_cleanJson(text));
+      print('DEBUG: Decoded type: ${decoded.runtimeType}');
 
       Map<String, dynamic> responseJson;
       if (decoded is List && decoded.isNotEmpty) {
