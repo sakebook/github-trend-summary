@@ -74,7 +74,16 @@ URL: ${repository.url}
       }
 
       final text = parts.first['text'] as String;
-      final Map<String, dynamic> responseJson = jsonDecode(text);
+      final decoded = jsonDecode(_cleanJson(text));
+
+      final Map<String, dynamic> responseJson;
+      if (decoded is List) {
+        responseJson = decoded.first as Map<String, dynamic>;
+      } else if (decoded is Map) {
+        responseJson = decoded as Map<String, dynamic>;
+      } else {
+        throw Exception('Unexpected JSON structure from Gemini: $decoded');
+      }
 
       return Success(JapaneseSummary(
         repository: repository,
@@ -86,5 +95,16 @@ URL: ${repository.url}
     } catch (e) {
       return Failure(e is Exception ? e : Exception(e.toString()));
     }
+  }
+
+  String _cleanJson(String text) {
+    var cleaned = text.trim();
+    if (cleaned.startsWith('```')) {
+      final lines = cleaned.split('\n');
+      if (lines.length > 2) {
+        cleaned = lines.getRange(1, lines.length - 1).join('\n');
+      }
+    }
+    return cleaned.trim();
   }
 }
