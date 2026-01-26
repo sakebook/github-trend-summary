@@ -61,7 +61,6 @@ URL: ${repository.url}
             'Gemini API error: ${response.statusCode} - ${response.body}'));
       }
 
-      print('DEBUG: Response body: ${response.body}');
       final dynamic decodedResponse = jsonDecode(response.body);
       if (decodedResponse is! Map) {
         return Failure(Exception(
@@ -99,9 +98,7 @@ URL: ${repository.url}
         return Failure(Exception('Text part is not a String'));
       }
 
-      print('DEBUG: Generated text: $text');
       final dynamic decoded = jsonDecode(_cleanJson(text));
-      print('DEBUG: Decoded type: ${decoded.runtimeType}');
 
       Map<String, dynamic> responseJson;
       if (decoded is List && decoded.isNotEmpty) {
