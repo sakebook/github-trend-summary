@@ -1,0 +1,75 @@
+import 'dart:io';
+import 'package:args/args.dart';
+import 'package:github_trend_summary/github_trend_summary.dart';
+
+void main(List<String> arguments) async {
+  final parser = ArgParser()
+    ..addOption('lang', abbr: 'l', help: 'Target programming language', defaultsTo: 'dart')
+    ..addOption('github-token', help: 'GitHub Personal Access Token')
+    ..addOption('gemini-key', help: 'Gemini API Key', mandatory: true)
+    ..addOption('output', abbr: 'o', help: 'Output markdown file path')
+    ..addFlag('help', abbr: 'h', negatable: false, help: 'Show usage information');
+
+  ArgResults results;
+  try {
+    results = parser.parse(arguments);
+  } catch (e) {
+    print('Error parsing arguments: $e');
+    print(parser.usage);
+    exit(1);
+  }
+
+  if (results['help'] as bool) {
+    print('GitHub Trending Intelligence CLI');
+    print(parser.usage);
+    return;
+  }
+
+  final language = results['lang'] as String;
+  final githubToken = results['github-token'] as String?;
+  final geminiKey = results['gemini-key'] as String;
+  final outputPath = results['output'] as String?;
+
+  print('🔍 Fetching trending $language repositories from GitHub...');
+  final fetcher = GitHubFetcher(apiToken: githubToken);
+  final fetchResult = await fetcher.fetchTrending(language);
+
+  final List<Repository> repositories;
+  switch (fetchResult) {
+    case Success(value: final r):
+      repositories = r;
+    case Failure(error: final e):
+      print('❌ Failed to fetch repositories: $e');
+      exit(1);
+  }
+
+  print('🤖 Analyzing ${repositories.length} repositories with Gemini...');
+  final analyzer = GeminiAnalyzer(apiKey: geminiKey);
+  final summaries = <JapaneseSummary>[];
+
+  for (final repo in repositories) {
+    print('  - Analyzing ${repo.owner}/${repo.name}...');
+    final analyzeResult = await analyzer.analyze(repo);
+    switch (analyzeResult) {
+      case Success(value: final s):
+        summaries.add(s);
+      case Failure(error: final e):
+        print('    ⚠️ Failed to analyze ${repo.name}: $e');
+    }
+  }
+
+  final publishers = <Publisher>[
+    ConsolePublisher(),
+    if (outputPath != null) MarkdownFilePublisher(outputPath: outputPath),
+  ];
+
+  print('\n📢 Publishing results...');
+  for (final publisher in publishers) {
+    final publishResult = await publisher.publish(summaries);
+    if (publishResult is Failure) {
+      print('❌ Failed to publish with ${publisher.runtimeType}: ${(publishResult as Failure).error}');
+    }
+  }
+
+  print('✅ Done!');
+}
