@@ -68,8 +68,7 @@ URL: ${repository.url}
             await Future.delayed(Duration(seconds: delaySeconds));
             continue;
           }
-          return Failure(Exception(
-              'Gemini API error: ${response.statusCode} - ${response.body}'));
+          throw Exception('Gemini API error: ${response.statusCode} - ${response.body}');
         }
 
         final dynamic decodedResponse = jsonDecode(response.body);
