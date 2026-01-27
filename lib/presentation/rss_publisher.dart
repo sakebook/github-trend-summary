@@ -17,6 +17,10 @@ class RssPublisher implements Publisher {
         .replaceAll("'", '&apos;');
   }
 
+  String _sanitizeCdata(String text) {
+    return text.replaceAll(']]>', ']]]]><![CDATA[>');
+  }
+
   @override
   Future<Result<void, Exception>> publish(List<JapaneseSummary> summaries) async {
     try {
@@ -35,15 +39,15 @@ class RssPublisher implements Publisher {
         final label = repo.language != null ? '[${repo.language}] ' : '';
         
         buffer.writeln('  <item>');
-        buffer.writeln('    <title><![CDATA[$label${repo.owner}/${repo.name}]]></title>');
+        buffer.writeln('    <title><![CDATA[${_sanitizeCdata("$label${repo.owner}/${repo.name}")}]]></title>');
         buffer.writeln('    <link>${_escapeXml(repo.url)}</link>');
         buffer.writeln('    <guid isPermaLink="true">${_escapeXml(repo.url)}</guid>');
         buffer.writeln('    <pubDate>${_toRfc822(DateTime.now())}</pubDate>'); // 本来は取得日
         buffer.writeln('    <description><![CDATA[');
-        buffer.writeln('      <h3>概要</h3><p>${s.summary}</p>');
-        buffer.writeln('      <h3>背景</h3><p>${s.background}</p>');
-        buffer.writeln('      <h3>注目ポイント</h3><p>${s.whyHot}</p>');
-        buffer.writeln('      <h3>技術スタック</h3><p>${s.techStack.join(", ")}</p>');
+        buffer.writeln('      <h3>概要</h3><p>${_sanitizeCdata(s.summary)}</p>');
+        buffer.writeln('      <h3>背景</h3><p>${_sanitizeCdata(s.background)}</p>');
+        buffer.writeln('      <h3>注目ポイント</h3><p>${_sanitizeCdata(s.whyHot)}</p>');
+        buffer.writeln('      <h3>技術スタック</h3><p>${_sanitizeCdata(s.techStack.join(", "))}</p>');
         buffer.writeln('    ]]></description>');
         buffer.writeln('  </item>');
       }

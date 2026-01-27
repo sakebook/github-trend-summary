@@ -45,5 +45,30 @@ void main() {
       expect(content, contains('<link>https://github.com/test/repo</link>'));
       expect(content, contains('テスト概要'));
     });
+
+    test('should sanitize CDATA closing sequence', () async {
+      final publisher = RssPublisher(outputPath: testPath);
+      final summaries = [
+        JapaneseSummary(
+          repository: (
+            name: 'test-repo',
+            owner: 'test-owner',
+            description: 'Test Description',
+            url: 'https://github.com/test/repo',
+            stars: 123,
+            language: 'TypeScript',
+          ),
+          summary: 'End sequence ]]> test',
+          background: 'bg',
+          techStack: ['dart'],
+          whyHot: 'hot',
+        ),
+      ];
+
+      await publisher.publish(summaries);
+
+      final content = File(testPath).readAsStringSync();
+      expect(content, contains('End sequence ]]]]><![CDATA[> test'));
+    });
   });
 }
