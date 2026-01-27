@@ -8,6 +8,15 @@ class RssPublisher implements Publisher {
 
   RssPublisher({required this.outputPath});
 
+  String _escapeXml(String text) {
+    return text
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&apos;');
+  }
+
   @override
   Future<Result<void, Exception>> publish(List<JapaneseSummary> summaries) async {
     try {
@@ -27,8 +36,8 @@ class RssPublisher implements Publisher {
         
         buffer.writeln('  <item>');
         buffer.writeln('    <title><![CDATA[$label${repo.owner}/${repo.name}]]></title>');
-        buffer.writeln('    <link>${repo.url}</link>');
-        buffer.writeln('    <guid isPermaLink="true">${repo.url}</guid>');
+        buffer.writeln('    <link>${_escapeXml(repo.url)}</link>');
+        buffer.writeln('    <guid isPermaLink="true">${_escapeXml(repo.url)}</guid>');
         buffer.writeln('    <pubDate>${_toRfc822(DateTime.now())}</pubDate>'); // 本来は取得日
         buffer.writeln('    <description><![CDATA[');
         buffer.writeln('      <h3>概要</h3><p>${s.summary}</p>');

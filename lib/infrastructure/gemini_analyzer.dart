@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:http/http.dart' as http;
 import '../core/interfaces.dart';
 import '../core/models.dart';
@@ -61,20 +62,22 @@ URL: ${repository.url}
         );
 
         if (response.statusCode != 200) {
-          if (response.statusCode == 429 && retryCount < maxRetries) {
+          // 429 または 5xx 系のエラーは一時的なものとして再試行を検討
+          final isTransient = response.statusCode == 429 || (response.statusCode >= 500 && response.statusCode < 600);
+          
+          if (isTransient && retryCount < maxRetries) {
             retryCount++;
-            final delaySeconds = 2 * retryCount; // 簡略的なバックオフ
-            print('    ⚠️ Rate limit (429). Retrying in $delaySeconds seconds... ($retryCount/$maxRetries)');
+            final delaySeconds = 2 * retryCount;
+            print('    ⚠️ Transient error (${response.statusCode}). Retrying in $delaySeconds seconds... ($retryCount/$maxRetries)');
             await Future.delayed(Duration(seconds: delaySeconds));
             continue;
           }
-          throw Exception('Gemini API error: ${response.statusCode} - ${response.body}');
+          return Failure(Exception('Gemini API error: ${response.statusCode} - ${response.body}'));
         }
 
         final dynamic decodedResponse = jsonDecode(response.body);
         if (decodedResponse is! Map) {
-          return Failure(Exception(
-              'Root response is not a Map. Type: ${decodedResponse.runtimeType}'));
+          return Failure(Exception('Root response is not a Map. Type: ${decodedResponse.runtimeType}'));
         }
         final data = Map<String, dynamic>.from(decodedResponse);
 
@@ -116,12 +119,12 @@ URL: ${repository.url}
           if (first is Map) {
             responseJson = Map<String, dynamic>.from(first);
           } else {
-            throw Exception('List element is not a Map: $first');
+            return Failure(Exception('List element is not a Map: $first'));
           }
         } else if (decoded is Map) {
           responseJson = Map<String, dynamic>.from(decoded);
         } else {
-          throw Exception('Unexpected JSON structure from Gemini: $decoded');
+          return Failure(Exception('Unexpected JSON structure from Gemini: $decoded'));
         }
 
         final techStackData = responseJson['techStack'];
@@ -136,12 +139,18 @@ URL: ${repository.url}
           techStack: techStack,
           whyHot: responseJson['whyHot']?.toString() ?? 'No reason provided',
         ));
-      } catch (e) {
+      } on SocketException catch (e) {
+        // ネットワークエラーは再試行
         if (retryCount < maxRetries) {
           retryCount++;
-          await Future.delayed(Duration(seconds: 2 * retryCount));
+          final delaySeconds = 2 * retryCount;
+          print('    ⚠️ Network error: $e. Retrying in $delaySeconds seconds... ($retryCount/$maxRetries)');
+          await Future.delayed(Duration(seconds: delaySeconds));
           continue;
         }
+        return Failure(e);
+      } catch (e) {
+        // その他の例外（パースエラー等）は再試行せずに即失敗を返す
         return Failure(e is Exception ? e : Exception(e.toString()));
       }
     }

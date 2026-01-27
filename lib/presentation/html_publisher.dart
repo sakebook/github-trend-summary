@@ -138,7 +138,7 @@ class HtmlPublisher implements Publisher {
         buffer.writeln('''
             <div class="repo-card">
                 <div class="repo-header">
-                    <a href="${s.repository.url}" class="repo-name" target="_blank">${_escapeHtml(s.repository.name)}</a>
+                    <a href="${_escapeHtml(s.repository.url)}" class="repo-name" target="_blank">${_escapeHtml(s.repository.name)}</a>
                     <span class="stars">⭐ ${s.repository.stars}</span>
                 </div>
                 <p class="repo-description">${_escapeHtml(s.repository.description ?? '')}</p>
