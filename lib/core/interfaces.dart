@@ -3,10 +3,11 @@ import 'result.dart';
 
 abstract interface class RepositoryFetcher {
   Future<Result<List<Repository>, Exception>> fetchTrending(
-    String language, {
+    String target, {
     int? minStars,
     int? maxStars,
     bool newOnly = false,
+    bool isTopic = false,
   });
 }
 

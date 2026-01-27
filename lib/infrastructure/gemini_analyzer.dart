@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:http/http.dart' as http;
 import '../core/interfaces.dart';
 import '../core/models.dart';
@@ -18,11 +19,15 @@ class GeminiAnalyzer implements TrendAnalyzer {
   @override
   Future<Result<JapaneseSummary, Exception>> analyze(
       Repository repository) async {
-    try {
-      final url = Uri.parse(
-          'https://generativelanguage.googleapis.com/v1beta/models/$model:generateContent?key=$apiKey');
+    const maxRetries = 3;
+    int retryCount = 0;
 
-      final prompt = '''
+    while (true) {
+      try {
+        final url = Uri.parse(
+            'https://generativelanguage.googleapis.com/v1beta/models/$model:generateContent?key=$apiKey');
+
+        final prompt = '''
 以下のGitHubリポジトリの情報を、開発者目線で詳細に分析し、日本語で要約してください。
 リポジトリ名: ${repository.owner}/${repository.name}
 説明: ${repository.description ?? '説明なし'}
@@ -37,97 +42,117 @@ URL: ${repository.url}
 }
 ''';
 
-      final requestBody = {
-        'contents': [
-          {
-            'parts': [
-              {'text': prompt}
-            ]
+        final requestBody = {
+          'contents': [
+            {
+              'parts': [
+                {'text': prompt}
+              ]
+            }
+          ],
+          'generationConfig': {
+            'responseMimeType': 'application/json',
           }
-        ],
-        'generationConfig': {
-          'responseMimeType': 'application/json',
+        };
+
+        final response = await _client.post(
+          url,
+          headers: {'Content-Type': 'application/json'},
+          body: jsonEncode(requestBody),
+        );
+
+        if (response.statusCode != 200) {
+          // 429 または 5xx 系のエラーは一時的なものとして再試行を検討
+          final isTransient = response.statusCode == 429 || (response.statusCode >= 500 && response.statusCode < 600);
+          
+          if (isTransient && retryCount < maxRetries) {
+            retryCount++;
+            final delaySeconds = 2 * retryCount;
+            print('    ⚠️ Transient error (${response.statusCode}). Retrying in $delaySeconds seconds... ($retryCount/$maxRetries)');
+            await Future.delayed(Duration(seconds: delaySeconds));
+            continue;
+          }
+          return Failure(Exception('Gemini API error: ${response.statusCode} - ${response.body}'));
         }
-      };
 
-      final response = await _client.post(
-        url,
-        headers: {'Content-Type': 'application/json'},
-        body: jsonEncode(requestBody),
-      );
+        final dynamic decodedResponse = jsonDecode(response.body);
+        if (decodedResponse is! Map) {
+          return Failure(Exception('Root response is not a Map. Type: ${decodedResponse.runtimeType}'));
+        }
+        final data = Map<String, dynamic>.from(decodedResponse);
 
-      if (response.statusCode != 200) {
-        return Failure(Exception(
-            'Gemini API error: ${response.statusCode} - ${response.body}'));
-      }
+        final candidates = data['candidates'];
+        if (candidates is! List || candidates.isEmpty) {
+          return Failure(Exception('No candidates found or not a list'));
+        }
 
-      final dynamic decodedResponse = jsonDecode(response.body);
-      if (decodedResponse is! Map) {
-        return Failure(Exception(
-            'Root response is not a Map. Type: ${decodedResponse.runtimeType}'));
-      }
-      final data = Map<String, dynamic>.from(decodedResponse);
+        final candidate = candidates.first;
+        if (candidate is! Map) {
+          return Failure(Exception('Candidate is not a Map'));
+        }
 
-      final candidates = data['candidates'];
-      if (candidates is! List || candidates.isEmpty) {
-        return Failure(Exception('No candidates found or not a list'));
-      }
+        final content = candidate['content'];
+        if (content is! Map) {
+          return Failure(Exception('Content is not a Map'));
+        }
 
-      final candidate = candidates.first;
-      if (candidate is! Map) {
-        return Failure(Exception('Candidate is not a Map'));
-      }
+        final parts = content['parts'];
+        if (parts is! List || parts.isEmpty) {
+          return Failure(Exception('Parts is not a List or empty'));
+        }
 
-      final content = candidate['content'];
-      if (content is! Map) {
-        return Failure(Exception('Content is not a Map'));
-      }
+        final part = parts.first;
+        if (part is! Map) {
+          return Failure(Exception('Part is not a Map'));
+        }
 
-      final parts = content['parts'];
-      if (parts is! List || parts.isEmpty) {
-        return Failure(Exception('Parts is not a List or empty'));
-      }
+        final text = part['text'];
+        if (text is! String) {
+          return Failure(Exception('Text part is not a String'));
+        }
 
-      final part = parts.first;
-      if (part is! Map) {
-        return Failure(Exception('Part is not a Map'));
-      }
+        final dynamic decoded = jsonDecode(_cleanJson(text));
 
-      final text = part['text'];
-      if (text is! String) {
-        return Failure(Exception('Text part is not a String'));
-      }
-
-      final dynamic decoded = jsonDecode(_cleanJson(text));
-
-      Map<String, dynamic> responseJson;
-      if (decoded is List && decoded.isNotEmpty) {
-        final first = decoded.first;
-        if (first is Map) {
-          responseJson = Map<String, dynamic>.from(first);
+        Map<String, dynamic> responseJson;
+        if (decoded is List && decoded.isNotEmpty) {
+          final first = decoded.first;
+          if (first is Map) {
+            responseJson = Map<String, dynamic>.from(first);
+          } else {
+            return Failure(Exception('List element is not a Map: $first'));
+          }
+        } else if (decoded is Map) {
+          responseJson = Map<String, dynamic>.from(decoded);
         } else {
-          throw Exception('List element is not a Map: $first');
+          return Failure(Exception('Unexpected JSON structure from Gemini: $decoded'));
         }
-      } else if (decoded is Map) {
-        responseJson = Map<String, dynamic>.from(decoded);
-      } else {
-        throw Exception('Unexpected JSON structure from Gemini: $decoded');
+
+        final techStackData = responseJson['techStack'];
+        final List<String> techStack = (techStackData is List)
+            ? techStackData.map((e) => e.toString()).toList()
+            : [];
+
+        return Success(JapaneseSummary(
+          repository: repository,
+          summary: responseJson['summary']?.toString() ?? 'No summary',
+          background: responseJson['background']?.toString() ?? 'No background',
+          techStack: techStack,
+          whyHot: responseJson['whyHot']?.toString() ?? 'No reason provided',
+        ));
+      } on SocketException catch (e) {
+        // ネットワークエラーは再試行
+        if (retryCount < maxRetries) {
+          retryCount++;
+          final delaySeconds = 2 * retryCount;
+          print('    ⚠️ Network error: $e. Retrying in $delaySeconds seconds... ($retryCount/$maxRetries)');
+          await Future.delayed(Duration(seconds: delaySeconds));
+          continue;
+        }
+        return Failure(e);
+      } catch (e) {
+        // その他の例外（パースエラー等）は再試行せずに即失敗を返す
+        return Failure(e is Exception ? e : Exception(e.toString()));
       }
-
-      final techStackData = responseJson['techStack'];
-      final List<String> techStack = (techStackData is List)
-          ? techStackData.map((e) => e.toString()).toList()
-          : [];
-
-      return Success(JapaneseSummary(
-        repository: repository,
-        summary: responseJson['summary']?.toString() ?? 'No summary',
-        background: responseJson['background']?.toString() ?? 'No background',
-        techStack: techStack,
-        whyHot: responseJson['whyHot']?.toString() ?? 'No reason provided',
-      ));
-    } catch (e) {
-      return Failure(e is Exception ? e : Exception(e.toString()));
     }
   }
 
