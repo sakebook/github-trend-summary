@@ -79,6 +79,11 @@ void main(List<String> arguments) async {
     }
   }
 
+  if (summaries.isEmpty) {
+    print('❌ No summaries were generated. Exiting.');
+    exit(1);
+  }
+
   final publishers = <Publisher>[
     ConsolePublisher(),
     if (outputPath != null) MarkdownFilePublisher(outputPath: outputPath),
@@ -89,6 +94,7 @@ void main(List<String> arguments) async {
     final publishResult = await publisher.publish(summaries);
     if (publishResult is Failure) {
       print('❌ Failed to publish with ${publisher.runtimeType}: ${(publishResult as Failure).error}');
+      exit(1);
     }
   }
 
