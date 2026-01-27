@@ -5,3 +5,5 @@ export 'infrastructure/github_fetcher.dart';
 export 'infrastructure/gemini_analyzer.dart';
 export 'presentation/console_publisher.dart';
 export 'presentation/markdown_publisher.dart';
+export 'presentation/rss_publisher.dart';
+export 'presentation/html_publisher.dart';
