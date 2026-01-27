@@ -43,6 +43,10 @@ class RssPublisher implements Publisher {
       buffer.writeln('</rss>');
 
       final file = File(outputPath);
+      final parent = file.parent;
+      if (!parent.existsSync()) {
+        await parent.create(recursive: true);
+      }
       await file.writeAsString(buffer.toString());
       return Success(null);
     } catch (e) {
