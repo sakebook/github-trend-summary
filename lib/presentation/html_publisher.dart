@@ -8,6 +8,15 @@ class HtmlPublisher implements Publisher {
 
   HtmlPublisher({required this.outputPath});
 
+  String _escapeHtml(String text) {
+    return text
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#39;');
+  }
+
   @override
   Future<Result<void, Exception>> publish(List<JapaneseSummary> summaries) async {
     try {
@@ -127,26 +136,24 @@ class HtmlPublisher implements Publisher {
       for (final s in summaries) {
         final repo = s.repository;
         buffer.writeln('''
-            <article class="repo-card">
+            <div class="repo-card">
                 <div class="repo-header">
-                    <a href="${repo.url}" class="repo-title" target="_blank">${repo.owner} / ${repo.name}</a>
-                    <span class="stars">★ ${repo.stars}</span>
+                    <a href="${s.repository.url}" class="repo-name" target="_blank">${_escapeHtml(s.repository.name)}</a>
+                    <span class="stars">⭐ ${s.repository.stars}</span>
                 </div>
+                <p class="repo-description">${_escapeHtml(s.repository.description ?? '')}</p>
+                <div class="summary-badge">${_escapeHtml(s.summary)}</div>
                 
-                <div class="section-title">Summary</div>
-                <p>${s.summary}</p>
-
-                <div class="section-title">Background</div>
-                <p>${s.background}</p>
-
-                <div class="section-title">Why it's hot</div>
-                <p>${s.whyHot}</p>
-
-                <div class="section-title">Tech Stack</div>
-                <div class="tech-tags">
-                    ${s.techStack.map((t) => '<span class="tech-tag">$t</span>').join('')}
+                <div class="section-title">背景</div>
+                <p>${_escapeHtml(s.background)}</p>
+                
+                <div class="section-title">なぜ注目？</div>
+                <p>${_escapeHtml(s.whyHot)}</p>
+                
+                <div class="tech-stack">
+                    ${s.techStack.map((t) => '<span class="tech-tag">${_escapeHtml(t)}</span>').join('')}
                 </div>
-            </article>
+            </div>
 ''');
       }
 
