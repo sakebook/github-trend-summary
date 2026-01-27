@@ -131,6 +131,8 @@ Future<void> _processFetchResult(
     
     print('  - Analyzing ${repo.owner}/${repo.name}...');
     final analyzeResult = await analyzer.analyze(repo);
+    // 連投による 429 を防ぐために少し待つ
+    await Future.delayed(const Duration(milliseconds: 500));
     switch (analyzeResult) {
       case Success(value: final s):
         allSummaries.add(s);
