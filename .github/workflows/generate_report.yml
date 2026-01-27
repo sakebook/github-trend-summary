@@ -1,0 +1,50 @@
+name: Daily GitHub Trend Report
+
+on:
+  schedule:
+    - cron: '0 0 * * *' # 毎日 UTC 0:00 (JST 9:00) に実行
+  workflow_dispatch: # 手動実行も可能にする
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Dart
+        uses: dart-lang/setup-dart@v1
+
+      - name: Install dependencies
+        run: dart pub get
+
+      - name: Generate Report
+        env:
+          GEMINI_KEY: ${{ secrets.GEMINI_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          mkdir -p public
+          # ここで興味のある言語やトピックを調整できます
+          dart bin/main.dart \
+            --lang dart,all \
+            --topic ai,llm \
+            --new-only \
+            --gemini-key $GEMINI_KEY \
+            --github-token $GITHUB_TOKEN \
+            --rss public/rss.xml \
+            --html public/index.html \
+            --output public/report.md
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './public'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
