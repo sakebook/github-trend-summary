@@ -2,7 +2,12 @@ import 'models.dart';
 import 'result.dart';
 
 abstract interface class RepositoryFetcher {
-  Future<Result<List<Repository>, Exception>> fetchTrending(String language);
+  Future<Result<List<Repository>, Exception>> fetchTrending(
+    String language, {
+    int? minStars,
+    int? maxStars,
+    bool newOnly = false,
+  });
 }
 
 abstract interface class TrendAnalyzer {

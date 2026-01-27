@@ -13,15 +13,32 @@ class GitHubFetcher implements RepositoryFetcher {
 
   @override
   Future<Result<List<Repository>, Exception>> fetchTrending(
-      String language) async {
+    String language, {
+    int? minStars,
+    int? maxStars,
+    bool newOnly = false,
+  }) async {
     try {
-      // 過去7日間に作成または更新されたリポジトリを対象にすることで、
-      // 常に活発な巨大リポジトリだけでなく「旬」なリポジトリを検索しやすくする。
       final lookbackDate = DateTime.now().subtract(const Duration(days: 7));
       final dateStr = lookbackDate.toIso8601String().split('T')[0];
 
-      // クエリ例: language:dart pushed:>=2026-01-20
-      final query = 'language:$language pushed:>=$dateStr';
+      // 言語指定がある場合は query に含める ('all' の場合は含めないことで全言語対象とする)
+      final isAll = language.toLowerCase() == 'all';
+      final langPart = isAll ? '' : 'language:$language ';
+
+      // 動的なデフォルト: 全言語なら50、特定言語なら10
+      final effectiveMinStars = minStars ?? (isAll ? 50 : 10);
+      
+      // スター数の範囲指定 (maxStarsがあれば N..M 形式にする)
+      final starsRange = maxStars != null 
+          ? 'stars:$effectiveMinStars..$maxStars' 
+          : 'stars:>=$effectiveMinStars';
+
+      // newOnlyなら作成日(created)、そうでなければ更新日(pushed)で絞り込む
+      final dateFilter = newOnly ? 'created' : 'pushed';
+      
+      // fork:false を含めることでオリジナルのリポジトリに絞る
+      final query = '$langPart$dateFilter:>=$dateStr $starsRange fork:false';
 
       final url = Uri.https('api.github.com', '/search/repositories', {
         'q': query,
