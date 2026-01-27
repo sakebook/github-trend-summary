@@ -64,18 +64,19 @@ class RssPublisher implements Publisher {
   }
 
   String _toRfc822(DateTime dt) {
-    // Mon, 02 Jan 2006 15:04:05 -0700
+    // Convert to UTC to ensure +0000 is accurate
+    final utc = dt.toUtc();
     final days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
     final months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     
-    final day = days[dt.weekday % 7];
-    final month = months[dt.month - 1];
-    final date = dt.day.toString().padLeft(2, '0');
-    final year = dt.year;
-    final hour = dt.hour.toString().padLeft(2, '0');
-    final min = dt.minute.toString().padLeft(2, '0');
-    final sec = dt.second.toString().padLeft(2, '0');
+    final day = days[utc.weekday % 7];
+    final month = months[utc.month - 1];
+    final date = utc.day.toString().padLeft(2, '0');
+    final year = utc.year;
+    final hour = utc.hour.toString().padLeft(2, '0');
+    final min = utc.minute.toString().padLeft(2, '0');
+    final sec = utc.second.toString().padLeft(2, '0');
     
-    return '$day, $date $month $year $hour:$min:$sec +0000'; // FIXME: UTC想定
+    return '$day, $date $month $year $hour:$min:$sec +0000';
   }
 }
