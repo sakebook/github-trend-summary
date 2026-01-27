@@ -13,23 +13,29 @@ class GitHubFetcher implements RepositoryFetcher {
 
   @override
   Future<Result<List<Repository>, Exception>> fetchTrending(
-    String language, {
+    String target, {
     int? minStars,
     int? maxStars,
     bool newOnly = false,
+    bool isTopic = false,
   }) async {
     try {
       final lookbackDate = DateTime.now().subtract(const Duration(days: 7));
       final dateStr = lookbackDate.toIso8601String().split('T')[0];
 
-      // 言語指定がある場合は query に含める ('all' の場合は含めないことで全言語対象とする)
-      final isAll = language.toLowerCase() == 'all';
-      final langPart = isAll ? '' : 'language:$language ';
+      // 言語指定またはトピック指定を query に含める
+      String filterPart = '';
+      if (isTopic) {
+        filterPart = 'topic:$target ';
+      } else {
+        final isAll = target.toLowerCase() == 'all';
+        filterPart = isAll ? '' : 'language:$target ';
+      }
 
-      // 動的なデフォルト: 全言語なら50、特定言語なら10
-      final effectiveMinStars = minStars ?? (isAll ? 50 : 10);
+      // 動的なデフォルト: 全言語なら50、特定言語/トピックなら10
+      final effectiveMinStars = minStars ?? (target.toLowerCase() == 'all' && !isTopic ? 50 : 10);
       
-      // スター数の範囲指定 (maxStarsがあれば N..M 形式にする)
+      // スター数の範囲指定
       final starsRange = maxStars != null 
           ? 'stars:$effectiveMinStars..$maxStars' 
           : 'stars:>=$effectiveMinStars';
@@ -37,8 +43,7 @@ class GitHubFetcher implements RepositoryFetcher {
       // newOnlyなら作成日(created)、そうでなければ更新日(pushed)で絞り込む
       final dateFilter = newOnly ? 'created' : 'pushed';
       
-      // fork:false を含めることでオリジナルのリポジトリに絞る
-      final query = '$langPart$dateFilter:>=$dateStr $starsRange fork:false';
+      final query = '$filterPart$dateFilter:>=$dateStr $starsRange fork:false';
 
       final url = Uri.https('api.github.com', '/search/repositories', {
         'q': query,
