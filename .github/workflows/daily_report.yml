@@ -6,9 +6,9 @@ on:
   workflow_dispatch:
     inputs:
       language:
-        description: 'Programming language to search'
-        required: true
-        default: 'dart'
+        description: 'Programming language to search (e.g. dart, typescript, all)'
+        required: false
+        default: 'all'
 
 jobs:
   report:
@@ -28,12 +28,12 @@ jobs:
 
       - name: Run Report
         env:
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GEMINI_KEY: ${{ secrets.GEMINI_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           ./github_trend_summary \
-            --lang ${{ github.event.inputs.language || 'dart' }} \
-            --gemini-key $GEMINI_API_KEY \
+            --lang ${{ github.event.inputs.language || 'all' }} \
+            --gemini-key $GEMINI_KEY \
             --github-token $GITHUB_TOKEN \
             --output report.md
 
