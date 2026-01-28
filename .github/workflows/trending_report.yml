@@ -1,9 +1,18 @@
-name: Daily GitHub Trend Report
+name: GitHub Trending Intelligence
 
 on:
   schedule:
-    - cron: '0 0 * * *' # 毎日 UTC 0:00 (JST 9:00) に実行
-  workflow_dispatch: # 手動実行も可能にする
+    - cron: '0 0 * * *' # 毎日 UTC 0:00 (JST 9:00)
+  workflow_dispatch:
+    inputs:
+      language:
+        description: 'Programming language(s) (comma separated)'
+        required: false
+        default: 'dart,typescript,python,rust,go,all'
+      topic:
+        description: 'Topic(s) (comma separated)'
+        required: false
+        default: 'ai,llm,mcp,rag,agents'
 
 permissions:
   contents: write
@@ -27,12 +36,13 @@ jobs:
         env:
           GEMINI_KEY: ${{ secrets.GEMINI_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          LANGS: ${{ github.event.inputs.language || 'dart,typescript,python,rust,go,all' }}
+          TOPICS: ${{ github.event.inputs.topic || 'ai,llm,mcp,rag,agents' }}
         run: |
           mkdir -p public
-          # ここで興味のある言語やトピックを調整できます
           dart bin/main.dart \
-            --lang dart,all \
-            --topic ai,llm \
+            --lang "$LANGS" \
+            --topic "$TOPICS" \
             --new-only \
             --gemini-key $GEMINI_KEY \
             --github-token $GITHUB_TOKEN \
@@ -40,7 +50,13 @@ jobs:
             --html public/index.html \
             --output public/report.md
 
-      - name: Upload artifact
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: trending-report
+          path: public/
+
+      - name: Upload Pages Artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: './public'

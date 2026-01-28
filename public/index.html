@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub Trending Intelligence</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Outfit:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0b0f1a;
+            --card: #161b22;
+            --card-border: #30363d;
+            --text-main: #e6edf3;
+            --text-dim: #8b949e;
+            --accent: #58a6ff;
+            --accent-soft: rgba(88, 166, 255, 0.1);
+            --star: #e3b341;
+            --bg-gradient: radial-gradient(circle at top right, #161b22, #0b0f1a);
+        }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg);
+            background-image: var(--bg-gradient);
+            color: var(--text-main);
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 60px;
+            animation: fadeInDown 0.8s ease-out;
+        }
+        h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 3rem;
+            background: linear-gradient(135deg, #fff 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 0;
+            letter-spacing: -0.02em;
+        }
+        .header-sub {
+            color: var(--text-dim);
+            font-size: 1.1rem;
+            margin-top: 8px;
+        }
+        .update-time {
+            display: inline-block;
+            margin-top: 16px;
+            padding: 4px 12px;
+            background: var(--accent-soft);
+            border-radius: 100px;
+            font-size: 0.8rem;
+            color: var(--accent);
+            border: 1px solid rgba(88, 166, 255, 0.2);
+        }
+        .repo-card {
+            background: var(--card);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 32px;
+            margin-bottom: 32px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        .repo-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.3);
+        }
+        .repo-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .repo-name {
+            font-size: 1.5rem;
+            font-weight: 800;
+            text-decoration: none;
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .repo-name::before {
+            content: "🚀";
+            font-size: 1.2rem;
+        }
+        .stars {
+            color: var(--star);
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .repo-description {
+            color: var(--text-dim);
+            font-size: 0.95rem;
+            margin-bottom: 24px;
+            font-style: italic;
+        }
+        .summary-box {
+            background: rgba(255,255,255,0.03);
+            border-left: 4px solid var(--accent);
+            padding: 16px 20px;
+            border-radius: 4px 12px 12px 4px;
+            margin-bottom: 24px;
+            font-weight: 600;
+        }
+        .grid-sections {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+        @media (max-width: 600px) {
+            .grid-sections { grid-template-columns: 1fr; }
+        }
+        .section-item h3 {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-dim);
+            margin: 0 0 8px 0;
+        }
+        .section-item p {
+            margin: 0;
+            font-size: 0.9rem;
+            color: var(--text-main);
+        }
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 12px;
+        }
+        .tech-tag {
+            background: #21262d;
+            border: 1px solid var(--card-border);
+            color: var(--text-main);
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        footer {
+            text-align: center;
+            padding: 60px 0;
+            color: var(--text-dim);
+            font-size: 0.9rem;
+        }
+        footer a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Trending Intelligence</h1>
+            <p class="header-sub">Daily GitHub analysis powered by Gemini AI</p>
+            <div class="update-time">Last Updated: 2026-01-28 21:59:39</div>
+        </header>
+
+        <main>
+
+            <div class="repo-card">
+                <div class="repo-header">
+                    <a href="https://github.com/vercel-labs/json-render" class="repo-name" target="_blank">json-render</a>
+                    <span class="stars">⭐ 9487</span>
+                </div>
+                <p class="repo-description">AI → JSON → UI</p>
+                <div class="summary-box">AI生成JSONに基づく動的UIレンダリングエンジン</div>
+                
+                <div class="grid-sections">
+                    <div class="section-item">
+                        <h3>背景 / Context</h3>
+                        <p>AIによる構造化データ（JSON）生成を、UIレンダリングパイプラインに統合。これにより、動的なUIを、AIの生成結果に基づき迅速に構築・変更可能にする。開発者は、コードを直接編集せずとも、AIの出力調整を通じてUIを制御できる。</p>
+                    </div>
+                    <div class="section-item">
+                        <h3>注目理由 / Why Trending</h3>
+                        <p>JSONをUI記述言語として扱うことで、AIの進化にUIが追従。既存のUIフレームワークの制約を超え、AIドリブンなUIの可能性を開拓。JSON Schemaとの連携で、UIのバリデーションと生成の自動化も視野に。</p>
+                    </div>
+                </div>
+                
+                <div class="tech-stack">
+                    <span class="tech-tag">TypeScript</span><span class="tech-tag">React</span><span class="tech-tag">JSON</span><span class="tech-tag">Vercel AI SDK</span>
+                </div>
+            </div>
+
+            <div class="repo-card">
+                <div class="repo-header">
+                    <a href="https://github.com/different-ai/openwork" class="repo-name" target="_blank">openwork</a>
+                    <span class="stars">⭐ 7734</span>
+                </div>
+                <p class="repo-description">An open-source alternative to Claude Cowork, powered by opencode</p>
+                <div class="summary-box">オープンソースAI協調ワークプラットフォーム</div>
+                
+                <div class="grid-sections">
+                    <div class="section-item">
+                        <h3>背景 / Context</h3>
+                        <p>プロプライエタリなAIアシスタント(Claude Cowork)の代替となるオープンソースソリューション。企業内でのAI活用におけるデータプライバシーとカスタマイズ性の要求に応える。大規模言語モデル(LLM)を基盤とし、ワークフロー自動化と協調作業を支援。</p>
+                    </div>
+                    <div class="section-item">
+                        <h3>注目理由 / Why Trending</h3>
+                        <p>クローズドなAIプラットフォームへの依存を避け、データ主権を確保。API連携により既存の業務システムとの統合が容易。企業固有のニーズに合わせたカスタマイズが可能。コミュニティによる機能拡張が期待される。</p>
+                    </div>
+                </div>
+                
+                <div class="tech-stack">
+                    <span class="tech-tag">Python</span><span class="tech-tag">LLM (大規模言語モデル)</span><span class="tech-tag">Open Source</span>
+                </div>
+            </div>
+
+            <div class="repo-card">
+                <div class="repo-header">
+                    <a href="https://github.com/github/copilot-sdk" class="repo-name" target="_blank">copilot-sdk</a>
+                    <span class="stars">⭐ 6075</span>
+                </div>
+                <p class="repo-description">Multi-platform SDK for integrating GitHub Copilot Agent into apps and services</p>
+                <div class="summary-box">GitHub Copilot Agent統合SDK</div>
+                
+                <div class="grid-sections">
+                    <div class="section-item">
+                        <h3>背景 / Context</h3>
+                        <p>GitHub Copilot Agentを様々なアプリケーションやサービスに統合するためのSDK。Copilotの機能をIDEを超えて拡張し、音声アシスタント、チャットボット、その他のツールに組み込むことを可能にする。開発者は、コンテキストに応じたAIアシスタント機能を提供できる。</p>
+                    </div>
+                    <div class="section-item">
+                        <h3>注目理由 / Why Trending</h3>
+                        <p>Copilotを「どこでも使えるAIアシスタント」へと進化。単なるコード補完を超え、APIを通じてより複雑なタスクを自動化。開発者ツールだけでなく、業務アプリケーション全体へのAI浸透を加速する。</p>
+                    </div>
+                </div>
+                
+                <div class="tech-stack">
+                    <span class="tech-tag">TypeScript</span><span class="tech-tag">gRPC</span><span class="tech-tag">GitHub Copilot API</span>
+                </div>
+            </div>
+
+            <div class="repo-card">
+                <div class="repo-header">
+                    <a href="https://github.com/QwenLM/Qwen3-TTS" class="repo-name" target="_blank">Qwen3-TTS</a>
+                    <span class="stars">⭐ 5625</span>
+                </div>
+                <p class="repo-description">Qwen3-TTS is an open-source series of TTS models developed by the Qwen team at Alibaba Cloud, supporting stable, expressive, and streaming speech generation, free-form voice design, and vivid voice cloning.</p>
+                <div class="summary-box">高品質な音声合成、自由なボイスデザイン、音声クローン機能を備えたオープンソースTTSモデル。</div>
+                
+                <div class="grid-sections">
+                    <div class="section-item">
+                        <h3>背景 / Context</h3>
+                        <p>Alibaba Cloud QwenチームによるオープンソースのTTSモデル。単なるテキスト読み上げを超え、感情表現豊かで安定した音声生成、自由なボイスデザイン、音声クローンを可能にする。音声合成の分野における高度なカスタマイズ性とリアルな表現を追求する。</p>
+                    </div>
+                    <div class="section-item">
+                        <h3>注目理由 / Why Trending</h3>
+                        <p>従来のTTSモデルでは困難だった、リアルタイムストリーミング音声生成、多様な感情表現、特定の声質のクローンを可能にする点が画期的。音声コンテンツ制作における表現の自由度を飛躍的に向上させ、AIキャラクターの個性化に貢献する潜在力を持つ。</p>
+                    </div>
+                </div>
+                
+                <div class="tech-stack">
+                    <span class="tech-tag">Python</span><span class="tech-tag">PyTorch</span><span class="tech-tag">TTS</span><span class="tech-tag">Speech Synthesis</span><span class="tech-tag">Deep Learning</span><span class="tech-tag">Voice Cloning</span>
+                </div>
+            </div>
+
+            <div class="repo-card">
+                <div class="repo-header">
+                    <a href="https://github.com/coreyhaines31/marketingskills" class="repo-name" target="_blank">marketingskills</a>
+                    <span class="stars">⭐ 5077</span>
+                </div>
+                <p class="repo-description">Marketing skills for Claude Code and AI agents. CRO, copywriting, SEO, analytics, and growth engineering.</p>
+                <div class="summary-box">AIエージェントにマーケティングスキルを付与し、自律的なマーケティング活動を可能にするためのリソース集。</div>
+                
+                <div class="grid-sections">
+                    <div class="section-item">
+                        <h3>背景 / Context</h3>
+                        <p>Claude CodeやAIエージェントにマーケティングスキルを付与するためのリポジトリ。単なる情報提供ではなく、AIが自律的にマーケティング戦略を実行できるよう、CRO、コピーライティング、SEO、分析、成長エンジニアリングなどのスキルを体系的に提供する。</p>
+                    </div>
+                    <div class="section-item">
+                        <h3>注目理由 / Why Trending</h3>
+                        <p>AIエージェントが単なるタスク実行ツールから、自律的なマーケターへと進化する可能性を示す。人間が行っていたマーケティング業務をAIが肩代わりし、データに基づいた戦略立案と実行を高速化することで、ビジネスの成長を加速させる潜在力を持つ。</p>
+                    </div>
+                </div>
+                
+                <div class="tech-stack">
+                    <span class="tech-tag">Marketing</span><span class="tech-tag">AI Agents</span><span class="tech-tag">Claude</span><span class="tech-tag">CRO</span><span class="tech-tag">Copywriting</span><span class="tech-tag">SEO</span><span class="tech-tag">Analytics</span><span class="tech-tag">Growth Engineering</span>
+                </div>
+            </div>
+
+            <div class="repo-card">
+                <div class="repo-header">
+                    <a href="https://github.com/sickn33/antigravity-awesome-skills" class="repo-name" target="_blank">antigravity-awesome-skills</a>
+                    <span class="stars">⭐ 4714</span>
+                </div>
+                <p class="repo-description">The Ultimate Collection of 200+ Agentic Skills for Claude Code/Antigravity/Cursor. Battle-tested, high-performance skills for AI agents including official skills from Anthropic and Vercel.</p>
+                <div class="summary-box">AIエージェントの能力を向上させるための、即戦力となるスキルライブラリ</div>
+                
+                <div class="grid-sections">
+                    <div class="section-item">
+                        <h3>背景 / Context</h3>
+                        <p>大規模言語モデル(LLM)のエージェント機能を拡張し、特定のタスク実行能力を高めるためのスキル集。Anthropic Claude、Antigravity、CursorといったIDEと連携し、AIエージェントの性能を底上げします。</p>
+                    </div>
+                    <div class="section-item">
+                        <h3>注目理由 / Why Trending</h3>
+                        <p>AnthropicやVercel公式スキルを含む、実用性の高い200以上のエージェントスキルを体系的にまとめている点。特定のIDEやLLMに特化せず、汎用性の高いスキル開発を目指している点も魅力です。</p>
+                    </div>
+                </div>
+                
+                <div class="tech-stack">
+                    <span class="tech-tag">Python</span><span class="tech-tag">Anthropic Claude</span><span class="tech-tag">Vercel</span><span class="tech-tag">AI Agents</span>
+                </div>
+            </div>
+
+            <div class="repo-card">
+                <div class="repo-header">
+                    <a href="https://github.com/dadbodgeoff/drift" class="repo-name" target="_blank">drift</a>
+                    <span class="stars">⭐ 377</span>
+                </div>
+                <p class="repo-description">Codebase pattern detection for AI agents. Scans your code, learns conventions, feeds context to Claude/Cursor or any IDE MCP. Also works fully offline with CLI</p>
+                <div class="summary-box">AIエージェントによるコーディング規約逸脱検知ツール。コード品質を維持します。</div>
+                
+                <div class="grid-sections">
+                    <div class="section-item">
+                        <h3>背景 / Context</h3>
+                        <p>AIエージェントがコードベース内のパターンを学習し、コーディング規約を遵守させることを目的としたツール。大規模プロジェクトにおけるコードの品質維持、属人化の排除に貢献します。オフラインでの動作もサポート。</p>
+                    </div>
+                    <div class="section-item">
+                        <h3>注目理由 / Why Trending</h3>
+                        <p>AIエージェントにコードベースのコンテキストを理解させ、コーディング規約からの逸脱を検知できる点。Claude/Cursorだけでなく、他のIDE MCPにも対応可能な柔軟性が魅力です。</p>
+                    </div>
+                </div>
+                
+                <div class="tech-stack">
+                    <span class="tech-tag">Python</span><span class="tech-tag">CLI</span><span class="tech-tag">AI Agents</span><span class="tech-tag">Code Analysis</span>
+                </div>
+            </div>
+
+            <div class="repo-card">
+                <div class="repo-header">
+                    <a href="https://github.com/avifenesh/awesome-slash" class="repo-name" target="_blank">awesome-slash</a>
+                    <span class="stars">⭐ 277</span>
+                </div>
+                <p class="repo-description">Plugins &amp; skills for Claude Code, OpenCode &amp; Codex CLI. 29 autonomous agents for workflow automation, code review, slop detection, PR management, drift detection &amp; more.</p>
+                <div class="summary-box">AIエージェントによる開発ワークフロー自動化プラグイン・スキル集</div>
+                
+                <div class="grid-sections">
+                    <div class="section-item">
+                        <h3>背景 / Context</h3>
+                        <p>Claude Code, OpenCode, Codex CLI向けに、ワークフロー自動化、コードレビュー、PR管理などを行うためのプラグイン・スキル集。自律的なAIエージェントを29個搭載し、開発効率を向上させます。</p>
+                    </div>
+                    <div class="section-item">
+                        <h3>注目理由 / Why Trending</h3>
+                        <p>29個の自律エージェントによる高度な自動化機能が特徴。単なるタスク自動化に留まらず、コードレビューやPR管理など、開発プロセス全体を効率化する点が強みです。</p>
+                    </div>
+                </div>
+                
+                <div class="tech-stack">
+                    <span class="tech-tag">Python</span><span class="tech-tag">Claude Code</span><span class="tech-tag">OpenCode</span><span class="tech-tag">Codex CLI</span><span class="tech-tag">AI Agents</span>
+                </div>
+            </div>
+
+            <div class="repo-card">
+                <div class="repo-header">
+                    <a href="https://github.com/joeseesun/anything-to-notebooklm" class="repo-name" target="_blank">anything-to-notebooklm</a>
+                    <span class="stars">⭐ 272</span>
+                </div>
+                <p class="repo-description">Claude Skill: Multi-source content processor for NotebookLM. Supports WeChat articles, web pages, YouTube, PDF, Markdown, search queries → Podcast/PPT/MindMap/Quiz etc.</p>
+                <div class="summary-box">NotebookLM用マルチソースコンテンツプロセッサ。多様な形式の情報をNotebookLMで利用可能な形に変換。</div>
+                
+                <div class="grid-sections">
+                    <div class="section-item">
+                        <h3>背景 / Context</h3>
+                        <p>NotebookLMの機能を拡張し、多様なデータソース（WeChat記事、Webページ、YouTube、PDFなど）を扱えるようにするツール。異なる形式のコンテンツをNotebookLMに取り込み、Podcast、PPT、マインドマップ、クイズなどの形式に変換することで、情報活用を促進。</p>
+                    </div>
+                    <div class="section-item">
+                        <h3>注目理由 / Why Trending</h3>
+                        <p>多様な情報源を統合し、NotebookLMの可能性を広げる点。特に、Podcastやクイズ形式への自動変換は、学習や情報共有の新しい形を提供する。異なる入力形式に対する汎用的な対応が、プロジェクトの価値を高めている。</p>
+                    </div>
+                </div>
+                
+                <div class="tech-stack">
+                    <span class="tech-tag">Python</span><span class="tech-tag">NotebookLM API</span><span class="tech-tag">各種ファイルフォーマット解析ライブラリ（PDFMiner, BeautifulSoupなど）</span><span class="tech-tag">データ変換・加工ライブラリ</span>
+                </div>
+            </div>
+
+            <div class="repo-card">
+                <div class="repo-header">
+                    <a href="https://github.com/nhevers/claude-recall" class="repo-name" target="_blank">claude-recall</a>
+                    <span class="stars">⭐ 154</span>
+                </div>
+                <p class="repo-description">Long-term memory layer for Clawd &amp; Claude Code that learns and recalls your project context automatically</p>
+                <div class="summary-box">Claude/Claude Code向けの長期記憶レイヤー。プロジェクトコンテキストを学習し、過去の情報を参照することで、より適切な応答を生成する。</div>
+                
+                <div class="grid-sections">
+                    <div class="section-item">
+                        <h3>背景 / Context</h3>
+                        <p>ClaudeまたはClaude Codeの長期記憶レイヤーとして機能し、プロジェクトのコンテキストを自動的に学習・記憶する。これにより、過去の作業内容や関連情報を容易に参照でき、開発効率の向上とコードベースの理解促進に貢献する。</p>
+                    </div>
+                    <div class="section-item">
+                        <h3>注目理由 / Why Trending</h3>
+                        <p>LLMの短期記憶の制約を克服し、長期的なプロジェクトコンテキストを維持する点。過去の会話やコード変更履歴を元に、Claudeに適切な情報を与えることで、よりコンテキストを理解した応答を可能にする。プロジェクトの理解度向上に貢献する。</p>
+                    </div>
+                </div>
+                
+                <div class="tech-stack">
+                    <span class="tech-tag">Python</span><span class="tech-tag">Claude API</span><span class="tech-tag">ベクトルデータベース（例：ChromaDB, FAISS）</span><span class="tech-tag">自然言語処理（NLP）</span><span class="tech-tag">埋め込みモデル</span>
+                </div>
+            </div>
+
+            <div class="repo-card">
+                <div class="repo-header">
+                    <a href="https://github.com/gibram-io/gibram" class="repo-name" target="_blank">gibram</a>
+                    <span class="stars">⭐ 95</span>
+                </div>
+                <p class="repo-description">GibRAM is an in-memory knowledge graph server designed for retrieval augmented generation (RAG / GraphRAG) workflows.</p>
+                <div class="summary-box">RAGのための高速インメモリ知識グラフサーバー</div>
+                
+                <div class="grid-sections">
+                    <div class="section-item">
+                        <h3>背景 / Context</h3>
+                        <p>RAG（Retrieval Augmented Generation）ワークフロー向けに設計されたインメモリ知識グラフサーバー。大規模言語モデル（LLM）のコンテキスト拡張に特化し、外部知識を効率的に統合することで、LLMの回答精度と情報鮮度を向上させる。</p>
+                    </div>
+                    <div class="section-item">
+                        <h3>注目理由 / Why Trending</h3>
+                        <p>インメモリ構造による高速なグラフ探索が特徴。GraphRAGにおけるボトルネックであるデータアクセスレイテンシを大幅に低減し、LLM推論パイプライン全体のパフォーマンスを向上させる。複雑な関係性を考慮した高度な検索が可能。</p>
+                    </div>
+                </div>
+                
+                <div class="tech-stack">
+                    <span class="tech-tag">Go</span><span class="tech-tag">gRPC</span><span class="tech-tag">Knowledge Graph</span><span class="tech-tag">RAG</span>
+                </div>
+            </div>
+
+            <div class="repo-card">
+                <div class="repo-header">
+                    <a href="https://github.com/skorotkiewicz/llmnet" class="repo-name" target="_blank">llmnet</a>
+                    <span class="stars">⭐ 59</span>
+                </div>
+                <p class="repo-description">The Offline Internet.</p>
+                <div class="summary-box">オフライン環境向けLLM情報検索システム</div>
+                
+                <div class="grid-sections">
+                    <div class="section-item">
+                        <h3>背景 / Context</h3>
+                        <p>オフライン環境で動作する「オフラインインターネット」。ローカルに保存されたドキュメントやWebサイトをLLMの知識源として利用可能にする。ネットワーク接続がない環境でも高度な情報検索とLLMによる自然言語処理を実現する。</p>
+                    </div>
+                    <div class="section-item">
+                        <h3>注目理由 / Why Trending</h3>
+                        <p>インターネット接続に依存しないLLM活用を可能にする点が革新的。機密性の高い情報や、クローズドな環境での利用に最適。ネットワーク制約のある環境におけるLLMの適用範囲を大幅に拡大する。</p>
+                    </div>
+                </div>
+                
+                <div class="tech-stack">
+                    <span class="tech-tag">Python</span><span class="tech-tag">LLM</span><span class="tech-tag">ベクトルデータベース (推測)</span><span class="tech-tag">ドキュメント処理</span>
+                </div>
+            </div>
+
+        </main>
+
+        <footer>
+            <p>&copy; 2026 GitHub Trending Intelligence Agent</p>
+            <p><a href="rss.xml">RSS Feed</a></p>
+        </footer>
+    </div>
+</body>
+</html>
+

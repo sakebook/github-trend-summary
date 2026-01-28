@@ -16,7 +16,7 @@ void main(List<String> arguments) async {
     ..addOption('max-stars',
         help: 'Maximum star count to exclude giant projects (e.g. 50000)')
     ..addFlag('new-only',
-        help: 'Fetch only repositories created within the last 7 days',
+        help: 'Fetch only repositories created within the last 14 days',
         negatable: false)
     ..addOption('github-token', help: 'GitHub Personal Access Token')
     ..addOption('gemini-key', help: 'Gemini API Key', mandatory: true)

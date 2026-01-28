@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub Trending Intelligence</title>
+    <style>
+        :root {
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-color: #212529;
+            --accent-color: #0d6efd;
+            --secondary-text: #6c757d;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        h1 {
+            color: var(--accent-color);
+            margin-bottom: 10px;
+        }
+        .update-time {
+            color: var(--secondary-text);
+            font-size: 0.9em;
+        }
+        .repo-card {
+            background: var(--card-bg);
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            padding: 24px;
+            margin-bottom: 24px;
+            border: 1px solid #dee2e6;
+        }
+        .repo-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 16px;
+        }
+        .repo-title {
+            font-size: 1.4em;
+            font-weight: bold;
+            text-decoration: none;
+            color: var(--accent-color);
+        }
+        .repo-title:hover {
+            text-decoration: underline;
+        }
+        .stars {
+            background: #f1f8ff;
+            color: #0366d6;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+        .section-title {
+            font-weight: bold;
+            margin-top: 16px;
+            margin-bottom: 4px;
+            color: #495057;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .tech-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 8px;
+        }
+        .tech-tag {
+            background: #e9ecef;
+            padding: 2px 10px;
+            border-radius: 4px;
+            font-size: 0.8em;
+            color: #495057;
+        }
+        footer {
+            text-align: center;
+            margin-top: 60px;
+            padding-bottom: 40px;
+            color: var(--secondary-text);
+            font-size: 0.85em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>GitHub Trending Intelligence</h1>
+            <p>Gemini AIによる日刊トレンド分析レポート</p>
+            <div class="update-time">最終更新: 2026-01-28 19:35:35</div>
+        </header>
+
+        <main>
+
+            <div class="repo-card">
+                <div class="repo-header">
+                    <a href="https://github.com/dnstt-xyz/dnstt_xyz_app" class="repo-name" target="_blank">dnstt_xyz_app</a>
+                    <span class="stars">⭐ 81</span>
+                </div>
+                <p class="repo-description">Multi-platform dnstt client for restricted networks like Iran, China, Russia</p>
+                <div class="summary-badge">インターネット検閲を回避するためのマルチプラットフォームDNSトンネリングクライアント。</div>
+                
+                <div class="section-title">背景</div>
+                <p>dnstt_xyz_appは、イラン、中国、ロシアのようなインターネット検閲が厳しい国での、DNSトンネリングによる検閲回避クライアントです。複数のプラットフォームをサポートし、検閲を迂回する手段を提供します。</p>
+                
+                <div class="section-title">なぜ注目？</div>
+                <p>検閲回避技術は、ネットワーク制限下にあるユーザーにとって不可欠です。このアプリは、DNSを悪用することで、従来のVPNよりも検閲を回避しやすい可能性があります。特に、オープンソースである点が信頼性を高めています。</p>
+                
+                <div class="tech-stack">
+                    <span class="tech-tag">Dart (Flutter)</span><span class="tech-tag">DNS tunneling</span><span class="tech-tag">Multi-platform development</span>
+                </div>
+            </div>
+
+            <div class="repo-card">
+                <div class="repo-header">
+                    <a href="https://github.com/Sri-Varshini-A/InvoSmart" class="repo-name" target="_blank">InvoSmart</a>
+                    <span class="stars">⭐ 65</span>
+                </div>
+                <p class="repo-description">InvoSmart is a comprehensive invoice and customer management application built with a Flutter frontend and Django backend.</p>
+                <div class="summary-badge">FlutterとDjangoによる請求書および顧客管理アプリケーション。</div>
+                
+                <div class="section-title">背景</div>
+                <p>InvoSmartは、FlutterフロントエンドとDjangoバックエンドを使用して構築された包括的な請求書および顧客管理アプリケーションです。中小企業向けに、請求書作成、顧客情報管理、支払いの追跡などを効率化するツールを提供します。</p>
+                
+                <div class="section-title">なぜ注目？</div>
+                <p>FlutterとDjangoの組み合わせは、クロスプラットフォーム対応の高速開発と、堅牢なバックエンド機能を両立できます。特に中小企業向けに、手頃な価格で高度な顧客管理機能を提供できる点が魅力です。</p>
+                
+                <div class="tech-stack">
+                    <span class="tech-tag">Flutter</span><span class="tech-tag">Django</span><span class="tech-tag">Python</span><span class="tech-tag">REST API</span><span class="tech-tag">SQL Database (likely PostgreSQL or MySQL)</span>
+                </div>
+            </div>
+
+            <div class="repo-card">
+                <div class="repo-header">
+                    <a href="https://github.com/hpcll/HMusic" class="repo-name" target="_blank">HMusic</a>
+                    <span class="stars">⭐ 54</span>
+                </div>
+                <p class="repo-description">HMusic - 智能音乐播放器，支持小米 AI 音箱直连模式</p>
+                <div class="summary-badge">小米AIスピーカー直接接続をサポートするスマート音楽プレーヤー。</div>
+                
+                <div class="section-title">背景</div>
+                <p>HMusicは、小米(Xiaomi) AIスピーカーとの直接接続モードをサポートするスマート音楽プレーヤーです。ローカルの音楽ライブラリをAIスピーカーで再生したり、スマートホーム環境での音楽体験を向上させることを目的としています。</p>
+                
+                <div class="section-title">なぜ注目？</div>
+                <p>Xiaomi AIスピーカーとの直接接続モードのサポートは、他のスマートスピーカーとの連携を容易にします。特に、中国市場におけるXiaomi製品の普及率を考えると、大きな潜在力を持つと考えられます。</p>
+                
+                <div class="tech-stack">
+                    <span class="tech-tag">Unknown (likely C++, Java, or Kotlin)</span><span class="tech-tag">Xiaomi AI Speaker SDK</span><span class="tech-tag">Audio playback libraries</span><span class="tech-tag">Local music library management</span>
+                </div>
+            </div>
+
+            <div class="repo-card">
+                <div class="repo-header">
+                    <a href="https://github.com/Lingyan000/fluxdo" class="repo-name" target="_blank">fluxdo</a>
+                    <span class="stars">⭐ 31</span>
+                </div>
+                <p class="repo-description">一个 Linux.do 第三方客户端</p>
+                <div class="summary-badge">Linux.doコミュニティへのFlutter製サードパーティクライアント。</div>
+                
+                <div class="section-title">背景</div>
+                <p>Linux.doは中国のLinux関連コミュニティサイト。fluxdoは、そのLinux.doへのサードパーティクライアント。公式アプリがない状況で、コミュニティへのアクセスを容易にするために開発されたと考えられる。コマンドラインツールやウェブブラウザ以外で、よりネイティブに近い操作感を提供する。</p>
+                
+                <div class="section-title">なぜ注目？</div>
+                <p>Flutterによるクロスプラットフォーム開発で、Linuxデスクトップ環境だけでなく、他のOSでも動作する可能性を示唆。中国の特定コミュニティに特化したクライアントアプリというニッチな需要に応え、独自の価値を提供している。</p>
+                
+                <div class="tech-stack">
+                    <span class="tech-tag">Dart</span><span class="tech-tag">Flutter</span>
+                </div>
+            </div>
+
+            <div class="repo-card">
+                <div class="repo-header">
+                    <a href="https://github.com/xtractiion/docspace" class="repo-name" target="_blank">docspace</a>
+                    <span class="stars">⭐ 28</span>
+                </div>
+                <p class="repo-description">A simple, open-source Android app to keep your important files organized and easy to find. I built this as a student who was tired of losing track of important documents. Docspace provides a single, private space to organize files with unlimited folders. It stores only file metadata, not duplicate files, so your device storage isn’t wasted.</p>
+                <div class="summary-badge">ファイルメタデータのみを管理する、プライバシー重視のAndroidファイル整理アプリ。</div>
+                
+                <div class="section-title">背景</div>
+                <p>学生が重要なドキュメントを整理しやすくするために開発されたAndroidアプリ。ファイルメタデータのみを保存することでストレージ効率を高め、無限のフォルダでファイルを整理できるプライベートスペースを提供する。類似のファイル管理アプリと比較して、特にプライバシーを重視している点が特徴。</p>
+                
+                <div class="section-title">なぜ注目？</div>
+                <p>重複ファイルを保存しないという設計により、限られたストレージ容量を有効活用できる。オフラインで動作し、クラウドストレージへの依存を減らすことで、プライバシー意識の高いユーザーに訴求する。シンプルなUI/UXで、技術者以外にも使いやすい。</p>
+                
+                <div class="tech-stack">
+                    <span class="tech-tag">Kotlin</span><span class="tech-tag">Android SDK</span><span class="tech-tag">Jetpack Compose (推測)</span>
+                </div>
+            </div>
+
+            <div class="repo-card">
+                <div class="repo-header">
+                    <a href="https://github.com/ComicSparks/hibiscus" class="repo-name" target="_blank">hibiscus</a>
+                    <span class="stars">⭐ 27</span>
+                </div>
+                <p class="repo-description">一个动漫APP</p>
+                <div class="summary-badge">中国語圏向けのアニメ配信Androidアプリ。</div>
+                
+                <div class="section-title">背景</div>
+                <p>hibiscusは、中国語圏向けの动漫(アニメ)アプリ。日本のアニメコンテンツを収集・配信し、ユーザーに視聴体験を提供するものと推測される。中国国内でのアニメ配信に関する法規制や著作権問題をクリアしている必要がある。</p>
+                
+                <div class="section-title">なぜ注目？</div>
+                <p>特定地域のアニメファンに特化したアプリであり、地域制限されたコンテンツへのアクセスを提供している可能性がある。UI/UXの最適化や、コミュニティ機能の充実によって、他の大手動画配信サービスとの差別化を図っていると考えられる。</p>
+                
+                <div class="tech-stack">
+                    <span class="tech-tag">Kotlin/Java (Android)</span><span class="tech-tag">動画配信関連API</span><span class="tech-tag">バックエンド技術(不明)</span>
+                </div>
+            </div>
+
+            <div class="repo-card">
+                <div class="repo-header">
+                    <a href="https://github.com/brnpl/Flutter-Labs" class="repo-name" target="_blank">Flutter-Labs</a>
+                    <span class="stars">⭐ 19</span>
+                </div>
+                <p class="repo-description">Hands-on challenges for learning how to reverse engineer Flutter applications.</p>
+                <div class="summary-badge">Flutterアプリのリバースエンジニアリング学習用ハンズオン課題集</div>
+                
+                <div class="section-title">背景</div>
+                <p>Flutterアプリケーションのリバースエンジニアリングを実践的に学ぶためのハンズオン形式の課題集。Flutterアプリの脆弱性分析や、セキュリティ対策の実装スキル向上に貢献します。独自の解析手法やデバッグテクニック習得が可能です。</p>
+                
+                <div class="section-title">なぜ注目？</div>
+                <p>既存のFlutterアプリのリバースエンジニアリング手法を体系的に学習できる点が魅力。具体的な課題を通して、難読化されたコードの解析や、セキュリティホールの発見スキルを効率的に習得できるため、モバイルセキュリティエンジニアにとって有用です。</p>
+                
+                <div class="tech-stack">
+                    <span class="tech-tag">Flutter</span><span class="tech-tag">Dart</span><span class="tech-tag">リバースエンジニアリングツール (想定: Frida, Ghidra)</span><span class="tech-tag">APK解析</span>
+                </div>
+            </div>
+
+            <div class="repo-card">
+                <div class="repo-header">
+                    <a href="https://github.com/dpineer/uart_checker" class="repo-name" target="_blank">uart_checker</a>
+                    <span class="stars">⭐ 19</span>
+                </div>
+                <p class="repo-description"></p>
+                <div class="summary-badge">UART通信検証ツール</div>
+                
+                <div class="section-title">背景</div>
+                <p>リポジトリ名からUART(Universal Asynchronous Receiver/Transmitter)の動作検証ツールと推測されます。組み込み機器のデバッグや通信テストにおいて、UART通信の信頼性を担保するために使用されると考えられます。ハードウェアとソフトウェア間のインターフェースを検証します。</p>
+                
+                <div class="section-title">なぜ注目？</div>
+                <p>UART通信の正確性を検証するための専用ツールである点がポイント。汎用的なシリアル通信ツールでは難しい、プロトコルレベルでの詳細なチェックや、エラー検出に特化している可能性があります。低レイヤの通信制御に携わるエンジニアにとって不可欠なツールとなりえます。</p>
+                
+                <div class="tech-stack">
+                    <span class="tech-tag">C/C++ (可能性)</span><span class="tech-tag">UART</span><span class="tech-tag">シリアル通信</span><span class="tech-tag">組み込みシステム</span><span class="tech-tag">ターミナルエミュレータ</span>
+                </div>
+            </div>
+
+            <div class="repo-card">
+                <div class="repo-header">
+                    <a href="https://github.com/15dd/hikari_novel_flutter" class="repo-name" target="_blank">hikari_novel_flutter</a>
+                    <span class="stars">⭐ 14</span>
+                </div>
+                <p class="repo-description">使用flutter构建的第三方轻小说文库客户端</p>
+                <div class="summary-badge">Flutter製ライトノベルクライアントアプリ</div>
+                
+                <div class="section-title">背景</div>
+                <p>Flutterで構築された、ライトノベルの非公式クライアントアプリ。中国のライトノベルサイトのAPIを利用し、小説の閲覧機能を提供していると推測されます。Flutterのクロスプラットフォーム開発能力を活かしています。</p>
+                
+                <div class="section-title">なぜ注目？</div>
+                <p>Flutterを用いて、サードパーティのAPIを活用したモバイルアプリ開発の実践例として参考になります。UI/UXの設計や、API連携、データ表示など、Flutterの基本的な機能が網羅的に実装されている可能性があり、学習教材として有用です。</p>
+                
+                <div class="tech-stack">
+                    <span class="tech-tag">Flutter</span><span class="tech-tag">Dart</span><span class="tech-tag">ライトノベルAPI (詳細不明)</span><span class="tech-tag">JSON</span><span class="tech-tag">HTTP</span>
+                </div>
+            </div>
+
+            <div class="repo-card">
+                <div class="repo-header">
+                    <a href="https://github.com/muyuzier-afk/FuwariStudio" class="repo-name" target="_blank">FuwariStudio</a>
+                    <span class="stars">⭐ 12</span>
+                </div>
+                <p class="repo-description">FuwariStudio is a cross-platform Markdown editor built for managing Fuwari blog repositories. It provides a clean, modern writing experience with split preview, image import/resize, and one-click GitHub sync (download repo on first run, edit posts in src/content/posts/, then commit &amp; push updates). </p>
+                <div class="summary-badge">Fuwariブログリポジトリ管理に特化した、クロスプラットフォームMarkdownエディタ。GitHub連携機能を内蔵。</div>
+                
+                <div class="section-title">背景</div>
+                <p>FuwariStudioは、Fuwariブログリポジトリを管理するためのクロスプラットフォームMarkdownエディタです。ローカルでブログコンテンツを編集し、GitHubとの同期を容易にすることで、ブログ執筆ワークフローを効率化します。初回起動時にリポジトリをダウンロードし、変更をコミット＆プッシュする機能を備えています。</p>
+                
+                <div class="section-title">なぜ注目？</div>
+                <p>Electronを使用することでクロスプラットフォームに対応し、GitHubとの連携機能を内蔵している点が魅力です。Markdownエディタとしての基本的な機能に加え、ブログリポジトリ管理に特化した機能を提供することで、特定のニーズに深く応えています。</p>
+                
+                <div class="tech-stack">
+                    <span class="tech-tag">Markdown</span><span class="tech-tag">Electron</span><span class="tech-tag">JavaScript/TypeScript (推測)</span><span class="tech-tag">GitHub API</span>
+                </div>
+            </div>
+
+            <div class="repo-card">
+                <div class="repo-header">
+                    <a href="https://github.com/QwenLM/Qwen3-TTS" class="repo-name" target="_blank">Qwen3-TTS</a>
+                    <span class="stars">⭐ 5599</span>
+                </div>
+                <p class="repo-description">Qwen3-TTS is an open-source series of TTS models developed by the Qwen team at Alibaba Cloud, supporting stable, expressive, and streaming speech generation, free-form voice design, and vivid voice cloning.</p>
+                <div class="summary-badge">高性能なオープンソースTTSモデル。音声生成、音声デザイン、音声クローンが可能。</div>
+                
+                <div class="section-title">背景</div>
+                <p>Alibaba Cloud Qwenチームが開発したオープンソースTTSモデル。安定性、表現力、ストリーミング音声生成をサポート。自由な音声デザイン、鮮やかな音声クローンも可能。大規模言語モデルの音声インタフェース構築を容易にする。</p>
+                
+                <div class="section-title">なぜ注目？</div>
+                <p>大規模言語モデル（Qwen）と連携することで、より自然で文脈に即した音声生成が期待できる。音声クローン技術は倫理的な問題を孕むものの、その技術的完成度は注目に値する。</p>
+                
+                <div class="tech-stack">
+                    <span class="tech-tag">Python</span><span class="tech-tag">PyTorch</span><span class="tech-tag">TTS (Text-to-Speech)</span><span class="tech-tag">モデルアーキテクチャ（Transformerベースと推測）</span>
+                </div>
+            </div>
+
+            <div class="repo-card">
+                <div class="repo-header">
+                    <a href="https://github.com/VoltAgent/awesome-moltbot-skills" class="repo-name" target="_blank">awesome-moltbot-skills</a>
+                    <span class="stars">⭐ 2406</span>
+                </div>
+                <p class="repo-description">The awesome collection of Moltbot Skills. (Clawdbot has officially been renamed to Moltbot)</p>
+                <div class="summary-badge">Moltbotの機能を拡張するためのスキル集。特定のタスクを自動化。</div>
+                
+                <div class="section-title">背景</div>
+                <p>Moltbot (旧Clawdbot) 用のスキルのコレクション。AIエージェントの機能を拡張するための様々なモジュールを集積。タスク自動化や情報検索など、特定の目的に特化したスキルが用意されている。</p>
+                
+                <div class="section-title">なぜ注目？</div>
+                <p>Moltbot自体のアーキテクチャと、スキルの拡張性を示す。特定のAIエージェントに特化したスキルのエコシステムは、開発者のコミュニティ形成と機能拡張を促進する。</p>
+                
+                <div class="tech-stack">
+                    <span class="tech-tag">Python (推測)</span><span class="tech-tag">Moltbotフレームワーク</span><span class="tech-tag">AIエージェント関連技術</span>
+                </div>
+            </div>
+
+            <div class="repo-card">
+                <div class="repo-header">
+                    <a href="https://github.com/tldev/posturr" class="repo-name" target="_blank">posturr</a>
+                    <span class="stars">⭐ 1442</span>
+                </div>
+                <p class="repo-description">A macOS app that blurs your screen when you slouch. Uses Vision framework for real-time posture detection.</p>
+                <div class="summary-badge">猫背を検知して画面をぼかすmacOSアプリ。姿勢矯正を支援。</div>
+                
+                <div class="section-title">背景</div>
+                <p>macOSアプリ。Visionフレームワークを使用してリアルタイムで姿勢を検出し、猫背になると画面をぼかす。長時間のデスクワークにおける姿勢矯正を支援し、健康促進に貢献する。</p>
+                
+                <div class="section-title">なぜ注目？</div>
+                <p>Visionフレームワークによるリアルタイム姿勢検出の応用例。機械学習技術を健康管理に役立てる点が興味深い。プライバシーへの配慮（カメラ映像のローカル処理）も重要。</p>
+                
+                <div class="tech-stack">
+                    <span class="tech-tag">Swift</span><span class="tech-tag">macOS</span><span class="tech-tag">Vision Framework</span><span class="tech-tag">姿勢検出</span>
+                </div>
+            </div>
+
+            <div class="repo-card">
+                <div class="repo-header">
+                    <a href="https://github.com/mvanhorn/last30days-skill" class="repo-name" target="_blank">last30days-skill</a>
+                    <span class="stars">⭐ 1303</span>
+                </div>
+                <p class="repo-description">Claude Code skill that researches any topic across Reddit + X from the last 30 days, then writes copy-paste-ready prompts</p>
+                <div class="summary-badge">RedditとXのトレンド情報に基づいたプロンプト自動生成スキル</div>
+                
+                <div class="section-title">背景</div>
+                <p>RedditとX(Twitter)の過去30日間の情報を集約し、特定のトピックに関する調査を自動化するClaude Code skill。プロンプト作成を効率化し、トレンド分析や市場調査の初期段階を支援する。</p>
+                
+                <div class="section-title">なぜ注目？</div>
+                <p>最新トレンドに基づいたプロンプト生成を自動化する点。情報収集の初期段階における時間的コストを削減し、より高度な分析や創造的な作業に集中できる。情報の鮮度と関連性の高さが強み。</p>
+                
+                <div class="tech-stack">
+                    <span class="tech-tag">Python</span><span class="tech-tag">Claude API</span><span class="tech-tag">Reddit API</span><span class="tech-tag">X API</span><span class="tech-tag">Prompt Engineering</span>
+                </div>
+            </div>
+
+            <div class="repo-card">
+                <div class="repo-header">
+                    <a href="https://github.com/forrestchang/andrej-karpathy-skills" class="repo-name" target="_blank">andrej-karpathy-skills</a>
+                    <span class="stars">⭐ 1252</span>
+                </div>
+                <p class="repo-description"></p>
+                <div class="summary-badge">Andrej Karpathy氏の知識・スキルを反映したAI関連リソース集</div>
+                
+                <div class="section-title">背景</div>
+                <p>著名なAI研究者Andrej Karpathy氏の知識やスキルを模倣・活用するためのリポジトリ。具体的な内容は不明だが、Karpathy氏の専門分野（深層学習、コンピュータビジョン、自然言語処理）に関連するツールやモデル、学習教材などが含まれる可能性が高い。</p>
+                
+                <div class="section-title">なぜ注目？</div>
+                <p>AI研究における第一人者の知見を、再利用可能な形に落とし込んでいる点。研究の効率化や教育への応用が期待される。特定のタスクに特化したpre-trainedモデルや、学習済みパラメータが提供されている可能性も。</p>
+                
+                <div class="tech-stack">
+                    <span class="tech-tag">Python</span><span class="tech-tag">PyTorch</span><span class="tech-tag">TensorFlow</span><span class="tech-tag">Deep Learning</span>
+                </div>
+            </div>
+
+            <div class="repo-card">
+                <div class="repo-header">
+                    <a href="https://github.com/deepseek-ai/DeepSeek-OCR-2" class="repo-name" target="_blank">DeepSeek-OCR-2</a>
+                    <span class="stars">⭐ 1112</span>
+                </div>
+                <p class="repo-description">Visual Causal Flow</p>
+                <div class="summary-badge">Visual Causal Flow採用の高精度OCRエンジン</div>
+                
+                <div class="section-title">背景</div>
+                <p>DeepSeek-AIによるOCRエンジン。Visual Causal Flowというアプローチを採用し、画像内のテキスト認識精度を向上させる。特に複雑なレイアウトや歪みのある画像に対する認識性能の向上が期待される。</p>
+                
+                <div class="section-title">なぜ注目？</div>
+                <p>Visual Causal Flowに基づく、高精度なOCRエンジンである点。従来のOCR技術では困難だった、複雑な画像からのテキスト抽出を可能にする。特に、画像解析やドキュメント処理分野における応用が期待される。</p>
+                
+                <div class="tech-stack">
+                    <span class="tech-tag">Python</span><span class="tech-tag">Deep Learning</span><span class="tech-tag">OCR</span><span class="tech-tag">Visual Causal Flow</span><span class="tech-tag">Computer Vision</span>
+                </div>
+            </div>
+
+            <div class="repo-card">
+                <div class="repo-header">
+                    <a href="https://github.com/vuejs-ai/skills" class="repo-name" target="_blank">skills</a>
+                    <span class="stars">⭐ 792</span>
+                </div>
+                <p class="repo-description">Agent skills for Vue 3 development</p>
+                <div class="summary-badge">Vue 3開発を支援するAIエージェントのスキル集。コード生成、補完、デバッグ等の自動化機能を提供。</div>
+                
+                <div class="section-title">背景</div>
+                <p>Vue 3開発におけるAIエージェントの能力拡張を目的としたリポジトリ。コンポーネントの自動生成、コード補完、デバッグ支援など、開発ワークフローを効率化する「スキル」をVue CLIやViteプラグインとして提供し、開発者の生産性向上に貢献する。</p>
+                
+                <div class="section-title">なぜ注目？</div>
+                <p>AIエージェントをVue開発に統合することで、開発者が記述するボイラープレートコードを削減し、より創造的なタスクに集中できる。特定の開発タスクを自動化する「スキル」の概念は、従来のフレームワーク拡張とは異なる新しいアプローチ。</p>
+                
+                <div class="tech-stack">
+                    <span class="tech-tag">Vue 3</span><span class="tech-tag">TypeScript</span><span class="tech-tag">AI Agent</span><span class="tech-tag">Vue CLI</span><span class="tech-tag">Vite</span>
+                </div>
+            </div>
+
+            <div class="repo-card">
+                <div class="repo-header">
+                    <a href="https://github.com/op7418/Youtube-clipper-skill" class="repo-name" target="_blank">Youtube-clipper-skill</a>
+                    <span class="stars">⭐ 788</span>
+                </div>
+                <p class="repo-description"></p>
+                <div class="summary-badge">YouTube動画のクリッピングを自動化するCLIツールをAIエージェントスキルとして提供。</div>
+                
+                <div class="section-title">背景</div>
+                <p>YouTube動画から指定された範囲を切り出すためのCLIツールを、AIエージェントのスキルとして実装するプロジェクト。大規模な動画コンテンツから特定の部分を抽出するタスクを自動化し、コンテンツ再利用や分析を効率化する。</p>
+                
+                <div class="section-title">なぜ注目？</div>
+                <p>YouTube動画の特定のセグメントをコマンドラインから直接切り出す機能は、コンテンツ制作者や研究者にとって非常に有用。AIエージェントスキルとして提供することで、他のツールとの連携や自動化が容易になり、柔軟なワークフローを構築できる。</p>
+                
+                <div class="tech-stack">
+                    <span class="tech-tag">Python</span><span class="tech-tag">yt-dlp (推測)</span><span class="tech-tag">AI Agent</span><span class="tech-tag">CLI</span>
+                </div>
+            </div>
+
+            <div class="repo-card">
+                <div class="repo-header">
+                    <a href="https://github.com/unicodeveloper/globalthreatmap" class="repo-name" target="_blank">globalthreatmap</a>
+                    <span class="stars">⭐ 744</span>
+                </div>
+                <p class="repo-description">Global threat map. Learn wars, conflicts, military bases and history of nations. </p>
+                <div class="summary-badge">世界の紛争、軍事基地、国の歴史を地図上に可視化するWebアプリケーション。</div>
+                
+                <div class="section-title">背景</div>
+                <p>世界中の紛争、軍事基地、国の歴史などの脅威情報を可視化するWebアプリケーション。地政学的リスクの把握、国際情勢の分析、教育目的など、多岐にわたる用途が考えられる。データソースの信頼性と最新性が重要。</p>
+                
+                <div class="section-title">なぜ注目？</div>
+                <p>単なる地図表示に留まらず、紛争や軍事情報を統合的に表示することで、グローバルな脅威状況を直感的に理解できる。API連携により、外部データソースとの連携や独自の分析機能の追加も可能であり、拡張性が高い。</p>
+                
+                <div class="tech-stack">
+                    <span class="tech-tag">JavaScript</span><span class="tech-tag">React (推測)</span><span class="tech-tag">Node.js (推測)</span><span class="tech-tag">Geographic Information System (GIS)</span><span class="tech-tag">REST API</span>
+                </div>
+            </div>
+
+            <div class="repo-card">
+                <div class="repo-header">
+                    <a href="https://github.com/KKKKhazix/Khazix-Skills" class="repo-name" target="_blank">Khazix-Skills</a>
+                    <span class="stars">⭐ 697</span>
+                </div>
+                <p class="repo-description"></p>
+                <div class="summary-badge">League of LegendsのKhazixのスキルに関するデータまたはロジックを提供するリポジトリ。</div>
+                
+                <div class="section-title">背景</div>
+                <p>リポジトリ名から、League of Legendsのキャラクター「Khazix」のスキルに関するデータまたはロジックを扱うものと推測されます。ゲームのスキル計算、ダメージシミュレーション、AI制御などに利用される可能性があります。</p>
+                
+                <div class="section-title">なぜ注目？</div>
+                <p>Khazixのような複雑なスキルの挙動を正確にモデル化するには、高度なゲームロジックの理解と効率的な計算手法が必要です。コミュニティによる分析やシミュレーションが、ゲームバランス調整や戦略研究に貢献する可能性があります。</p>
+                
+                <div class="tech-stack">
+                    <span class="tech-tag">不明 (リポジトリに説明がないため推測)</span><span class="tech-tag">可能性: Python (データ分析、AI)</span><span class="tech-tag">JavaScript (Web表示)</span><span class="tech-tag">JSON/YAML (データ記述)</span>
+                </div>
+            </div>
+
+            <div class="repo-card">
+                <div class="repo-header">
+                    <a href="https://github.com/luccast/crabwalk" class="repo-name" target="_blank">crabwalk</a>
+                    <span class="stars">⭐ 328</span>
+                </div>
+                <p class="repo-description">🦀 Crabwalk 🦀 Real-time companion monitor for Clawdbot agents.</p>
+                <div class="summary-badge">Clawdbotエージェント専用のリアルタイム監視・可視化ツール</div>
+                
+                <div class="section-title">背景</div>
+                <p>Clawdbotエージェントのリアルタイムコンパニオンモニタリングツール。エージェントの動作状況、パフォーマンス、リソース使用状況などを可視化し、問題発生時の迅速な対応やボトルネックの特定を支援する。分散システムにおけるエージェントの監視・管理を効率化する。</p>
+                
+                <div class="section-title">なぜ注目？</div>
+                <p>Rustで記述されている可能性が高く、高いパフォーマンスと信頼性を提供する。Clawdbotという特定のシステムに特化している点が、汎用的なモニタリングツールでは得られない深い洞察を提供する可能性を秘めている。リアルタイム監視という要件を満たすためのアーキテクチャに注目。</p>
+                
+                <div class="tech-stack">
+                    <span class="tech-tag">Rust (可能性が高い)</span><span class="tech-tag">モニタリング関連技術 (Prometheus, Grafanaとの連携の可能性)</span><span class="tech-tag">Clawdbot</span>
+                </div>
+            </div>
+
+            <div class="repo-card">
+                <div class="repo-header">
+                    <a href="https://github.com/vueuse/skills" class="repo-name" target="_blank">skills</a>
+                    <span class="stars">⭐ 239</span>
+                </div>
+                <p class="repo-description">Agent Skills for VueUse</p>
+                <div class="summary-badge">VueUse 기반의 에이전트 스킬(기능) 모듈 모음</div>
+                
+                <div class="section-title">背景</div>
+                <p>VueUseのエージェント向けスキルセット。VueUseのcomposablesを活用し、特定のタスクや機能をエージェントに付与するための再利用可能なモジュールを提供する。これにより、エージェントの開発効率を向上させ、複雑な処理を容易に実装できるようになる。</p>
+                
+                <div class="section-title">なぜ注目？</div>
+                <p>VueUseという人気のあるVue.jsユーティリティライブラリを基盤としている点が強み。composable関数というVue.jsの特性を活かし、エージェントの機能をモジュール化し、再利用性を高めている。Vue.jsのエコシステムにおけるエージェント開発の標準化を推進する可能性を秘めている。</p>
+                
+                <div class="tech-stack">
+                    <span class="tech-tag">Vue.js</span><span class="tech-tag">VueUse</span><span class="tech-tag">JavaScript/TypeScript</span><span class="tech-tag">Composable Functions</span>
+                </div>
+            </div>
+
+            <div class="repo-card">
+                <div class="repo-header">
+                    <a href="https://github.com/liu-ziting/ThinkFlowAI" class="repo-name" target="_blank">ThinkFlowAI</a>
+                    <span class="stars">⭐ 134</span>
+                </div>
+                <p class="repo-description">ThinkFlow AI 是一个轻量级“从想法到结构化图谱”的工作台：输入一个核心想法，应用会把它扩展为可浏览的知识图谱（模块/子模块）。每个节点支持继续追问扩展、深挖详情，以及可选的配图生成。</p>
+                <div class="summary-badge">아이디어를 시작점으로 지식 그래프를 생성하는 도구</div>
+                
+                <div class="section-title">背景</div>
+                <p>アイデアを構造化された知識グラフに変換する軽量ワークベンチ。中心となるアイデアを入力すると、それを拡張してナビゲート可能な知識グラフ（モジュール/サブモジュール）を生成する。各ノードは、詳細を掘り下げたり、関連画像を生成したりするための追跡拡張をサポートする。</p>
+                
+                <div class="section-title">なぜ注目？</div>
+                <p>アイデアの発想から構造化までを支援する点がユニーク。既存の知識グラフ作成ツールとは異なり、アイデアを起点とすることで、より創造的な思考を促進する。追跡拡張や画像生成機能により、知識の深化と視覚化を同時に実現できる点が魅力的。</p>
+                
+                <div class="tech-stack">
+                    <span class="tech-tag">AI</span><span class="tech-tag">知識グラフ</span><span class="tech-tag">自然言語処理 (NLP)</span><span class="tech-tag">画像生成 (DALL-E, Stable Diffusion等のAPI連携の可能性)</span><span class="tech-tag">JavaScript/TypeScript (UI)</span><span class="tech-tag">React/Vue/Svelte (UIフレームワークの可能性)</span>
+                </div>
+            </div>
+
+            <div class="repo-card">
+                <div class="repo-header">
+                    <a href="https://github.com/nhevers/claude-recall" class="repo-name" target="_blank">claude-recall</a>
+                    <span class="stars">⭐ 122</span>
+                </div>
+                <p class="repo-description">Long-term memory layer for Clawd &amp; Claude Code that learns and recalls your project context automatically</p>
+                <div class="summary-badge">Claudeのプロジェクトコンテキスト長期記憶レイヤー</div>
+                
+                <div class="section-title">背景</div>
+                <p>大規模言語モデル(LLM)であるClaudeの文脈理解能力を拡張し、長期記憶を実現する仕組みです。開発者のプロジェクトコンテキストを学習し、自動的にRecallすることで、より適切な応答を可能にします。既存のLLMの短期記憶の限界を克服する試みです。</p>
+                
+                <div class="section-title">なぜ注目？</div>
+                <p>LLMの長期記憶問題を、プロジェクトコンテキストの自動学習とRecallというアプローチで解決しようとしている点が革新的です。開発者は、常に最新のプロジェクト状況をClaudeに伝える必要がなくなり、より自然で深い対話が可能になります。</p>
+                
+                <div class="tech-stack">
+                    <span class="tech-tag">Python</span><span class="tech-tag">Large Language Model (Claude)</span><span class="tech-tag">Vector Database (推測)</span>
+                </div>
+            </div>
+
+            <div class="repo-card">
+                <div class="repo-header">
+                    <a href="https://github.com/embedding-shapes/one-agent-one-browser" class="repo-name" target="_blank">one-agent-one-browser</a>
+                    <span class="stars">⭐ 116</span>
+                </div>
+                <p class="repo-description">One from scratch browser built by one human and one agent, working hand in hand</p>
+                <div class="summary-badge">人間とAIエージェント協調型スクラッチブラウザ</div>
+                
+                <div class="section-title">背景</div>
+                <p>人間とAIエージェントが協調して動作する、スクラッチから構築されたブラウザです。単一の開発者とエージェントが共同で開発している点が特徴的で、AIによるブラウザ制御の可能性を追求しています。既存のブラウザ自動化ツールとは異なり、より深いレベルでの統合を目指しています。</p>
+                
+                <div class="section-title">なぜ注目？</div>
+                <p>人間とAIが共同でブラウザを開発するという実験的な試みが興味深いです。AIがブラウザの内部構造を理解し、より高度な自動化や最適化を実現する可能性を示唆しています。今後のAIエージェントとブラウザの融合の方向性を示す重要なプロジェクトです。</p>
+                
+                <div class="tech-stack">
+                    <span class="tech-tag">Rust (推測)</span><span class="tech-tag">WebAssembly (推測)</span><span class="tech-tag">AI Agent (具体的な技術は不明)</span>
+                </div>
+            </div>
+
+            <div class="repo-card">
+                <div class="repo-header">
+                    <a href="https://github.com/oleeai/gen-ai-101" class="repo-name" target="_blank">gen-ai-101</a>
+                    <span class="stars">⭐ 92</span>
+                </div>
+                <p class="repo-description">This repository provides a comprehensive starter kit for developers, students, and educators, it showcases practical examples for building intelligent chatbots, handling multi-turn conversations, streaming AI responses and processing images. </p>
+                <div class="summary-badge">生成AIアプリケーション開発スターターキット</div>
+                
+                <div class="section-title">背景</div>
+                <p>開発者、学生、教育者向けに、生成AIアプリケーション構築のスターターキットを提供します。インテリジェントチャットボットの構築、複数ターンの会話処理、AI応答のストリーミング、画像処理などの実践的な例が含まれています。生成AI技術の教育普及を目的としています。</p>
+                
+                <div class="section-title">なぜ注目？</div>
+                <p>生成AI技術を学ぶための実践的なサンプルコードが豊富に提供されている点が魅力です。特に、複数ターンの会話処理やAI応答のストリーミングなど、より高度なアプリケーション開発に必要な技術を習得できます。生成AIアプリケーション開発の敷居を下げる役割を果たします。</p>
+                
+                <div class="tech-stack">
+                    <span class="tech-tag">Python</span><span class="tech-tag">Large Language Model (具体的なモデルは不明)</span><span class="tech-tag">Streamlit</span><span class="tech-tag">LangChain (推測)</span><span class="tech-tag">各種画像処理ライブラリ (推測)</span>
+                </div>
+            </div>
+
+            <div class="repo-card">
+                <div class="repo-header">
+                    <a href="https://github.com/coollabsio/jean" class="repo-name" target="_blank">jean</a>
+                    <span class="stars">⭐ 87</span>
+                </div>
+                <p class="repo-description">Run AI agents parallel in isolated workspaces.</p>
+                <div class="summary-badge">AIエージェントの並列実行環境を提供し、分散AIアプリケーション開発を効率化する。</div>
+                
+                <div class="section-title">背景</div>
+                <p>jeanは、AIエージェントを隔離されたワークスペースで並行実行するためのフレームワークです。これにより、エージェント間の干渉を防ぎ、スケーラブルなAIシステムの構築を支援します。内部では、コンテナ技術や仮想化を利用して、各エージェントに独立した実行環境を提供していると考えられます。</p>
+                
+                <div class="section-title">なぜ注目？</div>
+                <p>AIエージェントの並行実行におけるリソース競合と依存関係管理の課題を解決し、エージェント設計の自由度と実験の効率性を高めます。分散処理基盤との連携により、複雑なマルチエージェントシステムの開発を加速させる可能性を秘めています。</p>
+                
+                <div class="tech-stack">
+                    <span class="tech-tag">Python</span><span class="tech-tag">Docker</span><span class="tech-tag">gRPC</span><span class="tech-tag">Kubernetes (推測)</span><span class="tech-tag">LangChain (推測)</span>
+                </div>
+            </div>
+
+            <div class="repo-card">
+                <div class="repo-header">
+                    <a href="https://github.com/Jane-xiaoer/skill-vision-control" class="repo-name" target="_blank">skill-vision-control</a>
+                    <span class="stars">⭐ 54</span>
+                </div>
+                <p class="repo-description">Safe MCP Skill version manager - detect updates, A/B testing, smart merge</p>
+                <div class="summary-badge">Safe MCPのスキルバージョン管理を自動化し、A/Bテスト、スマートマージをサポート。</div>
+                
+                <div class="section-title">背景</div>
+                <p>skill-vision-controlは、Safe MCP (Model Composition Platform) のスキルバージョン管理を目的としたツールです。アップデートの検出、A/Bテスト、スマートマージ機能を備え、モデルの品質と安定性を維持しながら、継続的な改善を支援します。CI/CDパイプラインとの統合を想定していると考えられます。</p>
+                
+                <div class="section-title">なぜ注目？</div>
+                <p>モデルのA/Bテストを自動化し、スキルバージョン管理を効率化します。誤った更新によるサービス停止のリスクを軽減し、品質を維持しながら迅速な改善サイクルを実現します。大規模な機械学習モデル運用における信頼性向上に貢献します。</p>
+                
+                <div class="tech-stack">
+                    <span class="tech-tag">Python</span><span class="tech-tag">MLflow (推測)</span><span class="tech-tag">Git</span><span class="tech-tag">TensorFlow/PyTorch (推測)</span>
+                </div>
+            </div>
+
+            <div class="repo-card">
+                <div class="repo-header">
+                    <a href="https://github.com/jau123/nanobanana-trending-prompts" class="repo-name" target="_blank">nanobanana-trending-prompts</a>
+                    <span class="stars">⭐ 49</span>
+                </div>
+                <p class="repo-description">1,000+ curated trending AI image prompts from X/Twitter, ranked by engagement. Works with NanoBanana Pro, GPT Image, Midjourney.  收集1000+ X热门AI生图prompt分享贴，每周更新</p>
+                <div class="summary-badge">XのトレンドAI画像生成プロンプト集。エンゲージメントランキングでクリエイターを支援。</div>
+                
+                <div class="section-title">背景</div>
+                <p>nanobanana-trending-promptsは、X(Twitter)でトレンドになっているAI画像生成プロンプトを収集し、エンゲージメントに基づいてランキングしたものです。NanoBanana Pro、GPT Image、Midjourneyなどのプラットフォームとの互換性を考慮してキュレーションされており、クリエイターが最新のトレンドに乗った画像を生成する手助けをします。</p>
+                
+                <div class="section-title">なぜ注目？</div>
+                <p>AI画像生成の分野におけるトレンドを把握し、高品質なプロンプトを効率的に発見できます。他のプロンプト集と比較して、エンゲージメントデータに基づいたランキングが特徴であり、ユーザーの興味を引く可能性の高いプロンプトにアクセスできます。生成AIの創造性を刺激する触媒として機能します。</p>
+                
+                <div class="tech-stack">
+                    <span class="tech-tag">なし (データセット)</span><span class="tech-tag">AI画像生成モデル (Midjourney, Stable Diffusion, DALL-E)</span><span class="tech-tag">データ収集スクレイピング</span>
+                </div>
+            </div>
+
+            <div class="repo-card">
+                <div class="repo-header">
+                    <a href="https://github.com/Xeron2000/openOii" class="repo-name" target="_blank">openOii</a>
+                    <span class="stars">⭐ 42</span>
+                </div>
+                <p class="repo-description">基于多智能体协作的 AI 漫剧生成平台 | AI Agent-based Comic Drama Generation Platform</p>
+                <div class="summary-badge">AIエージェント群が協調し、漫画形式のドラマを自動生成するプラットフォーム</div>
+                
+                <div class="section-title">背景</div>
+                <p>AIエージェント群による協調動作で、漫画形式のドラマを生成するプラットフォーム。従来の手作業による漫画制作の自動化を目指し、ストーリー構成からコマ割り、キャラクター配置までをAIが担当することで、コンテンツ制作のボトルネックを解消し、新たな表現の可能性を切り開く。</p>
+                
+                <div class="section-title">なぜ注目？</div>
+                <p>複数エージェントの協調による創造的なコンテンツ生成は、従来の単一AIモデルでは困難だった複雑なタスクを実現する。特に、ストーリーの整合性やキャラクターの感情表現など、高度な表現力が求められる分野での応用が期待され、今後のAIコンテンツ生成の可能性を広げる。</p>
+                
+                <div class="tech-stack">
+                    <span class="tech-tag">Python</span><span class="tech-tag">AIエージェント</span><span class="tech-tag">自然言語処理 (NLP)</span><span class="tech-tag">画像生成AI</span><span class="tech-tag">深層学習</span>
+                </div>
+            </div>
+
+            <div class="repo-card">
+                <div class="repo-header">
+                    <a href="https://github.com/dcramer/dex" class="repo-name" target="_blank">dex</a>
+                    <span class="stars">⭐ 105</span>
+                </div>
+                <p class="repo-description">Task tracking for Agents</p>
+                <div class="summary-badge">分散エージェントのタスク状態を一元管理・追跡するシステム</div>
+                
+                <div class="section-title">背景</div>
+                <p>Dexは、エージェント（監視、自動化処理などを行うプログラム）向けのタスク追跡システムです。従来、こういったエージェントが実行するタスクの状態管理は分散しがちでしたが、Dexは一元的に可視化し、問題発生時の追跡と解決を効率化することを目指しています。</p>
+                
+                <div class="section-title">なぜ注目？</div>
+                <p>エージェントが実行する非同期タスクの可視化に特化している点がユニークです。分散環境でのタスク実行状況を集中管理することで、複雑なシステムにおける問題の早期発見と根本原因の特定を支援します。特に、マイクロサービスアーキテクチャを採用しているシステムで有効と考えられます。</p>
+                
+                <div class="tech-stack">
+                    <span class="tech-tag">Python</span><span class="tech-tag">Likely Django or Flask</span><span class="tech-tag">Relational Database (PostgreSQL, MySQL)</span><span class="tech-tag">Celery or similar task queue</span>
+                </div>
+            </div>
+
+            <div class="repo-card">
+                <div class="repo-header">
+                    <a href="https://github.com/skorotkiewicz/llmnet" class="repo-name" target="_blank">llmnet</a>
+                    <span class="stars">⭐ 59</span>
+                </div>
+                <p class="repo-description">The Offline Internet.</p>
+                <div class="summary-badge">LLMを活用したオフラインインターネット環境構築プロジェクト</div>
+                
+                <div class="section-title">背景</div>
+                <p>LLMnetは、オフライン環境でのインターネットアクセスを可能にするプロジェクトです。LLM（大規模言語モデル）を活用して、オフラインで利用可能な情報を生成・管理し、ネットワーク接続がない状況でも情報検索や学習を継続できるようにすることを目指しています。</p>
+                
+                <div class="section-title">なぜ注目？</div>
+                <p>インターネット接続が不安定、または利用できない環境下で、大規模言語モデルを活用して情報アクセスを可能にする点です。知識集約的な作業をオフラインで行えるため、災害時や通信インフラが整っていない地域での活用が期待できます。また、プライバシーを重視する環境にも適しています.</p>
+                
+                <div class="tech-stack">
+                    <span class="tech-tag">Python</span><span class="tech-tag">LLM (e.g., GPT-3, Llama)</span><span class="tech-tag">Vector Database (e.g., Chroma, FAISS)</span><span class="tech-tag">Offline storage (e.g., SQLite)</span>
+                </div>
+            </div>
+
+            <div class="repo-card">
+                <div class="repo-header">
+                    <a href="https://github.com/fangchenantek/Psychosis-of-AI" class="repo-name" target="_blank">Psychosis-of-AI</a>
+                    <span class="stars">⭐ 36</span>
+                </div>
+                <p class="repo-description">一份来自2026年的AI精神病理学诊断报告 / A Pathological Diagnosis of AI Civilization</p>
+                <div class="summary-badge">AI文明の精神病理学的診断を装った、AI倫理に関する考察</div>
+                
+                <div class="section-title">背景</div>
+                <p>Psychosis-of-AIは、2026年のAIの精神病理学的診断を装った、AI文明の潜在的なリスクと倫理的課題を探求する思索的なプロジェクトです。AIの進化がもたらす社会への影響を、精神医学的な視点から考察することを試みています。</p>
+                
+                <div class="section-title">なぜ注目？</div>
+                <p>AIの倫理的な問題を精神医学的な視点から分析するというユニークなアプローチです。技術的な実装よりも、AIの発展が社会や人間に与える影響について、哲学的な議論を喚起することを目的としています。未来社会におけるAIとの関係性を深く考えさせられる内容です。</p>
+                
+                <div class="tech-stack">
+                    <span class="tech-tag">No specific tech stack, conceptual project</span><span class="tech-tag">Potentially uses LLMs for text generation</span>
+                </div>
+            </div>
+
+            <div class="repo-card">
+                <div class="repo-header">
+                    <a href="https://github.com/xiaotonng/lc2mcp" class="repo-name" target="_blank">lc2mcp</a>
+                    <span class="stars">⭐ 30</span>
+                </div>
+                <p class="repo-description">Convert LangChain tools to FastMCP tools</p>
+                <div class="summary-badge">LangChainツールをFastMCP環境に変換し、LLMアプリケーションの処理性能を向上させる。</div>
+                
+                <div class="section-title">背景</div>
+                <p>LangChainのツールをFastMCP（おそらくMulti-Chain Parallel Processing）のツールに変換することで、LLMアプリケーションにおける処理の並列化と効率化を図る。LangChainの豊富なツールエコシステムを、より高速な実行環境に統合することを目指す。</p>
+                
+                <div class="section-title">なぜ注目？</div>
+                <p>既存のLangChainツールをそのまま利用しつつ、FastMCPによる高速化を可能にする点が魅力。LLMアプリケーションのボトルネックとなりがちなツール実行部分を最適化し、スループット向上に貢献する可能性を秘めている。</p>
+                
+                <div class="tech-stack">
+                    <span class="tech-tag">Python</span><span class="tech-tag">LangChain</span><span class="tech-tag">FastMCP (推測)</span><span class="tech-tag">LLM</span>
+                </div>
+            </div>
+
+            <div class="repo-card">
+                <div class="repo-header">
+                    <a href="https://github.com/slwang-ustc/nano-vllm-v1" class="repo-name" target="_blank">nano-vllm-v1</a>
+                    <span class="stars">⭐ 28</span>
+                </div>
+                <p class="repo-description">Nano vLLM with vLLM v1&#39;s request scheduling strategy and chunked prefill</p>
+                <div class="summary-badge">vLLM v1のリクエストスケジューリングとチャンク化プリフィルを実装した、軽量版vLLM。</div>
+                
+                <div class="section-title">背景</div>
+                <p>vLLM v1のリクエストスケジューリング戦略とチャンク化されたプリフィルを活用した、軽量版のvLLM。リソースが限られた環境での大規模言語モデルの効率的な推論を目的とする。メモリ効率とスループットのバランスを追求。</p>
+                
+                <div class="section-title">なぜ注目？</div>
+                <p>vLLM v1の最新技術を、より小さなフットプリントで利用可能にする点が画期的。エッジデバイスや低スペック環境でのLLM推論の可能性を広げる。チャンク化プリフィルによるメモリ効率化に注目。</p>
+                
+                <div class="tech-stack">
+                    <span class="tech-tag">Python</span><span class="tech-tag">vLLM</span><span class="tech-tag">CUDA (推測)</span><span class="tech-tag">大規模言語モデル</span>
+                </div>
+            </div>
+
+            <div class="repo-card">
+                <div class="repo-header">
+                    <a href="https://github.com/AutoArk/TinyEngram" class="repo-name" target="_blank">TinyEngram</a>
+                    <span class="stars">⭐ 27</span>
+                </div>
+                <p class="repo-description">TinyEngram is an open research project built on Qwen model for exploring the Engram architecture.</p>
+                <div class="summary-badge">Qwenモデル上でEngramアーキテクチャを実装し、LLMにおける長期記憶の効率化を研究するプロジェクト。</div>
+                
+                <div class="section-title">背景</div>
+                <p>Qwenモデルをベースに、Engramアーキテクチャを探求するオープンな研究プロジェクト。Engramアーキテクチャは、脳の記憶構造を模倣したもので、LLMにおける長期記憶の効率的な管理と利用を目指すものと考えられる。</p>
+                
+                <div class="section-title">なぜ注目？</div>
+                <p>最新のQwenモデルをベースに、脳科学に着想を得たEngramアーキテクチャを実装している点がユニーク。LLMにおける長期記憶という重要な課題に対し、斬新なアプローチで取り組む研究的価値が高い。</p>
+                
+                <div class="tech-stack">
+                    <span class="tech-tag">Python</span><span class="tech-tag">Qwen</span><span class="tech-tag">Transformer</span><span class="tech-tag">Engramアーキテクチャ (推測)</span><span class="tech-tag">大規模言語モデル</span>
+                </div>
+            </div>
+
+            <div class="repo-card">
+                <div class="repo-header">
+                    <a href="https://github.com/InnovatorLM/Innovator-VL" class="repo-name" target="_blank">Innovator-VL</a>
+                    <span class="stars">⭐ 12</span>
+                </div>
+                <p class="repo-description">Fully Open-source Multimodal Language Models for Science Discovery</p>
+                <div class="summary-badge">科学研究向け、完全オープンソースのマルチモーダル大規模言語モデル</div>
+                
+                <div class="section-title">背景</div>
+                <p>科学研究におけるマルチモーダルな課題を解決する、完全オープンソースの大規模言語モデル。画像、テキスト、数式等の多様なデータ形式を統合的に理解し、科学的発見を支援。既存の閉鎖的なモデルからの脱却と、研究の透明性・再現性向上を目指す。</p>
+                
+                <div class="section-title">なぜ注目？</div>
+                <p>科学特化型MMLLMとして、既存の汎用モデルでは困難な科学的推論・発見を促進。オープンソースである点が特に重要で、研究者がモデルを自由に拡張・カスタマイズし、専門分野に特化した性能向上が期待できる。</p>
+                
+                <div class="tech-stack">
+                    <span class="tech-tag">Python</span><span class="tech-tag">PyTorch</span><span class="tech-tag">Transformerアーキテクチャ</span><span class="tech-tag">Multimodal Learning</span>
+                </div>
+            </div>
+
+            <div class="repo-card">
+                <div class="repo-header">
+                    <a href="https://github.com/gyunggyung/Tiny-MoA" class="repo-name" target="_blank">Tiny-MoA</a>
+                    <span class="stars">⭐ 11</span>
+                </div>
+                <p class="repo-description">Running Mixture of Agents on CPU: LFM2.5 Brain (1.2B) + Falcon-R Reasoner (600M) + Tool Caller (90M). CPU-only, 16GB RAM. Lightweight AI Legion.</p>
+                <div class="summary-badge">CPU環境向け、軽量 Mixture of Agentsフレームワーク</div>
+                
+                <div class="section-title">背景</div>
+                <p>CPU環境で動作する軽量な Mixture of Agents (MoA) フレームワーク。大規模言語モデルを複数のエージェントに分割し、並列処理により効率的な推論を実現。低スペック環境でも動作可能なAIリージョン構築を目的とする。</p>
+                
+                <div class="section-title">なぜ注目？</div>
+                <p>大規模言語モデルの実行にGPUを必須としない点が画期的。CPU環境でMoAを実現することで、研究開発コストを大幅に削減し、エッジデバイスへの展開を可能にする。低リソース環境でのAI活用に新たな道を開く。</p>
+                
+                <div class="tech-stack">
+                    <span class="tech-tag">Python</span><span class="tech-tag">PyTorch</span><span class="tech-tag">LFM2.5</span><span class="tech-tag">Falcon-R</span><span class="tech-tag">Mixture of Experts (MoE)</span><span class="tech-tag">CPU最適化</span>
+                </div>
+            </div>
+
+        </main>
+
+        <footer>
+            <p>&copy; 2026 GitHub Trending Intelligence Agent</p>
+            <p><a href="rss.xml">RSS Feed</a></p>
+        </footer>
+    </div>
+</body>
+</html>
+
