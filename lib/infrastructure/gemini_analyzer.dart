@@ -22,6 +22,10 @@ class GeminiAnalyzer implements TrendAnalyzer {
     final result = await analyzeBatch([repository]);
     switch (result) {
       case Success(value: final list):
+        if (list.isEmpty) {
+          return Failure(
+              Exception('Gemini returned no analysis for the repository'));
+        }
         return Success(list.first);
       case Failure(error: final error):
         return Failure(error);
