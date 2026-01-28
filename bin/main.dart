@@ -23,7 +23,6 @@ void main(List<String> arguments) async {
     ..addOption('output', abbr: 'o', help: 'Output markdown file path')
     ..addOption('rss', help: 'Output RSS file path')
     ..addOption('html', help: 'Output HTML file path')
-    ..addOption('history-url', help: 'URL to the existing RSS feed to avoid duplicates')
     ..addFlag('help',
         abbr: 'h', negatable: false, help: 'Show usage information');
 
@@ -54,7 +53,16 @@ void main(List<String> arguments) async {
   final maxStarsStr = results['max-stars'] as String?;
   final maxStars = maxStarsStr != null ? int.tryParse(maxStarsStr) : null;
   final newOnly = results['new-only'] as bool;
-  final historyUrl = results['history-url'] as String?;
+
+  // 自動的に履歴URLを構築 (GitHub Actions環境の場合)
+  String? historyUrl;
+  final repo = Platform.environment['GITHUB_REPOSITORY'];
+  final owner = Platform.environment['GITHUB_REPOSITORY_OWNER'];
+  if (repo != null && owner != null && repo.contains('/')) {
+    final repoName = repo.split('/')[1];
+    historyUrl = 'https://$owner.github.io/$repoName/rss.xml';
+    print('🤖 Automatically detected history URL: $historyUrl');
+  }
 
   final fetcher = GitHubFetcher(apiToken: githubToken);
   final analyzer = GeminiAnalyzer(apiKey: geminiKey);

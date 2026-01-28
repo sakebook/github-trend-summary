@@ -27,7 +27,6 @@ dart bin/main.dart \
   --new-only \
   --gemini-key YOUR_GEMINI_KEY \
   --github-token YOUR_GITHUB_TOKEN \
-  --history-url https://[username].github.io/[repo]/rss.xml \
   --output report.md \
   --html public/index.html
 ```
@@ -39,7 +38,6 @@ dart bin/main.dart \
 | `--lang` | 対象とするプログラミング言語 (カンマ区切り。`all` で全言語) |
 | `--topic` | 対象とするトピック (カンマ区切り。`ai, mcp` 等) |
 | `--new-only` | 過去14日以内に作成されたリポジトリのみを対象とする (Rising Stars モード) |
-| `--history-url` | 既読管理のための既存 RSS の URL。重複紹介を防ぎます |
 | `--gemini-key` | Google Gemini API キー (必須) |
 
 ## GitHub Actions ワークフロー
