@@ -156,31 +156,46 @@ Future<void> _processFetchResult(
 
   // 1. 今回の実行ですでに取得済みのものを除外
   // 2. 過去のレポートに掲載済みのものを除外（既読スキップ）
-  final unreadRepositories = fetchedRepositories
-      .where((repo) =>
-          !allSummaries.any((s) => s.repository.url == repo.url) &&
-          !seenUrls.contains(repo.url))
-      .toList();
+  final List<Repository> seenInThisRun = [];
+  final List<Repository> seenInHistory = [];
+  final List<Repository> unreadRepositories = [];
+
+  for (final repo in fetchedRepositories) {
+    if (allSummaries.any((s) => s.repository.url == repo.url)) {
+      seenInThisRun.add(repo);
+    } else if (seenUrls.contains(repo.url)) {
+      seenInHistory.add(repo);
+    } else {
+      unreadRepositories.add(repo);
+    }
+  }
+
+  if (seenInHistory.isNotEmpty) {
+    print('  - Skipping ${seenInHistory.length} already reported repositories:');
+    for (final repo in seenInHistory) {
+      print('    - [Seen] ${repo.owner}/${repo.name}');
+    }
+  }
 
   // 未読が足りない場合は、既読リポジトリから今回の実行で未取得のものを補填する
   final List<Repository> repositoriesToAnalyze;
   if (unreadRepositories.length >= 5) {
     unreadRepositories.shuffle();
     repositoriesToAnalyze = unreadRepositories.take(5).toList();
-    print('  - Found ${unreadRepositories.length} unread repositories. Picking 5 for analysis.');
+    print('  ✨ Found ${unreadRepositories.length} unread repositories. Picking 5 for discovery.');
   } else {
     final needed = 5 - unreadRepositories.length;
-    final fallbackCandidates = fetchedRepositories
-        .where((repo) => !allSummaries.any((s) => s.repository.url == repo.url) &&
-                         !unreadRepositories.any((u) => u.url == repo.url))
-        .toList();
+    final fallbackCandidates = [
+      ...seenInHistory,
+      ...seenInThisRun.where((r) => !allSummaries.any((s) => s.repository.url == r.url)) // 基本ここには来ないはず
+    ];
     fallbackCandidates.shuffle();
 
     repositoriesToAnalyze = [
       ...unreadRepositories,
       ...fallbackCandidates.take(needed),
     ];
-    print('  - Only ${unreadRepositories.length} unread. Supplementing with ${repositoriesToAnalyze.length - unreadRepositories.length} historical ones.');
+    print('  - Only ${unreadRepositories.length} unread. Supplementing with ${repositoriesToAnalyze.length - unreadRepositories.length} historical ones for volume.');
   }
 
   if (repositoriesToAnalyze.isEmpty) {
