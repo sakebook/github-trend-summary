@@ -12,7 +12,7 @@ on:
       topic:
         description: 'Topic(s) (comma separated)'
         required: false
-        default: 'ai,llm,agent,generative-ai,machine-learning'
+        default: 'ai,llm,mcp,rag,agents'
 
 permissions:
   contents: write
@@ -37,7 +37,7 @@ jobs:
           GEMINI_KEY: ${{ secrets.GEMINI_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           LANGS: ${{ github.event.inputs.language || 'dart,typescript,python,rust,go,all' }}
-          TOPICS: ${{ github.event.inputs.topic || 'ai,llm,agent,generative-ai,machine-learning' }}
+          TOPICS: ${{ github.event.inputs.topic || 'ai,llm,mcp,rag,agents' }}
         run: |
           mkdir -p public
           dart bin/main.dart \

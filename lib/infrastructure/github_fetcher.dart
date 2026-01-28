@@ -20,7 +20,7 @@ class GitHubFetcher implements RepositoryFetcher {
     bool isTopic = false,
   }) async {
     try {
-      final lookbackDate = DateTime.now().subtract(const Duration(days: 7));
+      final lookbackDate = DateTime.now().subtract(const Duration(days: 3));
       final dateStr = lookbackDate.toIso8601String().split('T')[0];
 
       // 言語指定またはトピック指定を query に含める
@@ -49,7 +49,7 @@ class GitHubFetcher implements RepositoryFetcher {
         'q': query,
         'sort': 'stars',
         'order': 'desc',
-        'per_page': '10',
+        'per_page': '5',
       });
 
       final headers = {
