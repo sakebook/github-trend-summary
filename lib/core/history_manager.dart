@@ -32,7 +32,8 @@ class HistoryManager {
     if (content.isEmpty) return {};
 
     // Match GitHub repository URLs like https://github.com/owner/repo
-    final regex = RegExp(r'https://github\.com/([\w-]+)/([\w.-]+)');
+    // Uses a pattern that prevents matching a trailing period or closing bracket common in text
+    final regex = RegExp(r'https://github\.com/[\w-]+/[\w-]+[\w.-]*[\w-]');
     final matches = regex.allMatches(content);
 
     return matches.map((m) => m.group(0)!).toSet();
