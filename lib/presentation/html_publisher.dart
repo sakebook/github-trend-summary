@@ -28,127 +28,204 @@ class HtmlPublisher implements Publisher {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GitHub Trending Intelligence</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Outfit:wght@700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #f8f9fa;
-            --card-bg: #ffffff;
-            --text-color: #212529;
-            --accent-color: #0d6efd;
-            --secondary-text: #6c757d;
+            --bg: #0b0f1a;
+            --card: #161b22;
+            --card-border: #30363d;
+            --text-main: #e6edf3;
+            --text-dim: #8b949e;
+            --accent: #58a6ff;
+            --accent-soft: rgba(88, 166, 255, 0.1);
+            --star: #e3b341;
+            --bg-gradient: radial-gradient(circle at top right, #161b22, #0b0f1a);
         }
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg);
+            background-image: var(--bg-gradient);
+            color: var(--text-main);
             line-height: 1.6;
             margin: 0;
-            padding: 20px;
+            padding: 0;
+            min-height: 100vh;
         }
         .container {
-            max-width: 900px;
+            max-width: 800px;
             margin: 0 auto;
+            padding: 40px 20px;
         }
         header {
             text-align: center;
-            margin-bottom: 40px;
+            margin-bottom: 60px;
+            animation: fadeInDown 0.8s ease-out;
         }
         h1 {
-            color: var(--accent-color);
-            margin-bottom: 10px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 3rem;
+            background: linear-gradient(135deg, #fff 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 0;
+            letter-spacing: -0.02em;
+        }
+        .header-sub {
+            color: var(--text-dim);
+            font-size: 1.1rem;
+            margin-top: 8px;
         }
         .update-time {
-            color: var(--secondary-text);
-            font-size: 0.9em;
+            display: inline-block;
+            margin-top: 16px;
+            padding: 4px 12px;
+            background: var(--accent-soft);
+            border-radius: 100px;
+            font-size: 0.8rem;
+            color: var(--accent);
+            border: 1px solid rgba(88, 166, 255, 0.2);
         }
         .repo-card {
-            background: var(--card-bg);
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-            padding: 24px;
-            margin-bottom: 24px;
-            border: 1px solid #dee2e6;
+            background: var(--card);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 32px;
+            margin-bottom: 32px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        .repo-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.3);
         }
         .repo-header {
             display: flex;
             justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 16px;
+            align-items: center;
+            margin-bottom: 20px;
         }
-        .repo-title {
-            font-size: 1.4em;
-            font-weight: bold;
+        .repo-name {
+            font-size: 1.5rem;
+            font-weight: 800;
             text-decoration: none;
-            color: var(--accent-color);
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
-        .repo-title:hover {
-            text-decoration: underline;
+        .repo-name::before {
+            content: "🚀";
+            font-size: 1.2rem;
         }
         .stars {
-            background: #f1f8ff;
-            color: #0366d6;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.85em;
+            color: var(--star);
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .repo-description {
+            color: var(--text-dim);
+            font-size: 0.95rem;
+            margin-bottom: 24px;
+            font-style: italic;
+        }
+        .summary-box {
+            background: rgba(255,255,255,0.03);
+            border-left: 4px solid var(--accent);
+            padding: 16px 20px;
+            border-radius: 4px 12px 12px 4px;
+            margin-bottom: 24px;
             font-weight: 600;
         }
-        .section-title {
-            font-weight: bold;
-            margin-top: 16px;
-            margin-bottom: 4px;
-            color: #495057;
-            font-size: 0.9em;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
+        .grid-sections {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-bottom: 24px;
         }
-        .tech-tags {
+        @media (max-width: 600px) {
+            .grid-sections { grid-template-columns: 1fr; }
+        }
+        .section-item h3 {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-dim);
+            margin: 0 0 8px 0;
+        }
+        .section-item p {
+            margin: 0;
+            font-size: 0.9rem;
+            color: var(--text-main);
+        }
+        .tech-stack {
             display: flex;
             flex-wrap: wrap;
             gap: 8px;
-            margin-top: 8px;
+            margin-top: 12px;
         }
         .tech-tag {
-            background: #e9ecef;
-            padding: 2px 10px;
-            border-radius: 4px;
-            font-size: 0.8em;
-            color: #495057;
+            background: #21262d;
+            border: 1px solid var(--card-border);
+            color: var(--text-main);
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 500;
         }
         footer {
             text-align: center;
-            margin-top: 60px;
-            padding-bottom: 40px;
-            color: var(--secondary-text);
-            font-size: 0.85em;
+            padding: 60px 0;
+            color: var(--text-dim);
+            font-size: 0.9rem;
+        }
+        footer a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>GitHub Trending Intelligence</h1>
-            <p>Gemini AIによる日刊トレンド分析レポート</p>
-            <div class="update-time">最終更新: ${DateTime.now().toLocal().toString().split('.')[0]}</div>
+            <h1>Trending Intelligence</h1>
+            <p class="header-sub">Daily GitHub analysis powered by Gemini AI</p>
+            <div class="update-time">Last Updated: ${DateTime.now().toLocal().toString().split('.')[0]}</div>
         </header>
 
         <main>
 ''');
 
       for (final s in summaries) {
-        final repo = s.repository;
         buffer.writeln('''
             <div class="repo-card">
                 <div class="repo-header">
                     <a href="${_escapeHtml(s.repository.url)}" class="repo-name" target="_blank">${_escapeHtml(s.repository.name)}</a>
-                    <span class="stars">⭐ ${s.repository.stars}</span>
+                    <span class="stars">⭐ ${s.repository.stars.toString()}</span>
                 </div>
                 <p class="repo-description">${_escapeHtml(s.repository.description ?? '')}</p>
-                <div class="summary-badge">${_escapeHtml(s.summary)}</div>
+                <div class="summary-box">${_escapeHtml(s.summary)}</div>
                 
-                <div class="section-title">背景</div>
-                <p>${_escapeHtml(s.background)}</p>
-                
-                <div class="section-title">なぜ注目？</div>
-                <p>${_escapeHtml(s.whyHot)}</p>
+                <div class="grid-sections">
+                    <div class="section-item">
+                        <h3>背景 / Context</h3>
+                        <p>${_escapeHtml(s.background)}</p>
+                    </div>
+                    <div class="section-item">
+                        <h3>注目理由 / Why Trending</h3>
+                        <p>${_escapeHtml(s.whyHot)}</p>
+                    </div>
+                </div>
                 
                 <div class="tech-stack">
                     ${s.techStack.map((t) => '<span class="tech-tag">${_escapeHtml(t)}</span>').join('')}
