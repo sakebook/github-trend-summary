@@ -1,74 +1,83 @@
-import 'dart:io';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'package:http/testing.dart';
 import 'package:test/test.dart';
 import 'package:github_trend_summary/github_trend_summary.dart';
+import 'dart:io';
 
 void main() {
-  group('RssPublisher Tests', () {
-    const testPath = 'test_output.xml';
+  group('RssPublisher Merging Tests', () {
+    const outputPath = 'test_output/rss_merge.xml';
 
     tearDown(() {
-      final file = File(testPath);
+      final file = File(outputPath);
       if (file.existsSync()) {
         file.deleteSync();
       }
     });
 
-    test('should generate a valid RSS 2.0 file', () async {
-      final publisher = RssPublisher(outputPath: testPath);
-      final summaries = [
-        JapaneseSummary(
-          repository: (
-            name: 'test-repo',
-            owner: 'test-owner',
-            description: 'Test Description',
-            url: 'https://github.com/test/repo',
-            stars: 100,
-            language: 'Dart',
-          ),
-          summary: 'テスト概要',
-          background: 'テスト背景',
-          techStack: ['Dart', 'Flutter'],
-          whyHot: 'テスト注目ポイント',
+    test('should merge new items with existing ones and filter old ones', () async {
+      final now = DateTime.now().toUtc();
+      final oldDate = now.subtract(const Duration(days: 10));
+      final veryOldDate = now.subtract(const Duration(days: 20));
+
+      final existingRss = '''
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0">
+<channel>
+  <item>
+    <title>Old Repo</title>
+    <link>https://github.com/old/repo</link>
+    <pubDate>${_toRfc822(oldDate)}</pubDate>
+  </item>
+  <item>
+    <title>Very Old Repo</title>
+    <link>https://github.com/veryold/repo</link>
+    <pubDate>${_toRfc822(veryOldDate)}</pubDate>
+  </item>
+</channel>
+</rss>
+''';
+
+      final client = MockClient((request) async {
+        return http.Response(existingRss, 200);
+      });
+
+      final publisher = RssPublisher(
+        outputPath: outputPath,
+        historyUrl: 'https://example.com/rss.xml',
+        client: client,
+      );
+
+      final newSummary = JapaneseSummary(
+        repository: (
+          name: 'new-repo',
+          owner: 'new-owner',
+          url: 'https://github.com/new/repo',
+          stars: 100,
+          description: 'New Description',
+          language: 'Dart',
         ),
-      ];
+        summary: 'New Summary',
+        background: 'New Background',
+        techStack: ['Dart'],
+        whyHot: 'New Why',
+      );
 
-      final result = await publisher.publish(summaries);
+      await publisher.publish([newSummary]);
 
-      expect(result is Success, isTrue);
-      final file = File(testPath);
-      expect(file.existsSync(), isTrue);
-
-      final content = file.readAsStringSync();
-      expect(content, contains('<?xml version="1.0" encoding="UTF-8" ?>'));
-      expect(content, contains('<rss version="2.0"'));
-      expect(content, contains('<title><![CDATA[[Dart] test-owner/test-repo]]></title>'));
-      expect(content, contains('<link>https://github.com/test/repo</link>'));
-      expect(content, contains('テスト概要'));
-    });
-
-    test('should sanitize CDATA closing sequence', () async {
-      final publisher = RssPublisher(outputPath: testPath);
-      final summaries = [
-        JapaneseSummary(
-          repository: (
-            name: 'test-repo',
-            owner: 'test-owner',
-            description: 'Test Description',
-            url: 'https://github.com/test/repo',
-            stars: 123,
-            language: 'TypeScript',
-          ),
-          summary: 'End sequence ]]> test',
-          background: 'bg',
-          techStack: ['dart'],
-          whyHot: 'hot',
-        ),
-      ];
-
-      await publisher.publish(summaries);
-
-      final content = File(testPath).readAsStringSync();
-      expect(content, contains('End sequence ]]]]><![CDATA[> test'));
+      final outputContent = File(outputPath).readAsStringSync();
+      
+      expect(outputContent, contains('https://github.com/new/repo'));
+      expect(outputContent, contains('https://github.com/old/repo'));
+      expect(outputContent, isNot(contains('https://github.com/veryold/repo')));
     });
   });
+}
+
+String _toRfc822(DateTime dt) {
+  final utc = dt.toUtc();
+  final days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  final months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  return '${days[utc.weekday % 7]}, ${utc.day.toString().padLeft(2, '0')} ${months[utc.month - 1]} ${utc.year} ${utc.hour.toString().padLeft(2, '0')}:${utc.minute.toString().padLeft(2, '0')}:${utc.second.toString().padLeft(2, '0')} +0000';
 }

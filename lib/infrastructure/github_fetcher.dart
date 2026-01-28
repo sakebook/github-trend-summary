@@ -49,7 +49,7 @@ class GitHubFetcher implements RepositoryFetcher {
         'q': query,
         'sort': 'stars',
         'order': 'desc',
-        'per_page': '5',
+        'per_page': '20',
       });
 
       final headers = {
