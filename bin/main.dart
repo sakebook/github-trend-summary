@@ -54,9 +54,36 @@ void main(List<String> arguments) async {
   final maxStars = maxStarsStr != null ? int.tryParse(maxStarsStr) : null;
   final newOnly = results['new-only'] as bool;
 
+  // 自動的に履歴URLを構築 (GitHub Actions環境の場合)
+  String? historyUrl;
+  final repo = Platform.environment['GITHUB_REPOSITORY'];
+  final owner = Platform.environment['GITHUB_REPOSITORY_OWNER'];
+  if (repo != null && owner != null && repo.contains('/')) {
+    final repoName = repo.split('/')[1];
+    historyUrl = 'https://$owner.github.io/$repoName/rss.xml';
+    print('🤖 Automatically detected history URL: $historyUrl');
+  }
+
   final fetcher = GitHubFetcher(apiToken: githubToken);
   final analyzer = GeminiAnalyzer(apiKey: geminiKey);
   final allSummaries = <JapaneseSummary>[];
+
+  // 既読リポジトリの読み込み
+  final historyManager = HistoryManager();
+  final seenUrls = <String>{};
+  if (outputPath != null) {
+    seenUrls.addAll(await historyManager.extractUrls(outputPath));
+  }
+  if (htmlPath != null) {
+    seenUrls.addAll(await historyManager.extractUrls(htmlPath));
+  }
+  if (historyUrl != null) {
+    seenUrls.addAll(await historyManager.extractUrls(historyUrl));
+  }
+
+  if (seenUrls.isNotEmpty) {
+    print('📚 Loaded ${seenUrls.length} previously reported repositories.');
+  }
 
   // Fetch and Analyze for each language
   if (languages.isEmpty && topics.isEmpty) {
@@ -72,7 +99,7 @@ void main(List<String> arguments) async {
       newOnly: newOnly,
       isTopic: false,
     );
-    await _processFetchResult(fetchResult, analyzer, allSummaries);
+    await _processFetchResult(fetchResult, analyzer, allSummaries, seenUrls);
   }
 
   // Fetch and Analyze for each topic
@@ -85,7 +112,7 @@ void main(List<String> arguments) async {
       newOnly: newOnly,
       isTopic: true,
     );
-    await _processFetchResult(fetchResult, analyzer, allSummaries);
+    await _processFetchResult(fetchResult, analyzer, allSummaries, seenUrls);
   }
 
   if (allSummaries.isEmpty) {
@@ -96,7 +123,7 @@ void main(List<String> arguments) async {
   final publishers = <Publisher>[
     ConsolePublisher(),
     if (outputPath != null) MarkdownFilePublisher(outputPath: outputPath),
-    if (rssPath != null) RssPublisher(outputPath: rssPath),
+    if (rssPath != null) RssPublisher(outputPath: rssPath, historyUrl: historyUrl),
     if (htmlPath != null) HtmlPublisher(outputPath: htmlPath),
   ];
 
@@ -116,6 +143,7 @@ Future<void> _processFetchResult(
   Result<List<Repository>, Exception> fetchResult,
   TrendAnalyzer analyzer,
   List<JapaneseSummary> allSummaries,
+  Set<String> seenUrls,
 ) async {
   final List<Repository> fetchedRepositories;
   switch (fetchResult) {
@@ -126,23 +154,62 @@ Future<void> _processFetchResult(
       return;
   }
 
-  // すでに取得済みのリポジトリ（他言語/トピックと被る場合）を除外
-  final repositories = fetchedRepositories
-      .where((repo) => !allSummaries.any((s) => s.repository.url == repo.url))
-      .toList();
+  // 1. 今回の実行ですでに取得済みのものを除外
+  // 2. 過去のレポートに掲載済みのものを除外（既読スキップ）
+  final List<Repository> seenInThisRun = [];
+  final List<Repository> seenInHistory = [];
+  final List<Repository> unreadRepositories = [];
 
-  if (repositories.isEmpty) {
+  for (final repo in fetchedRepositories) {
+    if (allSummaries.any((s) => s.repository.url == repo.url)) {
+      seenInThisRun.add(repo);
+    } else if (seenUrls.contains(repo.url)) {
+      seenInHistory.add(repo);
+    } else {
+      unreadRepositories.add(repo);
+    }
+  }
+
+  if (seenInHistory.isNotEmpty) {
+    print('  - Skipping ${seenInHistory.length} already reported repositories:');
+    for (final repo in seenInHistory) {
+      print('    - [Seen] ${repo.owner}/${repo.name}');
+    }
+  }
+
+  // 未読が足りない場合は、既読リポジトリから今回の実行で未取得のものを補填する
+  final List<Repository> repositoriesToAnalyze;
+  if (unreadRepositories.length >= 5) {
+    unreadRepositories.shuffle();
+    repositoriesToAnalyze = unreadRepositories.take(5).toList();
+    print('  ✨ Found ${unreadRepositories.length} unread repositories. Picking 5 for discovery.');
+  } else {
+    final needed = 5 - unreadRepositories.length;
+    final fallbackCandidates = [
+      ...seenInHistory,
+      ...seenInThisRun.where((r) => !allSummaries.any((s) => s.repository.url == r.url)) // 基本ここには来ないはず
+    ];
+    fallbackCandidates.shuffle();
+
+    repositoriesToAnalyze = [
+      ...unreadRepositories,
+      ...fallbackCandidates.take(needed),
+    ];
+    print('  - Only ${unreadRepositories.length} unread. Supplementing with ${repositoriesToAnalyze.length - unreadRepositories.length} historical ones for volume.');
+  }
+
+  if (repositoriesToAnalyze.isEmpty) {
     print('  - No new repositories to analyze.');
     return;
   }
 
-  print('🤖 Analyzing ${repositories.length} new repositories in batches...');
+  print('🤖 Analyzing ${repositoriesToAnalyze.length} repositories in batches...');
   const batchSize = 3;
-  for (var i = 0; i < repositories.length; i += batchSize) {
-    final end = (i + batchSize < repositories.length)
+  for (var i = 0; i < repositoriesToAnalyze.length; i += batchSize) {
+    final end = (i + batchSize < repositoriesToAnalyze.length)
         ? i + batchSize
-        : repositories.length;
-    final batch = repositories.sublist(i, end);
+        : repositoriesToAnalyze.length;
+    final batch = repositoriesToAnalyze.sublist(i, end);
 
     print(
         '  - Analyzing batch ${i ~/ batchSize + 1} (${batch.length} repositories)...');
