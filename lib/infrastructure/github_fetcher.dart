@@ -20,7 +20,7 @@ class GitHubFetcher implements RepositoryFetcher {
     bool isTopic = false,
   }) async {
     try {
-      final lookbackDate = DateTime.now().subtract(const Duration(days: 3));
+      final lookbackDate = DateTime.now().subtract(const Duration(days: 14));
       final dateStr = lookbackDate.toIso8601String().split('T')[0];
 
       // 言語指定またはトピック指定を query に含める
@@ -32,18 +32,16 @@ class GitHubFetcher implements RepositoryFetcher {
         filterPart = isAll ? '' : 'language:$target ';
       }
 
-      // 動的なデフォルト: 全言語なら100、特定言語/トピックなら50
-      final effectiveMinStars = minStars ?? (target.toLowerCase() == 'all' && !isTopic ? 100 : 50);
+      // 動的な下限設定: 全言語なら50、特定言語/トピックなら20 (Rising Stars向けに調整)
+      final effectiveMinStars = minStars ?? (target.toLowerCase() == 'all' && !isTopic ? 50 : 20);
       
-      // スター数の範囲指定
-      final starsRange = maxStars != null 
-          ? 'stars:$effectiveMinStars..$maxStars' 
-          : 'stars:>=$effectiveMinStars';
+      // スター数の上限設定: 殿堂入り巨人を避けるためデフォルトで 10,000 を上限とする
+      final effectiveMaxStars = maxStars ?? 10000;
+      
+      final starsRange = 'stars:$effectiveMinStars..$effectiveMaxStars';
 
-      // newOnlyなら作成日(created)、そうでなければ更新日(pushed)で絞り込む
-      final dateFilter = newOnly ? 'created' : 'pushed';
-      
-      final query = '$filterPart$dateFilter:>=$dateStr $starsRange fork:false';
+      // デフォルトで作成日(created)で絞り込むように変更
+      final query = '$filterPart' 'created:>=$dateStr $starsRange fork:false';
 
       final url = Uri.https('api.github.com', '/search/repositories', {
         'q': query,
