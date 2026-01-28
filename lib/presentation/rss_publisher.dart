@@ -34,6 +34,7 @@ class RssPublisher implements Publisher {
     try {
       final now = DateTime.now().toUtc();
       final items = <String>[];
+      final newUrls = summaries.map((s) => s.repository.url).toSet();
 
       // 1. 今回の新しいアイテムを作成
       for (final s in summaries) {
@@ -42,7 +43,7 @@ class RssPublisher implements Publisher {
 
       // 2. 既存のRSSがある場合は取得してマージ
       if (historyUrl != null) {
-        final existingItems = await _fetchAndFilterExistingItems(now);
+        final existingItems = await _fetchAndFilterExistingItems(now, excludeUrls: newUrls);
         items.addAll(existingItems);
       }
 
@@ -95,7 +96,7 @@ class RssPublisher implements Publisher {
     return buffer.toString();
   }
 
-  Future<List<String>> _fetchAndFilterExistingItems(DateTime now) async {
+  Future<List<String>> _fetchAndFilterExistingItems(DateTime now, {Set<String>? excludeUrls}) async {
     try {
       final response = await _client.get(Uri.parse(historyUrl!));
       if (response.statusCode != 200) return [];
@@ -105,6 +106,14 @@ class RssPublisher implements Publisher {
       final filteredItems = <String>[];
 
       for (final element in elements) {
+        // 1. 重複チェック (guid または link)
+        final guid = element.findElements('guid').firstOrNull?.innerText;
+        final link = element.findElements('link').firstOrNull?.innerText;
+        if (excludeUrls != null && (excludeUrls.contains(guid) || excludeUrls.contains(link))) {
+          continue; // すでに今回の新着に含まれているのでスキップ
+        }
+
+        // 2. 期限チェック
         final pubDateStr = element.findElements('pubDate').firstOrNull?.innerText;
         if (pubDateStr != null) {
           try {
@@ -117,6 +126,9 @@ class RssPublisher implements Publisher {
             // パース失敗時は安全のため残す
             filteredItems.add('  ${element.toXmlString()}');
           }
+        } else {
+          // pubDateがない場合も安全のため残す (PRフィードバック対応)
+          filteredItems.add('  ${element.toXmlString()}');
         }
       }
       return filteredItems;

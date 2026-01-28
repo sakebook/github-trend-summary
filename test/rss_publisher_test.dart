@@ -72,6 +72,89 @@ void main() {
       expect(outputContent, contains('https://github.com/old/repo'));
       expect(outputContent, isNot(contains('https://github.com/veryold/repo')));
     });
+
+    test('should deduplicate when a new item is already in existing RSS', () async {
+      final now = DateTime.now().toUtc();
+      
+      final existingRss = '''
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0">
+<channel>
+  <item>
+    <title>Existing Repo</title>
+    <link>https://github.com/existing/repo</link>
+    <pubDate>${_toRfc822(now)}</pubDate>
+  </item>
+</channel>
+</rss>
+''';
+
+      final client = MockClient((request) async {
+        return http.Response(existingRss, 200);
+      });
+
+      final publisher = RssPublisher(
+        outputPath: outputPath,
+        historyUrl: 'https://example.com/rss.xml',
+        client: client,
+      );
+
+      final newSummary = JapaneseSummary(
+        repository: (
+          name: 'existing-repo',
+          owner: 'existing-owner',
+          url: 'https://github.com/existing/repo',
+          stars: 100,
+          description: 'New Description',
+          language: 'Dart',
+        ),
+        summary: 'New Summary',
+        background: 'New Background',
+        techStack: ['Dart'],
+        whyHot: 'New Why',
+      );
+
+      await publisher.publish([newSummary]);
+
+      final outputContent = File(outputPath).readAsStringSync();
+      
+      // Each item contains the URL twice (link and guid)
+      final matches = RegExp('https://github.com/existing/repo').allMatches(outputContent);
+      expect(matches.length, 2, reason: 'URL should appear exactly twice (link and guid of the NEW item)');
+      expect(outputContent, contains('New Summary'), reason: 'New summary should be present');
+      expect(outputContent, isNot(contains('Existing Repo')), reason: 'Old item title should be removed');
+    });
+
+    test('should preserve items without pubDate', () async {
+      final now = DateTime.now().toUtc();
+      
+      final existingRss = '''
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0">
+<channel>
+  <item>
+    <title>No Date Repo</title>
+    <link>https://github.com/nodate/repo</link>
+  </item>
+</channel>
+</rss>
+''';
+
+      final client = MockClient((request) async {
+        return http.Response(existingRss, 200);
+      });
+
+      final publisher = RssPublisher(
+        outputPath: outputPath,
+        historyUrl: 'https://example.com/rss.xml',
+        client: client,
+      );
+
+      await publisher.publish([]);
+
+      final outputContent = File(outputPath).readAsStringSync();
+      expect(outputContent, contains('https://github.com/nodate/repo'));
+    });
   });
 }
 
