@@ -50,5 +50,19 @@ void main() {
       
       expect(urls, isEmpty);
     });
+
+    test('should extract single-character repository names', () async {
+      final content = 'Check this: https://github.com/owner/a and https://github.com/owner/b.';
+      final client = MockClient((request) async {
+        return http.Response(content, 200);
+      });
+      
+      final manager = HistoryManager(client: client);
+      final urls = await manager.extractUrls('https://example.com/history.md');
+      
+      expect(urls, contains('https://github.com/owner/a'));
+      expect(urls, contains('https://github.com/owner/b'));
+      expect(urls.length, 2);
+    });
   });
 }
