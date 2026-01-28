@@ -17,8 +17,9 @@ void main() {
       await fetcher.fetchTrending('dart');
 
       final q = capturedUri.queryParameters['q']!;
+      expect(q, contains('created:>='));
       expect(q, contains('language:dart'));
-      expect(q, contains('stars:>=50'));
+      expect(q, contains('stars:20..10000'));
       expect(q, contains('fork:false'));
     });
 
@@ -34,7 +35,7 @@ void main() {
 
       final q = capturedUri.queryParameters['q']!;
       expect(q, contains('topic:ai'));
-      expect(q, contains('stars:>=50'));
+      expect(q, contains('stars:20..10000'));
     });
 
     test('should build correct query for "all" language', () async {
@@ -49,7 +50,7 @@ void main() {
 
       final q = capturedUri.queryParameters['q']!;
       expect(q, isNot(contains('language:')));
-      expect(q, contains('stars:>=100'));
+      expect(q, contains('stars:50..10000'));
     });
 
     test('should build correct query for new-only', () async {
