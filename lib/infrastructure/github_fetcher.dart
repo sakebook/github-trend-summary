@@ -32,8 +32,8 @@ class GitHubFetcher implements RepositoryFetcher {
         filterPart = isAll ? '' : 'language:$target ';
       }
 
-      // 動的なデフォルト: 全言語なら50、特定言語/トピックなら10
-      final effectiveMinStars = minStars ?? (target.toLowerCase() == 'all' && !isTopic ? 50 : 10);
+      // 動的なデフォルト: 全言語なら100、特定言語/トピックなら50
+      final effectiveMinStars = minStars ?? (target.toLowerCase() == 'all' && !isTopic ? 100 : 50);
       
       // スター数の範囲指定
       final starsRange = maxStars != null 
