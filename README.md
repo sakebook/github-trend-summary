@@ -22,8 +22,8 @@ GitHubのトレンドリポジトリを自動で収集し、Gemini AIを使っ�
 ```bash
 dart pub get
 dart bin/main.dart \
-  --lang dart,typescript \
-  --topic ai,llm \
+  --lang all \
+  --topic ai,llm,mcp,rag,agents \
   --new-only \
   --gemini-key YOUR_GEMINI_KEY \
   --github-token YOUR_GITHUB_TOKEN \
@@ -46,5 +46,5 @@ dart bin/main.dart \
 
 - **Trending Intelligence (`trending_report.yml`)**:
     - **インテリジェンス生成**: 毎日実行され、幅広い言語とAI関連トピックのレポートを生成します。
-    - **永続化**: 生成された `rss.xml` を自動的に次回実行時の `--history-url` として参照することで、複数日間にわたる内容の重複を回避します。
+    - **永続化**: 公開済みの `rss.xml` を自動的に「記憶」として読み込むことで、14日間にわたる内容の重複を回避します。
     - **公開**: 生成されたレポートは GitHub Actions のアーティファクトとして保存されるほか、GitHub Pages にも自動デプロイされます。
