@@ -59,6 +59,10 @@ void main(List<String> arguments) async {
   final allSummaries = <JapaneseSummary>[];
 
   // Fetch and Analyze for each language
+  if (languages.isEmpty && topics.isEmpty) {
+    languages.add('all');
+  }
+
   for (final lang in languages) {
     print('🔍 Fetching trending $lang repositories...');
     final fetchResult = await fetcher.fetchTrending(
@@ -113,31 +117,48 @@ Future<void> _processFetchResult(
   TrendAnalyzer analyzer,
   List<JapaneseSummary> allSummaries,
 ) async {
-  final List<Repository> repositories;
+  final List<Repository> fetchedRepositories;
   switch (fetchResult) {
     case Success(value: final r):
-      repositories = r;
+      fetchedRepositories = r;
     case Failure(error: final e):
       print('❌ Failed to fetch: $e');
       return;
   }
 
-  print('🤖 Analyzing ${repositories.length} repositories...');
-  for (final repo in repositories) {
-    // すでに取得済みのリポジトリ（他言語/トピックと被る場合）はスキップ
-    if (allSummaries.any((s) => s.repository.url == repo.url)) {
-      continue;
-    }
-    
-    print('  - Analyzing ${repo.owner}/${repo.name}...');
-    final analyzeResult = await analyzer.analyze(repo);
-    // 連投による 429 を防ぐために少し待つ
-    await Future.delayed(const Duration(milliseconds: 500));
+  // すでに取得済みのリポジトリ（他言語/トピックと被る場合）を除外
+  final repositories = fetchedRepositories
+      .where((repo) => !allSummaries.any((s) => s.repository.url == repo.url))
+      .toList();
+
+  if (repositories.isEmpty) {
+    print('  - No new repositories to analyze.');
+    return;
+  }
+
+  print('🤖 Analyzing ${repositories.length} new repositories in batches...');
+  const batchSize = 3;
+  for (var i = 0; i < repositories.length; i += batchSize) {
+    final end = (i + batchSize < repositories.length)
+        ? i + batchSize
+        : repositories.length;
+    final batch = repositories.sublist(i, end);
+
+    print(
+        '  - Analyzing batch ${i ~/ batchSize + 1} (${batch.length} repositories)...');
+    final analyzeResult = await analyzer.analyzeBatch(batch);
+
+    // バッチ間のレート制限回避 (もっと長く)
+    await Future.delayed(const Duration(milliseconds: 3000));
+
     switch (analyzeResult) {
-      case Success(value: final s):
-        allSummaries.add(s);
+      case Success(value: final summaries):
+        allSummaries.addAll(summaries);
+        for (final s in summaries) {
+          print('    ✅ Analyzed ${s.repository.owner}/${s.repository.name}');
+        }
       case Failure(error: final e):
-        print('    ⚠️ Failed to analyze ${repo.name}: $e');
+        print('    ⚠️ Batch analysis failed: $e');
     }
   }
 }

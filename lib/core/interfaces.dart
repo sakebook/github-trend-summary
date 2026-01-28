@@ -13,6 +13,7 @@ abstract interface class RepositoryFetcher {
 
 abstract interface class TrendAnalyzer {
   Future<Result<JapaneseSummary, Exception>> analyze(Repository repository);
+  Future<Result<List<JapaneseSummary>, Exception>> analyzeBatch(List<Repository> repositories);
 }
 
 abstract interface class Publisher {
