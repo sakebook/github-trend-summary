@@ -20,8 +20,10 @@ class GitHubFetcher implements RepositoryFetcher {
     bool isTopic = false,
   }) async {
     try {
-      final lookbackDate = DateTime.now().subtract(const Duration(days: 14));
+      final lookbackDays = newOnly ? 14 : 3;
+      final lookbackDate = DateTime.now().subtract(Duration(days: lookbackDays));
       final dateStr = lookbackDate.toIso8601String().split('T')[0];
+      final dateFilter = newOnly ? 'created:>=$dateStr' : 'pushed:>=$dateStr';
 
       // 言語指定またはトピック指定を query に含める
       String filterPart = '';
@@ -40,8 +42,8 @@ class GitHubFetcher implements RepositoryFetcher {
       
       final starsRange = 'stars:$effectiveMinStars..$effectiveMaxStars';
 
-      // デフォルトで作成日(created)で絞り込むように変更
-      final query = '$filterPart' 'created:>=$dateStr $starsRange fork:false';
+      // newOnly なら作成日(created)、そうでなければ更新日(pushed)で絞り込む
+      final query = '$filterPart' '$dateFilter $starsRange fork:false';
 
       final url = Uri.https('api.github.com', '/search/repositories', {
         'q': query,
