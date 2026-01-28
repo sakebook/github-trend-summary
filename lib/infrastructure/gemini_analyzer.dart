@@ -67,6 +67,7 @@ $repoListText
 出力フォーマット（JSON配列のみ）:
 [
   {
+    "repo": "owner/name (入力リストのリポジトリ名と正確に一致させてください)",
     "background": "技術的な背景・解決課題・詳細な仕組みの解説（250文字程度まで）",
     "techStack": ["主要言語", "具体的なライブラリや技術キーワード"],
     "whyHot": "技術的な独自性・注目すべき核心部分（250文字程度まで）",
@@ -156,19 +157,38 @@ $repoListText
 
         final List<JapaneseSummary> resultSummaries = [];
         for (var i = 0; i < decoded.length; i++) {
-          if (i >= repositories.length) break; // 念のため
-
           final item = decoded[i];
           if (item is! Map) continue;
 
           final responseJson = Map<String, dynamic>.from(item);
+          final repoName = responseJson['repo']?.toString();
+
+          // 名前でリポジトリを特定（名前が合わない場合はインデックスでフォールバック）
+          Repository? repository;
+          if (repoName != null) {
+            try {
+              repository = repositories.firstWhere(
+                (r) => '${r.owner}/${r.name}' == repoName,
+              );
+            } catch (_) {
+              // 名前でヒットしない場合はインデックス（念のため）
+              if (i < repositories.length) {
+                repository = repositories[i];
+              }
+            }
+          } else if (i < repositories.length) {
+            repository = repositories[i];
+          }
+
+          if (repository == null) continue;
+
           final techStackData = responseJson['techStack'];
           final List<String> techStack = (techStackData is List)
               ? techStackData.map((e) => e.toString()).toList()
               : [];
 
           resultSummaries.add(JapaneseSummary(
-            repository: repositories[i],
+            repository: repository,
             summary: responseJson['summary']?.toString() ?? 'No summary',
             background:
                 responseJson['background']?.toString() ?? 'No background',
