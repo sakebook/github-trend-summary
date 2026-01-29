@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:xml/xml.dart';
@@ -101,7 +102,8 @@ class RssPublisher implements Publisher {
       final response = await _client.get(Uri.parse(historyUrl!));
       if (response.statusCode != 200) return [];
 
-      final document = XmlDocument.parse(response.body);
+      final content = utf8.decode(response.bodyBytes);
+      final document = XmlDocument.parse(content);
       final elements = document.findAllElements('item');
       final filteredItems = <String>[];
 
