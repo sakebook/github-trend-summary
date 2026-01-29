@@ -14,7 +14,7 @@ class MarkdownFilePublisher implements Publisher {
     try {
       final buffer = StringBuffer();
       buffer.writeln('# GitHub Trending Summary');
-      buffer.writeln('Generated on: ${DateTime.now()}\n');
+      buffer.writeln('Generated on: ${DateTime.now().toUtc().add(const Duration(hours: 9)).toString().split('.')[0]} (JST)\n');
 
       for (final summary in summaries) {
         final repo = summary.repository;
