@@ -194,6 +194,46 @@ void main() {
       final outputContent = File(outputPath).readAsStringSync();
       expect(outputContent, contains(japaneseText));
     });
+
+    test('should trust explicit non-UTF-8 charset from headers', () async {
+      final now = DateTime.now().toUtc();
+      // ISO-8859-1 (Latin-1) text. "©" is 0xA9 in Latin-1.
+      const latinText = 'Copyright © 2026';
+      
+      final existingRss = '''
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<rss version="2.0">
+<channel>
+  <item>
+    <title>$latinText</title>
+    <link>https://github.com/latin/repo</link>
+    <pubDate>${_toRfc822(now)}</pubDate>
+  </item>
+</channel>
+</rss>
+''';
+
+      final client = MockClient((request) async {
+        return http.Response.bytes(
+          latin1.encode(existingRss),
+          200,
+          headers: {'content-type': 'application/xml; charset=iso-8859-1'},
+        );
+      });
+
+      final publisher = RssPublisher(
+        outputPath: outputPath,
+        historyUrl: 'https://example.com/rss.xml',
+        client: client,
+      );
+
+      await publisher.publish([]);
+
+      final outputContent = File(outputPath).readAsStringSync();
+      // Since File.readAsStringSync defaults to UTF-8, 
+      // the output (which we write as default UTF-8) should contain the decoded "©".
+      expect(outputContent, contains(latinText));
+    });
   });
 }
 

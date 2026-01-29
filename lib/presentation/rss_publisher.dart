@@ -102,7 +102,13 @@ class RssPublisher implements Publisher {
       final response = await _client.get(Uri.parse(historyUrl!));
       if (response.statusCode != 200) return [];
 
-      final content = utf8.decode(response.bodyBytes);
+      // Content-Type に charset が明示されている場合はそれを使い、
+      // そうでない場合はデフォルトの ISO-8859-1 (Latin-1) ではなく UTF-8 を使う
+      final contentType = response.headers['content-type'];
+      final content = (contentType != null && contentType.contains('charset='))
+          ? response.body
+          : utf8.decode(response.bodyBytes);
+
       final document = XmlDocument.parse(content);
       final elements = document.findAllElements('item');
       final filteredItems = <String>[];
