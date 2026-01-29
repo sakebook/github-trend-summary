@@ -104,7 +104,7 @@ class RssPublisher implements Publisher {
 
       // Content-Type に charset が明示されている場合はそれを使い、
       // そうでない場合はデフォルトの ISO-8859-1 (Latin-1) ではなく UTF-8 を使う
-      final contentType = response.headers['content-type'];
+      final contentType = response.headers['content-type']?.toLowerCase();
       final content = (contentType != null && contentType.contains('charset='))
           ? response.body
           : utf8.decode(response.bodyBytes);
