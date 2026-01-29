@@ -219,7 +219,7 @@ List<Repository> _sampleRepositories(List<Repository> pool, Set<String> seenUrls
     final pick = sortedSeen.take(needed).toList();
     finalSelection.addAll(pick);
     
-    print('  - Supplementing with $needed returning stars (Sorted by Current Stars):');
+    print('  - Supplementing with ${pick.length} returning stars (Sorted by Current Stars):');
     for (final r in pick) {
       print('    - [Returning Star] ${r.owner}/${r.name} (${r.stars} stars)');
     }
