@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:xml/xml.dart';
@@ -101,7 +102,14 @@ class RssPublisher implements Publisher {
       final response = await _client.get(Uri.parse(historyUrl!));
       if (response.statusCode != 200) return [];
 
-      final document = XmlDocument.parse(response.body);
+      // Content-Type に charset が明示されている場合はそれを使い、
+      // そうでない場合はデフォルトの ISO-8859-1 (Latin-1) ではなく UTF-8 を使う
+      final contentType = response.headers['content-type']?.toLowerCase();
+      final content = (contentType != null && contentType.contains('charset='))
+          ? response.body
+          : utf8.decode(response.bodyBytes);
+
+      final document = XmlDocument.parse(content);
       final elements = document.findAllElements('item');
       final filteredItems = <String>[];
 
