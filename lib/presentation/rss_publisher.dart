@@ -51,7 +51,7 @@ class RssPublisher implements Publisher {
       // 3. 全体構造の構築
       final buffer = StringBuffer();
       buffer.writeln('<?xml version="1.0" encoding="UTF-8" ?>');
-      buffer.writeln('<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">');
+      buffer.writeln('<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:gs="https://github.com/sakebook/github-trend-summary">');
       buffer.writeln('<channel>');
       buffer.writeln('  <title>GitHub Trending Intelligence</title>');
       buffer.writeln('  <link>https://github.com/trending</link>');
@@ -87,6 +87,7 @@ class RssPublisher implements Publisher {
     buffer.writeln('    <link>${_escapeXml(repo.url)}</link>');
     buffer.writeln('    <guid isPermaLink="true">${_escapeXml(repo.url)}</guid>');
     buffer.writeln('    <pubDate>${_toRfc822(date)}</pubDate>');
+    buffer.writeln('    <gs:stars>${repo.stars}</gs:stars>');
     buffer.writeln('    <description><![CDATA[');
     buffer.writeln('      <h3>概要</h3><p>${_sanitizeCdata(s.summary)}</p>');
     buffer.writeln('      <h3>背景</h3><p>${_sanitizeCdata(s.background)}</p>');
