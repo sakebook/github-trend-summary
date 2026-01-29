@@ -194,31 +194,32 @@ List<Repository> _sampleRepositories(List<Repository> pool, Set<String> seenUrls
   final unread = candidates.where((r) => !seenUrls.contains(r.url)).toList();
   final seen = candidates.where((r) => seenUrls.contains(r.url)).toList();
 
-  print('\n🎯 Discovery Sampling:');
+  print('\n🎯 Discovery Sampling (Natural Density):');
   print('  - Candidates pool: ${candidates.length} (Unread: ${unread.length}, Seen: ${seen.length})');
 
   final List<Repository> finalSelection = [];
 
-  // 3. 未読から最大5件をランダム選出 (Discovery)
+  // 3. 未読から最大5件を「ランダム」に選出 (Discovery)
+  // 理由: カテゴリごとの母数に比例した自然な重み付けになるため
   if (unread.isNotEmpty) {
     unread.shuffle();
     final selection = unread.take(5).toList();
     finalSelection.addAll(selection);
-    print('  ✨ Picking ${selection.length} unread repositories for discovery.');
+    print('  ✨ Picking ${selection.length} unread repositories for discovery (Random).');
     for (final r in selection) {
       print('    - [New] ${r.owner}/${r.name} (${r.stars} stars)');
     }
   }
 
-  // 4. 不足分を既読（ Returning Stars ）から補填 (スター数順)
+  // 4. 不足分を既読（ Returning Stars ）から補填 (スター数＝勢い順)
   if (finalSelection.length < 5 && seen.isNotEmpty) {
     final needed = 5 - finalSelection.length;
-    // スター数が多い順にソート
+    // 現在のスター数が多い順にソート (勢いのあるものを優先)
     final sortedSeen = seen.toList()..sort((a, b) => b.stars.compareTo(a.stars));
     final pick = sortedSeen.take(needed).toList();
     finalSelection.addAll(pick);
     
-    print('  - Supplementing with $needed returning stars (sorted by popularity):');
+    print('  - Supplementing with $needed returning stars (Sorted by Current Stars):');
     for (final r in pick) {
       print('    - [Returning Star] ${r.owner}/${r.name} (${r.stars} stars)');
     }
