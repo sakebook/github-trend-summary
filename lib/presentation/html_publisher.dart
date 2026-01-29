@@ -200,7 +200,7 @@ class HtmlPublisher implements Publisher {
         <header>
             <h1>Trending Intelligence</h1>
             <p class="header-sub">Daily GitHub analysis powered by Gemini AI</p>
-            <div class="update-time">Last Updated: ${DateTime.now().toLocal().toString().split('.')[0]}</div>
+            <div class="update-time">Last Updated: ${DateTime.now().toUtc().add(const Duration(hours: 9)).toString().split('.')[0]} (JST)</div>
         </header>
 
         <main>
