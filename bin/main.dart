@@ -90,6 +90,8 @@ void main(List<String> arguments) async {
     languages.add('all');
   }
 
+  final candidatePool = <Repository>[];
+
   for (final lang in languages) {
     print('🔍 Fetching trending $lang repositories...');
     final fetchResult = await fetcher.fetchTrending(
@@ -99,10 +101,13 @@ void main(List<String> arguments) async {
       newOnly: newOnly,
       isTopic: false,
     );
-    await _processFetchResult(fetchResult, analyzer, allSummaries, seenUrls);
+    if (fetchResult is Success<List<Repository>, Exception>) {
+      candidatePool.addAll(fetchResult.value);
+    } else if (fetchResult is Failure<List<Repository>, Exception>) {
+      print('  ⚠️ Failed to fetch $lang: ${fetchResult.error}');
+    }
   }
 
-  // Fetch and Analyze for each topic
   for (final topic in topics) {
     print('🔍 Fetching trending topic:$topic repositories...');
     final fetchResult = await fetcher.fetchTrending(
@@ -112,7 +117,45 @@ void main(List<String> arguments) async {
       newOnly: newOnly,
       isTopic: true,
     );
-    await _processFetchResult(fetchResult, analyzer, allSummaries, seenUrls);
+    if (fetchResult is Success<List<Repository>, Exception>) {
+      candidatePool.addAll(fetchResult.value);
+    } else if (fetchResult is Failure<List<Repository>, Exception>) {
+      print('  ⚠️ Failed to fetch topic:$topic: ${fetchResult.error}');
+    }
+  }
+
+  // グローバルサンプリング (合計5件)
+  final repositoriesToAnalyze = _sampleRepositories(candidatePool, seenUrls);
+
+  if (repositoriesToAnalyze.isEmpty) {
+    print('❌ No repositories to analyze. Exiting.');
+    exit(1);
+  }
+
+  print('🤖 Analyzing ${repositoriesToAnalyze.length} repositories in batches...');
+  const batchSize = 3;
+  for (var i = 0; i < repositoriesToAnalyze.length; i += batchSize) {
+    final end = (i + batchSize < repositoriesToAnalyze.length)
+        ? i + batchSize
+        : repositoriesToAnalyze.length;
+    final batch = repositoriesToAnalyze.sublist(i, end);
+
+    print(
+        '  - Analyzing batch ${i ~/ batchSize + 1} (${batch.length} repositories)...');
+    final analyzeResult = await analyzer.analyzeBatch(batch);
+
+    // バッチ間のレート制限回避
+    await Future.delayed(const Duration(milliseconds: 3000));
+
+    switch (analyzeResult) {
+      case Success(value: final summaries):
+        allSummaries.addAll(summaries);
+        for (final s in summaries) {
+          print('    ✅ Analyzed ${s.repository.owner}/${s.repository.name}');
+        }
+      case Failure(error: final e):
+        print('    ⚠️ Batch analysis failed: $e');
+    }
   }
 
   if (allSummaries.isEmpty) {
@@ -139,93 +182,47 @@ void main(List<String> arguments) async {
   print('✅ Done!');
 }
 
-Future<void> _processFetchResult(
-  Result<List<Repository>, Exception> fetchResult,
-  TrendAnalyzer analyzer,
-  List<JapaneseSummary> allSummaries,
-  Set<String> seenUrls,
-) async {
-  final List<Repository> fetchedRepositories;
-  switch (fetchResult) {
-    case Success(value: final r):
-      fetchedRepositories = r;
-    case Failure(error: final e):
-      print('❌ Failed to fetch: $e');
-      return;
+List<Repository> _sampleRepositories(List<Repository> pool, Set<String> seenUrls) {
+  // 1. 重複除去 (URLベース)
+  final uniquePool = <String, Repository>{};
+  for (final repo in pool) {
+    uniquePool[repo.url] = repo;
   }
+  final candidates = uniquePool.values.toList();
 
-  // 1. 今回の実行ですでに取得済みのものを除外
-  // 2. 過去のレポートに掲載済みのものを除外（既読スキップ）
-  final List<Repository> seenInThisRun = [];
-  final List<Repository> seenInHistory = [];
-  final List<Repository> unreadRepositories = [];
+  // 2. 未読と既読に分ける
+  final unread = candidates.where((r) => !seenUrls.contains(r.url)).toList();
+  final seen = candidates.where((r) => seenUrls.contains(r.url)).toList();
 
-  for (final repo in fetchedRepositories) {
-    if (allSummaries.any((s) => s.repository.url == repo.url)) {
-      seenInThisRun.add(repo);
-    } else if (seenUrls.contains(repo.url)) {
-      seenInHistory.add(repo);
-    } else {
-      unreadRepositories.add(repo);
+  print('\n🎯 Discovery Sampling:');
+  print('  - Candidates pool: ${candidates.length} (Unread: ${unread.length}, Seen: ${seen.length})');
+
+  final List<Repository> finalSelection = [];
+
+  // 3. 未読から最大5件をランダム選出 (Discovery)
+  if (unread.isNotEmpty) {
+    unread.shuffle();
+    final selection = unread.take(5).toList();
+    finalSelection.addAll(selection);
+    print('  ✨ Picking ${selection.length} unread repositories for discovery.');
+    for (final r in selection) {
+      print('    - [New] ${r.owner}/${r.name} (${r.stars} stars)');
     }
   }
 
-  if (seenInHistory.isNotEmpty) {
-    print('  - Skipping ${seenInHistory.length} already reported repositories:');
-    for (final repo in seenInHistory) {
-      print('    - [Seen] ${repo.owner}/${repo.name}');
+  // 4. 不足分を既読（ Returning Stars ）から補填 (スター数順)
+  if (finalSelection.length < 5 && seen.isNotEmpty) {
+    final needed = 5 - finalSelection.length;
+    // スター数が多い順にソート
+    final sortedSeen = seen.toList()..sort((a, b) => b.stars.compareTo(a.stars));
+    final pick = sortedSeen.take(needed).toList();
+    finalSelection.addAll(pick);
+    
+    print('  - Supplementing with $needed returning stars (sorted by popularity):');
+    for (final r in pick) {
+      print('    - [Returning Star] ${r.owner}/${r.name} (${r.stars} stars)');
     }
   }
 
-  // 未読が足りない場合は、既読リポジトリから今回の実行で未取得のものを補填する
-  final List<Repository> repositoriesToAnalyze;
-  if (unreadRepositories.length >= 5) {
-    unreadRepositories.shuffle();
-    repositoriesToAnalyze = unreadRepositories.take(5).toList();
-    print('  ✨ Found ${unreadRepositories.length} unread repositories. Picking 5 for discovery.');
-  } else {
-    final needed = 5 - unreadRepositories.length;
-    final fallbackCandidates = [
-      ...seenInHistory,
-      ...seenInThisRun.where((r) => !allSummaries.any((s) => s.repository.url == r.url)) // 基本ここには来ないはず
-    ];
-    fallbackCandidates.shuffle();
-
-    repositoriesToAnalyze = [
-      ...unreadRepositories,
-      ...fallbackCandidates.take(needed),
-    ];
-    print('  - Only ${unreadRepositories.length} unread. Supplementing with ${repositoriesToAnalyze.length - unreadRepositories.length} historical ones for volume.');
-  }
-
-  if (repositoriesToAnalyze.isEmpty) {
-    print('  - No new repositories to analyze.');
-    return;
-  }
-
-  print('🤖 Analyzing ${repositoriesToAnalyze.length} repositories in batches...');
-  const batchSize = 3;
-  for (var i = 0; i < repositoriesToAnalyze.length; i += batchSize) {
-    final end = (i + batchSize < repositoriesToAnalyze.length)
-        ? i + batchSize
-        : repositoriesToAnalyze.length;
-    final batch = repositoriesToAnalyze.sublist(i, end);
-
-    print(
-        '  - Analyzing batch ${i ~/ batchSize + 1} (${batch.length} repositories)...');
-    final analyzeResult = await analyzer.analyzeBatch(batch);
-
-    // バッチ間のレート制限回避 (もっと長く)
-    await Future.delayed(const Duration(milliseconds: 3000));
-
-    switch (analyzeResult) {
-      case Success(value: final summaries):
-        allSummaries.addAll(summaries);
-        for (final s in summaries) {
-          print('    ✅ Analyzed ${s.repository.owner}/${s.repository.name}');
-        }
-      case Failure(error: final e):
-        print('    ⚠️ Batch analysis failed: $e');
-    }
-  }
+  return finalSelection;
 }
