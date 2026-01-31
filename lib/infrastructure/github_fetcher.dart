@@ -77,12 +77,47 @@ class GitHubFetcher implements RepositoryFetcher {
           url: map['html_url'] as String,
           stars: map['stargazers_count'] as int,
           language: map['language'] as String?,
+          readmeContent: null, // 初期値はnull、後でfetchReadmeで埋める
         );
       }).toList();
 
       return Success(repos);
     } catch (e) {
       return Failure(e is Exception ? e : Exception(e.toString()));
+    }
+  }
+
+  Future<String?> fetchReadme(Repository repo) async {
+    try {
+      final url =
+          Uri.https('api.github.com', '/repos/${repo.owner}/${repo.name}/readme');
+      
+      final headers = {
+        'Accept': 'application/vnd.github+json',
+        if (apiToken != null && apiToken!.isNotEmpty)
+          'Authorization': 'token $apiToken',
+      };
+
+      final response = await _client.get(url, headers: headers);
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        final content = data['content'] as String?;
+        if (content != null) {
+          // GitHub API returns Base64 encoded content with newlines
+          final cleaned = content.replaceAll('\n', '');
+          return utf8.decode(base64.decode(cleaned));
+        }
+      } else if (response.statusCode == 404) {
+        print('    ⚠️ README not found for ${repo.owner}/${repo.name}');
+      } else {
+        print(
+            '    ⚠️ Failed to fetch README for ${repo.owner}/${repo.name}: ${response.statusCode}');
+      }
+      return null;
+    } catch (e) {
+      print('    ⚠️ Error fetching README for ${repo.owner}/${repo.name}: $e');
+      return null;
     }
   }
 }

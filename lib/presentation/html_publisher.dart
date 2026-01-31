@@ -108,6 +108,19 @@ class HtmlPublisher implements Publisher {
             align-items: center;
             margin-bottom: 20px;
         }
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .maturity-badge {
+            font-size: 0.75rem;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
         .repo-name {
             font-size: 1.5rem;
             font-weight: 800;
@@ -148,6 +161,9 @@ class HtmlPublisher implements Publisher {
             grid-template-columns: 1fr 1fr;
             gap: 24px;
             margin-bottom: 24px;
+        }
+        .section-item.full-width {
+            grid-column: 1 / -1;
         }
         @media (max-width: 600px) {
             .grid-sections { grid-template-columns: 1fr; }
@@ -210,7 +226,10 @@ class HtmlPublisher implements Publisher {
         buffer.writeln('''
             <div class="repo-card">
                 <div class="repo-header">
-                    <a href="${_escapeHtml(s.repository.url)}" class="repo-name" target="_blank">${_escapeHtml(s.repository.name)}</a>
+                    <div class="header-left">
+                        <a href="${_escapeHtml(s.repository.url)}" class="repo-name" target="_blank">${_escapeHtml(s.repository.name)}</a>
+                        ${!s.maturity.contains('Active Development') ? '<span class="maturity-badge" style="background:var(--accent-soft); color:var(--accent); border:1px solid var(--accent);">${_escapeHtml(s.maturity)}</span>' : ''}
+                    </div>
                     <span class="stars">⭐ ${s.repository.stars.toString()}</span>
                 </div>
                 <p class="repo-description">${_escapeHtml(s.repository.description ?? '')}</p>
@@ -218,12 +237,18 @@ class HtmlPublisher implements Publisher {
                 
                 <div class="grid-sections">
                     <div class="section-item">
-                        <h3>背景 / Context</h3>
-                        <p>${_escapeHtml(s.background)}</p>
+                        <h3>活用シーン / Use Case</h3>
+                        <p>${_escapeHtml(s.useCase)}</p>
                     </div>
                     <div class="section-item">
-                        <h3>注目理由 / Why Trending</h3>
-                        <p>${_escapeHtml(s.whyHot)}</p>
+                        <h3>競合差別化 / Competitive Edge</h3>
+                        <p>${_escapeHtml(s.rivalComparison)}</p>
+                    </div>
+                    <div class="section-item full-width">
+                        <h3>主要機能 / Key Features</h3>
+                        <ul>
+                          ${s.keyFeatures.map((f) => "<li>${_escapeHtml(f)}</li>").join("")}
+                        </ul>
                     </div>
                 </div>
                 

@@ -28,6 +28,7 @@ dart bin/main.dart \
   --gemini-key YOUR_GEMINI_KEY \
   --github-token YOUR_GITHUB_TOKEN \
   --output report.md \
+  --rss public/rss.xml \
   --html public/index.html
 ```
 

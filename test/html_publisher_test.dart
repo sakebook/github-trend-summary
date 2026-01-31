@@ -24,11 +24,14 @@ void main() {
             url: 'https://github.com/test/repo',
             stars: 123,
             language: 'TypeScript',
+            readmeContent: null,
           ),
           summary: 'テスト概要',
-          background: 'テスト背景',
+          useCase: 'テスト活用シーン',
+          keyFeatures: ['機能1', '機能2'],
+          maturity: 'Experimental',
           techStack: ['React', 'Node.js'],
-          whyHot: 'テスト注目ポイント',
+          rivalComparison: 'テスト競合比較',
         ),
       ];
 
@@ -55,14 +58,17 @@ void main() {
         stars: 100,
         url: 'https://github.com/owner/repo',
         language: 'Dart',
+        readmeContent: null,
       );
 
       final summary = JapaneseSummary(
         repository: repo,
         summary: 'summary & "quote"',
-        background: 'background < >',
+        useCase: 'useCase < >',
+        keyFeatures: ['<feature>'],
+        maturity: 'maturity &',
         techStack: ['<tag>'],
-        whyHot: 'hot',
+        rivalComparison: 'rivalComparison &',
       );
 
       final tempDir = Directory.systemTemp.createTempSync();
@@ -76,7 +82,7 @@ void main() {
       expect(html, contains('&lt;b&gt;script&lt;/b&gt;'));
       expect(html, contains('&lt;script&gt;alert(1)&lt;/script&gt;'));
       expect(html, contains('summary &amp; &quot;quote&quot;'));
-      expect(html, contains('background &lt; &gt;'));
+      expect(html, contains('useCase &lt; &gt;'));
       expect(html, contains('&lt;tag&gt;'));
       // Verify NOT containing raw scripts
       expect(html, isNot(contains('<script>')));

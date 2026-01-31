@@ -90,8 +90,10 @@ class RssPublisher implements Publisher {
     buffer.writeln('    <gs:stars>${repo.stars}</gs:stars>');
     buffer.writeln('    <description><![CDATA[');
     buffer.writeln('      <h3>概要</h3><p>${_sanitizeCdata(s.summary)}</p>');
-    buffer.writeln('      <h3>背景</h3><p>${_sanitizeCdata(s.background)}</p>');
-    buffer.writeln('      <h3>注目ポイント</h3><p>${_sanitizeCdata(s.whyHot)}</p>');
+    buffer.writeln('      <h3>活用シーン</h3><p>${_sanitizeCdata(s.useCase)}</p>');
+    buffer.writeln('      <h3>主要機能</h3><ul>${s.keyFeatures.map((f) => "<li>${_sanitizeCdata(f)}</li>").join("")}</ul>');
+    buffer.writeln('      <h3>開発状況</h3><p>${_sanitizeCdata(s.maturity)}</p>');
+    buffer.writeln('      <h3>競合差別化</h3><p>${_sanitizeCdata(s.rivalComparison)}</p>');
     buffer.writeln('      <h3>技術スタック</h3><p>${_sanitizeCdata(s.techStack.join(", "))}</p>');
     buffer.writeln('    ]]></description>');
     buffer.writeln('  </item>');
