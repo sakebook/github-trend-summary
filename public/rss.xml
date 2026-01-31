@@ -1,74 +1,697 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:gs="https://github.com/sakebook/github-trend-summary">
-<channel>
-  <title>GitHub Trending Intelligence</title>
-  <link>https://github.com/trending</link>
-  <description>Daily curated GitHub trends with Gemini analysis.</description>
-  <language>ja</language>
-  <lastBuildDate>Sat, 31 Jan 2026 04:46:54 +0000</lastBuildDate>
-  <item>
-    <title><![CDATA[[TypeScript] Jane-xiaoer/skill-vision-control]]></title>
-    <link>https://github.com/Jane-xiaoer/skill-vision-control</link>
-    <guid isPermaLink="true">https://github.com/Jane-xiaoer/skill-vision-control</guid>
-    <pubDate>Sat, 31 Jan 2026 04:46:54 +0000</pubDate>
-    <gs:stars>56</gs:stars>
-    <description><![CDATA[
-      <h3>概要</h3><p>MCPスキルの安全な更新、ABテスト、自動マージを実現するバージョン管理マネージャー。</p>
-      <h3>活用シーン</h3><p>AIエージェントに提供するMCPスキルの頻繁なアップデートが必要な環境で、不具合を抑えつつ新機能を安全にテスト・本番展開したい場合。</p>
-      <h3>主要機能</h3><ul><li>アップデート自動検知: 外部ソースからのMCPスキルの更新を監視し、変更点をリアルタイムで捕捉する機能</li><li>スキルABテスト: 異なるバージョンのスキルを特定の条件で出し分け、LLMの応答品質や成功率を比較検証可能</li><li>スマートマージ: スキル定義（JSON/YAML等）の不整合をインテリジェントに解決し、安全な統合を支援するロジック</li></ul>
-      <h3>開発状況</h3><p>Active Development</p>
-      <h3>競合差別化</h3><p>標準的なMCPサーバー運用やGitHub Actionsによる単純なCI/CDと比較し、スキル単位でのABテスト機能やスマートマージ（構造的競合解決）を備えている点が独自のエッジ。</p>
-      <h3>技術スタック</h3><p>Node.js, TypeScript, Model Context Protocol (MCP) SDK, Git-like Versioning Logic</p>
-    ]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[[Rust] lucasgelfond/zerobrew]]></title>
-    <link>https://github.com/lucasgelfond/zerobrew</link>
-    <guid isPermaLink="true">https://github.com/lucasgelfond/zerobrew</guid>
-    <pubDate>Sat, 31 Jan 2026 04:46:54 +0000</pubDate>
-    <gs:stars>4568</gs:stars>
-    <description><![CDATA[
-      <h3>概要</h3><p>Rust実装によりHomebrewを5〜20倍高速化する、ドロップイン互換の実験的パッケージマネージャ</p>
-      <h3>活用シーン</h3><p>macOS/Linux環境において、Homebrewの動作（特にアップデートや依存解決）の遅さを解消し、CIや開発環境構築のリードタイムを極限まで短縮したい場合</p>
-      <h3>主要機能</h3><ul><li>Homebrewドロップイン互換: 既存のbrewコマンドの代替として、インターフェースを維持したままシームレスな移行を目指す</li><li>Rustによる圧倒的な高速化: インタプリタのオーバーヘッドを排除し、依存関係の解決やパッケージ展開を高度に最適化</li><li>既存エコシステムの再利用: Homebrewが持つ膨大なパッケージ（Formulae）のリポジトリをそのまま利用可能</li></ul>
-      <h3>開発状況</h3><p>Experimental (実験的)</p>
-      <h3>競合差別化</h3><p>本家Homebrew（Ruby実装）と比較し、Rustのネイティブな並列実行性能を活かすことで5〜20倍の高速化を謳う。Nixのような宣言型ツールへの完全な移行を必要とせず、既存のFormula資産をそのまま高速化できる点が独自のエッジ</p>
-      <h3>技術スタック</h3><p>Rust, Homebrew API, CLI, Parallel Processing</p>
-    ]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[[C] antirez/flux2.c]]></title>
-    <link>https://github.com/antirez/flux2.c</link>
-    <guid isPermaLink="true">https://github.com/antirez/flux2.c</guid>
-    <pubDate>Sat, 31 Jan 2026 04:46:54 +0000</pubDate>
-    <gs:stars>1531</gs:stars>
-    <description><![CDATA[
-      <h3>概要</h3><p>Flux 2画像生成モデルの推論を、外部ライブラリに依存せず純粋なC言語のみで実装した超軽量エンジン。</p>
-      <h3>活用シーン</h3><p>Python環境や重厚なMLフレームワークを構築できない制約のあるエッジ環境、またはモデルの内部挙動を低レイヤーで詳細に解析・学習する用途。</p>
-      <h3>主要機能</h3><ul><li>Zero Dependencies: PyTorchやCUDA、ランタイムを必要とせず、標準CライブラリとOSの基本APIのみで完結。</li><li>Architecture Minimalization: FluxモデルのTransformer構造やアテンション、VAEデコーダーを単一に近いソースコードで直接的に実装し、可読性を最大化。</li><li>Efficient Memory Management: 重みデータのメモリマッピング(mmap)等、OSレイヤーの機能を活用した効率的なメモリロードと推論処理。</li></ul>
-      <h3>開発状況</h3><p>Experimental (実験的)</p>
-      <h3>競合差別化</h3><p>Hugging Face Diffusers等のPython実装と比較し、依存関係が皆無でコンパイルが容易。実行バイナリのみで動作し、フレームワークのオーバーヘッドを排除した極限のポータビリティが独自のエッジ。</p>
-      <h3>技術スタック</h3><p>C, POSIX Threads, SIMD (AVX/NEON), Pure C Inference</p>
-    ]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[[Python] joeseesun/anything-to-notebooklm]]></title>
-    <link>https://github.com/joeseesun/anything-to-notebooklm</link>
-    <guid isPermaLink="true">https://github.com/joeseesun/anything-to-notebooklm</guid>
-    <pubDate>Sat, 31 Jan 2026 04:46:54 +0000</pubDate>
-    <gs:stars>283</gs:stars>
-    <description><![CDATA[
-      <h3>概要</h3><p>多様なWebソースをClaudeで前処理し、NotebookLMでの活用に最適化された形式へ変換するツール。</p>
-      <h3>活用シーン</h3><p>分散したWeb記事、YouTube動画、PDF資料をClaudeを介してNotebookLMへ一括集約し、Podcast台本や学習クイズとして再構成する高度なリサーチ・コンテンツ制作フローの構築。</p>
-      <h3>主要機能</h3><ul><li>マルチソース・アグリゲーション: WeChat記事、YouTube、Webサイト、PDF、Markdown、検索結果など多岐にわたるソースを単一インターフェースで処理</li><li>コンテキスト最適化: NotebookLMでの活用を見据え、Claudeのスキルとしてコンテンツを抽出し、PodcastやPPT構成案、マインドマップ用に最適化</li><li>エンドツーエンドの変換フロー: 複雑なWeb構造のパースから、クイズや学習用資料といった具体的なアウトプット形式への変換をClaude上で完結</li></ul>
-      <h3>開発状況</h3><p>Active Development</p>
-      <h3>競合差別化</h3><p>NotebookLM標準のアップローダーと比較して、WeChatやYouTube、動的な検索結果を直接処理できる点が優位。特にClaudeの推論能力を前処理（構造化）に利用することで、インプット品質を向上させる技術的エッジを持つ。</p>
-      <h3>技術スタック</h3><p>Claude (Anthropic), Google NotebookLM, Claude Desktop Skills / MCP, LLM Prompt Engineering, Web Scraping</p>
-    ]]></description>
-  </item>
-
-</channel>
+  <channel>
+    <title>GitHub Trending Intelligence</title>
+    <link>https://github.com/trending</link>
+    <description>Daily curated GitHub trends with Gemini analysis.</description>
+    <language>ja</language>
+    <lastBuildDate>Sat, 31 Jan 2026 00:20:54 +0000</lastBuildDate>
+    <item>
+      <title>
+        <![CDATA[[Python] jmuncor/sherlock]]>
+      </title>
+      <link>https://github.com/jmuncor/sherlock</link>
+      <guid isPermaLink="true">https://github.com/jmuncor/sherlock</guid>
+      <pubDate>Sat, 31 Jan 2026 00:20:54 +0000</pubDate>
+      <gs:stars>576</gs:stars>
+      <description>
+        <![CDATA[
+      <h3>概要</h3><p>LLM APIトラフィックを監視し、リアルタイムに可視化するダッシュボードツール</p>
+      <h3>背景</h3><p>LLM APIの利用状況をリアルタイムに可視化し、コスト、プロンプトのデバッグ、コンテキストウィンドウの使用状況を開発セッション全体で監視するツール。AI開発における効率化とコスト最適化に貢献します。</p>
+      <h3>注目ポイント</h3><p>LLMの利用状況を詳細に把握し、API trafficをinterceptすることで、これまでブラックボックス化されていたLLMの内部動作を可視化する点。コスト最適化だけでなく、プロンプトエンジニアリングの高度化にも貢献します。</p>
+      <h3>技術スタック</h3><p>Python, LLM APIs, Real-time Terminal Dashboard</p>
+    ]]>
+      </description>
+    </item>
+    <item>
+      <title>
+        <![CDATA[theaiautomators/claude-code-agentic-rag-masterclass]]>
+      </title>
+      <link>https://github.com/theaiautomators/claude-code-agentic-rag-masterclass</link>
+      <guid isPermaLink="true">https://github.com/theaiautomators/claude-code-agentic-rag-masterclass</guid>
+      <pubDate>Sat, 31 Jan 2026 00:20:54 +0000</pubDate>
+      <gs:stars>21</gs:stars>
+      <description>
+        <![CDATA[
+      <h3>概要</h3><p>Claude Codeと連携したエージェント型RAGアプリケーション構築のマスタークラス</p>
+      <h3>背景</h3><p>Claude Codeと連携して、エージェント型のRAG（Retrieval-Augmented Generation）アプリケーションをスクラッチから構築する8モジュール構成のコース。ハイブリッド検索、リルランキング、Text-to-SQL、サブエージェントなどの高度な技術を習得できます。</p>
+      <h3>注目ポイント</h3><p>大規模言語モデル（LLM）を効果的に活用するためのRAGアーキテクチャの実践的な実装方法を、コードアシスタントと共に学べる点。特に、Text-to-SQLやサブエージェントといった高度な機能の統合に焦点が当てられているのが魅力です。</p>
+      <h3>技術スタック</h3><p>React, FastAPI, Supabase, Claude Code, RAG</p>
+    ]]>
+      </description>
+    </item>
+    <item>
+      <title>
+        <![CDATA[[TypeScript] jamiepine/voicebox]]>
+      </title>
+      <link>https://github.com/jamiepine/voicebox</link>
+      <guid isPermaLink="true">https://github.com/jamiepine/voicebox</guid>
+      <pubDate>Sat, 31 Jan 2026 00:20:54 +0000</pubDate>
+      <gs:stars>132</gs:stars>
+      <description>
+        <![CDATA[
+      <h3>概要</h3><p>Qwen3-TTS搭載のオープンソース音声合成スタジオ</p>
+      <h3>背景</h3><p>Qwen3-TTSを搭載したオープンソースの音声合成スタジオ。カスタマイズ可能な音声の生成、編集、および管理を可能にします。研究開発からコンテンツ制作まで、幅広い用途に対応できます。</p>
+      <h3>注目ポイント</h3><p>Qwen3-TTSという強力なTTSモデルを基盤とし、高度な音声合成機能をオープンソースで提供する点。音声合成の研究開発を加速させるだけでなく、個人開発者や中小企業が手軽に高品質な音声コンテンツを生成できる環境を提供します。</p>
+      <h3>技術スタック</h3><p>Python, Qwen3-TTS, Speech Synthesis, Open Source</p>
+    ]]>
+      </description>
+    </item>
+    <item>
+      <title>
+        <![CDATA[[Python] lasgroup/SDPO]]>
+      </title>
+      <link>https://github.com/lasgroup/SDPO</link>
+      <guid isPermaLink="true">https://github.com/lasgroup/SDPO</guid>
+      <pubDate>Sat, 31 Jan 2026 00:20:54 +0000</pubDate>
+      <gs:stars>48</gs:stars>
+      <description>
+        <![CDATA[
+      <h3>概要</h3><p>強化学習における自己蒸留を用いたサンプル効率と安定性の向上</p>
+      <h3>背景</h3><p>SDPOは、強化学習におけるサンプル効率と安定性を向上させることを目的とした手法です。自己蒸留の概念を強化学習に応用し、ポリシー学習の安定化を図ります。オフラインデータからの学習効率を高めることで、探索の負担を軽減します。</p>
+      <h3>注目ポイント</h3><p>自己蒸留を用いることで、既存のオフライン強化学習手法よりも安定した学習と高い性能を実現している点が注目されます。探索の難しい環境や、報酬がスパースな環境での利用に適しており、実世界への応用可能性を広げます。</p>
+      <h3>技術スタック</h3><p>Python, PyTorch, Reinforcement Learning</p>
+    ]]>
+      </description>
+    </item>
+    <item>
+      <title>
+        <![CDATA[[TypeScript] m1heng/clawdbot-feishu]]>
+      </title>
+      <link>https://github.com/m1heng/clawdbot-feishu</link>
+      <guid isPermaLink="true">https://github.com/m1heng/clawdbot-feishu</guid>
+      <pubDate>Sat, 31 Jan 2026 00:20:54 +0000</pubDate>
+      <gs:stars>1216</gs:stars>
+      <description>
+        <![CDATA[
+      <h3>概要</h3><p>ClawDBとFeishuを連携させるBot</p>
+      <h3>背景</h3><p>リポジトリ名から、ClawDB（または関連するデータベース）とFeishu（Lark、中国向けのビジネスコミュニケーションツール）を連携させるためのBotであると推測されます。データベースからの情報をFeishu上で操作・通知するためのインターフェースを提供していると考えられます。</p>
+      <h3>注目ポイント</h3><p>企業内データベースとコミュニケーションツールを連携させることで、情報へのアクセス効率と迅速な意思決定を支援します。Feishuという特定のプラットフォームに特化している点が、特定の市場ニーズに応えるための戦略的な選択と言えます。</p>
+      <h3>技術スタック</h3><p>Python, Feishu API, Database (推測: ClawDB), Bot Framework (推測)</p>
+    ]]>
+      </description>
+    </item>
+    <item>
+      <title>
+        <![CDATA[[Python] divyaprakash0426/autoshorts]]>
+      </title>
+      <link>https://github.com/divyaprakash0426/autoshorts</link>
+      <guid isPermaLink="true">https://github.com/divyaprakash0426/autoshorts</guid>
+      <pubDate>Fri, 30 Jan 2026 00:21:34 +0000</pubDate>
+      <gs:stars>108</gs:stars>
+      <description>
+        <![CDATA[
+      <h3>概要</h3><p>AI駆動のゲームプレイ動画短尺化ツール</p>
+      <h3>背景</h3><p>長尺のゲームプレイ映像から、AIによるシーン分析とGPUアクセラレーションされたレンダリングを用いて、短い縦型動画を自動生成します。視聴者のエンゲージメントを高めるために、AIによるナレーションもオプションで追加可能です。</p>
+      <h3>注目ポイント</h3><p>AIを用いて動画のハイライトを自動抽出し、視聴者を惹きつける短尺動画を生成する点。手作業による編集作業を大幅に削減し、コンテンツクリエイターの効率を飛躍的に向上させる可能性があります。</p>
+      <h3>技術スタック</h3><p>Python, AI (具体的なモデル名は不明), GPU acceleration, 動画編集ライブラリ (FFmpeg など), 音声合成</p>
+    ]]>
+      </description>
+    </item>
+    <item>
+      <title>
+        <![CDATA[[Shell] guo-yu/skills]]>
+      </title>
+      <link>https://github.com/guo-yu/skills</link>
+      <guid isPermaLink="true">https://github.com/guo-yu/skills</guid>
+      <pubDate>Fri, 30 Jan 2026 00:21:34 +0000</pubDate>
+      <gs:stars>217</gs:stars>
+      <description>
+        <![CDATA[
+      <h3>概要</h3><p>個人用自動化スクリプト集</p>
+      <h3>背景</h3><p>生産性と自動化を目的とした、個人のスキル集です。具体的なスキルセットの内容はリポジトリの中身を確認する必要がありますが、スクリプト、自動化ツール、設定ファイルなどが含まれていると推測されます。</p>
+      <h3>注目ポイント</h3><p>個人の自動化スキルを体系的にまとめている点。他の開発者が自身のワークフローを自動化するための参考資料として活用できる可能性があります。様々な環境に対応した汎用性の高いスクリプトが含まれている場合、特に有用です。</p>
+      <h3>技術スタック</h3><p>Shell scripting, Python, Automation tools (Ansible, etc.), Configuration management</p>
+    ]]>
+      </description>
+    </item>
+    <item>
+      <title>
+        <![CDATA[[TypeScript] nicobailon/pi-mcp-adapter]]>
+      </title>
+      <link>https://github.com/nicobailon/pi-mcp-adapter</link>
+      <guid isPermaLink="true">https://github.com/nicobailon/pi-mcp-adapter</guid>
+      <pubDate>Fri, 30 Jan 2026 00:21:34 +0000</pubDate>
+      <gs:stars>22</gs:stars>
+      <description>
+        <![CDATA[
+      <h3>概要</h3><p>Pi向け高効率MCPアダプター</p>
+      <h3>背景</h3><p>Pi (Raspberry Pi) コーディングエージェント向けの、トークン効率の良いMCP (Minecraft Protocol) アダプターです。Raspberry Pi上で動作するエージェントがMinecraftサーバーと効率的に通信するための橋渡しを行います。</p>
+      <h3>注目ポイント</h3><p>Raspberry Pi上で動作するエージェントとMinecraftサーバー間の通信を、トークン効率良く行う点。リソースの限られた環境でも、スムーズな連携を実現します。教育分野におけるMinecraftの活用を促進する可能性があります。</p>
+      <h3>技術スタック</h3><p>Python, Minecraft Protocol (MCP), Raspberry Pi, Networking</p>
+    ]]>
+      </description>
+    </item>
+    <item>
+      <title>
+        <![CDATA[[C] robitec97/gemma3.c]]>
+      </title>
+      <link>https://github.com/robitec97/gemma3.c</link>
+      <guid isPermaLink="true">https://github.com/robitec97/gemma3.c</guid>
+      <pubDate>Fri, 30 Jan 2026 00:21:34 +0000</pubDate>
+      <gs:stars>89</gs:stars>
+      <description>
+        <![CDATA[
+      <h3>概要</h3><p>C言語によるGemma 3の推論エンジン実装。高速なローカル推論と高い移植性が特徴。</p>
+      <h3>背景</h3><p>GoogleのGemma 3をC言語で実装した推論エンジン。大規模言語モデル(LLM)の高速なローカル推論を可能にする。C言語による実装は、移植性とリソース効率に優れ、組み込み機器などでの利用を促進する。</p>
+      <h3>注目ポイント</h3><p>C言語でLLM推論を実装することで、Pythonなどのオーバーヘッドを削減し、低レイテンシを実現する。組み込みシステムやエッジデバイスでのLLM活用を可能にする点が革新的。</p>
+      <h3>技術スタック</h3><p>C, LLM, Gemma, Inference Engine</p>
+    ]]>
+      </description>
+    </item>
+    <item>
+      <title>
+        <![CDATA[[PHP] atlas-php/atlas]]>
+      </title>
+      <link>https://github.com/atlas-php/atlas</link>
+      <guid isPermaLink="true">https://github.com/atlas-php/atlas</guid>
+      <pubDate>Fri, 30 Jan 2026 00:21:34 +0000</pubDate>
+      <gs:stars>20</gs:stars>
+      <description>
+        <![CDATA[
+      <h3>概要</h3><p>Laravel用AIオーケストレーションパッケージ。エージェント、ツール、パイプラインによるAIドリブン機能の構築を支援。</p>
+      <h3>背景</h3><p>Laravelフレームワーク上で動作するAIオーケストレーションパッケージ。AIエージェント、ツール、実行パイプラインを統合し、AIドリブンな機能開発を効率化する。複雑なAIワークフローをモジュール化し、再利用性と保守性を高める。</p>
+      <h3>注目ポイント</h3><p>AIエージェントの実行パイプラインを宣言的に定義し、柔軟なAIワークフローを構築できる。Laravelの強みを活かし、AI機能を既存のPHPアプリケーションに容易に統合可能にする。</p>
+      <h3>技術スタック</h3><p>PHP, Laravel, AI Agents, Orchestration, Pipelines</p>
+    ]]>
+      </description>
+    </item>
+    <item>
+      <title>
+        <![CDATA[[TypeScript] lukilabs/beautiful-mermaid]]>
+      </title>
+      <link>https://github.com/lukilabs/beautiful-mermaid</link>
+      <guid isPermaLink="true">https://github.com/lukilabs/beautiful-mermaid</guid>
+      <pubDate>Thu, 29 Jan 2026 15:34:24 +0000</pubDate>
+      <gs:stars>1721</gs:stars>
+      <description>
+        <![CDATA[
+      <h3>概要</h3><p>Mermaid.jsの図表を美しくカスタマイズするためのツール</p>
+      <h3>背景</h3><p>リポジトリ名から、Mermaid記法で記述された図表を美しくレンダリングすることに特化したプロジェクトと推測されます。テーマやスタイルをカスタマイズし、ドキュメントやWebサイトに洗練された図表を組み込むニーズに応える可能性があります。</p>
+      <h3>注目ポイント</h3><p>Mermaid.jsのデフォルトのスタイルを改善し、より視覚的に魅力的な図表を生成できる点。テーマ機能や拡張性があれば、独自のブランドスタイルを適用し、ドキュメント全体の品質を向上させることが期待できます。</p>
+      <h3>技術スタック</h3><p>JavaScript, Mermaid.js, CSS</p>
+    ]]>
+      </description>
+    </item>
+    <item>
+      <title>
+        <![CDATA[avinash201199/free-ai-agents-resources]]>
+      </title>
+      <link>https://github.com/avinash201199/free-ai-agents-resources</link>
+      <guid isPermaLink="true">https://github.com/avinash201199/free-ai-agents-resources</guid>
+      <pubDate>Thu, 29 Jan 2026 15:34:24 +0000</pubDate>
+      <gs:stars>178</gs:stars>
+      <description>
+        <![CDATA[
+      <h3>概要</h3><p>AIエージェントに関する無料学習リソース集</p>
+      <h3>背景</h3><p>AIエージェントに関する学習リソースを集約したハブ。急速に進化するAIエージェント技術の習得を支援し、最新の研究、ツール、チュートリアルへのアクセスを容易にすることで、開発者のスキルアップを促進します。</p>
+      <h3>注目ポイント</h3><p>2026年を見据えたAIエージェント技術の学習ハブという点がユニーク。単なるリンク集ではなく、体系的な学習パスやコミュニティ機能が組み込まれていれば、より価値が高まります。無料である点も魅力です。</p>
+      <h3>技術スタック</h3><p>N/A (リソース集約), AI, Agents, LLM</p>
+    ]]>
+      </description>
+    </item>
+    <item>
+      <title>
+        <![CDATA[[JavaScript] regression-io/coder-config]]>
+      </title>
+      <link>https://github.com/regression-io/coder-config</link>
+      <guid isPermaLink="true">https://github.com/regression-io/coder-config</guid>
+      <pubDate>Thu, 29 Jan 2026 15:34:24 +0000</pubDate>
+      <gs:stars>24</gs:stars>
+      <description>
+        <![CDATA[
+      <h3>概要</h3><p>AIコーディングツールの設定を一元管理するツール</p>
+      <h3>背景</h3><p>AIコーディングツールの設定管理を効率化するツール。Claude Code、Gemini CLI、Codex CLIなどの複数のAIコーディングツールを統合的に管理し、MCP(Model Configuration Profiles)、ルール、権限、メモリ、ワークストリームなどを一元的に制御します。</p>
+      <h3>注目ポイント</h3><p>AIコーディングツールの利用が増加する中で、設定管理の複雑さを解消する点が重要。異なるAIモデル間での設定の整合性を保ち、チーム全体での統一的な開発環境を構築するのに役立ちます。権限管理機能も企業利用には不可欠です。</p>
+      <h3>技術スタック</h3><p>Python, AI, Configuration Management, Codex, Claude, Gemini</p>
+    ]]>
+      </description>
+    </item>
+    <item>
+      <title>
+        <![CDATA[[Python] TNT-Likely/PanWatch]]>
+      </title>
+      <link>https://github.com/TNT-Likely/PanWatch</link>
+      <guid isPermaLink="true">https://github.com/TNT-Likely/PanWatch</guid>
+      <pubDate>Thu, 29 Jan 2026 15:34:24 +0000</pubDate>
+      <gs:stars>53</gs:stars>
+      <description>
+        <![CDATA[
+      <h3>概要</h3><p>AI駆動の株式監視・ポートフォリオ管理ツール</p>
+      <h3>背景</h3><p>AIを活用した株式監視アシスタント。A株、香港株、米国株に対応し、複数口座のポートフォリオ管理、スマートエージェントによる自動分析、PWAによるモバイル最適化を提供。個人投資家の情報収集と分析を効率化する。</p>
+      <h3>注目ポイント</h3><p>AIエージェントによる株式分析がユニーク。従来の手法に比べ、感情分析やニュース解析などを組み合わせた、より高度な投資判断支援が期待できる。PWA対応により、デスクトップとモバイル間でのシームレスな利用体験を提供する点も強み。</p>
+      <h3>技術スタック</h3><p>Python, AI (推論), PWA (Progressive Web App), 股票データAPI</p>
+    ]]>
+      </description>
+    </item>
+    <item>
+      <title>
+        <![CDATA[[TypeScript] ChartGPU/ChartGPU]]>
+      </title>
+      <link>https://github.com/ChartGPU/ChartGPU</link>
+      <guid isPermaLink="true">https://github.com/ChartGPU/ChartGPU</guid>
+      <pubDate>Thu, 29 Jan 2026 15:34:24 +0000</pubDate>
+      <gs:stars>2341</gs:stars>
+      <description>
+        <![CDATA[
+      <h3>概要</h3><p>高性能WebGPUチャート描画ライブラリ</p>
+      <h3>背景</h3><p>WebGPUベースのチャート描画ライブラリ。GPUの並列処理能力を活用することで、大量のデータを高速かつインタラクティブに可視化することを目的とする。従来のCanvasやSVGベースのチャートライブラリのパフォーマンス限界を克服する。</p>
+      <h3>注目ポイント</h3><p>WebGPUを活用したチャート描画ライブラリという点が革新的。従来のJavaScriptベースのチャートライブラリと比較して、圧倒的なパフォーマンス向上が期待できる。インタラクティブなデータ可視化やリアルタイムデータ処理に適している。</p>
+      <h3>技術スタック</h3><p>TypeScript, WebGPU, GPU</p>
+    ]]>
+      </description>
+    </item>
+    <item>
+      <title>
+        <![CDATA[blader/humanizer]]>
+      </title>
+      <link>https://github.com/blader/humanizer</link>
+      <guid isPermaLink="true">https://github.com/blader/humanizer</guid>
+      <pubDate>Thu, 29 Jan 2026 00:22:09 +0000</pubDate>
+      <description>
+        <![CDATA[
+      <h3>概要</h3><p>AI生成テキストを人間らしい文章に変換するClaude Code skill。</p>
+      <h3>背景</h3><p>AI生成テキスト特有のパターンを検出し、より人間らしい自然な文章へ変換する技術。コンテンツの信頼性向上や、AIの活用を隠蔽したい場合に有用。検出と修正のアルゴリズムが肝となる。</p>
+      <h3>注目ポイント</h3><p>AIによる文章生成が普及する中、その「AI臭」を消すという逆転の発想がユニーク。敵対的生成ネットワーク(GAN)的なアプローチや、大規模言語モデルの微調整で、更に精度を高める可能性がある。</p>
+      <h3>技術スタック</h3><p>Python, 機械学習, 自然言語処理 (NLP)</p>
+    ]]>
+      </description>
+    </item>
+    <item>
+      <title>
+        <![CDATA[[Shell] blader/Claudeception]]>
+      </title>
+      <link>https://github.com/blader/Claudeception</link>
+      <guid isPermaLink="true">https://github.com/blader/Claudeception</guid>
+      <pubDate>Thu, 29 Jan 2026 00:22:09 +0000</pubDate>
+      <description>
+        <![CDATA[
+      <h3>概要</h3><p>Claudeのスキルを自律的に抽出・学習させ、継続的に能力を向上させるClaude Code skill。</p>
+      <h3>背景</h3><p>Claudeのスキルを自律的に抽出・学習させるフレームワーク。継続的な学習を通じて、Claude自身の能力向上を目指す。メタ学習の一形態であり、自己改善型のAIエージェントを構築できる。</p>
+      <h3>注目ポイント</h3><p>AIが自ら学習し、能力を拡張するというコンセプトが先進的。エージェントがどのようなスキルを獲得し、どのように進化していくのか、その過程を観察すること自体が興味深い。自己進化型AIの可能性を示す。</p>
+      <h3>技術スタック</h3><p>Python, AIエージェント, 強化学習, 大規模言語モデル(LLM)</p>
+    ]]>
+      </description>
+    </item>
+    <item>
+      <title>
+        <![CDATA[[TypeScript] lukilabs/craft-agents-oss]]>
+      </title>
+      <link>https://github.com/lukilabs/craft-agents-oss</link>
+      <guid isPermaLink="true">https://github.com/lukilabs/craft-agents-oss</guid>
+      <pubDate>Thu, 29 Jan 2026 00:22:09 +0000</pubDate>
+      <description>
+        <![CDATA[
+      <h3>概要</h3><p>複数のAIエージェントを協調動作させるためのオープンソースフレームワーク。</p>
+      <h3>背景</h3><p>リポジトリ名から、複数の自律エージェントを協調動作させるためのフレームワークと推測される。複雑なタスクを分割し、各エージェントが分担して処理することで、より高度なタスクを実現する。</p>
+      <h3>注目ポイント</h3><p>個々のAIエージェントの能力には限界があるため、複数エージェントによる協調は必然的な進化。エージェント間の通信プロトコルや、タスク割り当ての最適化などが重要になる。自律分散システムとしての応用も期待できる。</p>
+      <h3>技術スタック</h3><p>Python, AIエージェント, 分散システム, 並列処理</p>
+    ]]>
+      </description>
+    </item>
+    <item>
+      <title>
+        <![CDATA[[TypeScript] benjitaylor/agentation]]>
+      </title>
+      <link>https://github.com/benjitaylor/agentation</link>
+      <guid isPermaLink="true">https://github.com/benjitaylor/agentation</guid>
+      <pubDate>Thu, 29 Jan 2026 00:22:09 +0000</pubDate>
+      <description>
+        <![CDATA[
+      <h3>概要</h3><p>AIエージェントの思考フローを可視化する開発者向けデバッグ・分析ツール</p>
+      <h3>背景</h3><p>AIエージェントの視覚的フィードバックツール。エージェントの思考プロセスを可視化し、デバッグ、理解、改善を支援する。複雑なマルチステップ推論を伴うAIアプリケーション開発におけるブラックボックス問題を軽減。</p>
+      <h3>注目ポイント</h3><p>AIエージェントの透明性向上に着目。プロンプトエンジニアリングとエージェント開発における反復的な試行錯誤の効率化。UIによる直感的な理解は、特に複雑なエージェント設計において強力な武器となる。</p>
+      <h3>技術スタック</h3><p>JavaScript, React, Node.js, UI visualization</p>
+    ]]>
+      </description>
+    </item>
+    <item>
+      <title>
+        <![CDATA[[TypeScript] michaelshimeles/ralphy]]>
+      </title>
+      <link>https://github.com/michaelshimeles/ralphy</link>
+      <guid isPermaLink="true">https://github.com/michaelshimeles/ralphy</guid>
+      <pubDate>Thu, 29 Jan 2026 00:22:09 +0000</pubDate>
+      <description>
+        <![CDATA[
+      <h3>概要</h3><p>複数LLM連携によるPRD自動生成Bashスクリプト</p>
+      <h3>背景</h3><p>PRD(製品要求仕様書)の自動生成を目指す自律型Bashスクリプト。複数の大規模言語モデル(Claude Code, Codex, OpenCode, Cursor agent, Qwen, Droid)をループで実行し、仕様が完成するまで反復処理を行う。</p>
+      <h3>注目ポイント</h3><p>PRD作成という反復的タスクの自動化を、Bashスクリプトと複数のLLMを組み合わせることで実現。 特定のLLMに依存せず、複数のモデルを連携させることで、出力の多様性と完成度を高めるアプローチがユニーク。</p>
+      <h3>技術スタック</h3><p>Bash, 大規模言語モデル(LLM), Claude Code, Codex, OpenCode, Cursor agent, Qwen, Droid, PRD generation</p>
+    ]]>
+      </description>
+    </item>
+    <item>
+      <title>
+        <![CDATA[[Python] violit-dev/violit]]>
+      </title>
+      <link>https://github.com/violit-dev/violit</link>
+      <guid isPermaLink="true">https://github.com/violit-dev/violit</guid>
+      <pubDate>Thu, 29 Jan 2026 00:22:09 +0000</pubDate>
+      <description>
+        <![CDATA[
+      <h3>概要</h3><p>再実行なしで高速なWebアプリケーションを構築するための、非同期Pythonフレームワーク。</p>
+      <h3>背景</h3><p>Streamlitの簡便さを維持しつつ、再実行によるパフォーマンスボトルネックを解消することを目指したPython Webフレームワーク。非同期処理を活用し、高速なレスポンスと効率的なリソース利用を実現します。</p>
+      <h3>注目ポイント</h3><p>Streamlitの最大の弱点である再実行を排除することで、大規模なWebアプリケーションや高負荷なリアルタイムアプリケーション開発に適しています。特に、データ可視化ツールの高速化に貢献する可能性があります。</p>
+      <h3>技術スタック</h3><p>Python, AsyncIO, FastAPI (類似), WebSockets</p>
+    ]]>
+      </description>
+    </item>
+    <item>
+      <title>
+        <![CDATA[[Rust] SIGNIAINDEX/SIGNIA]]>
+      </title>
+      <link>https://github.com/SIGNIAINDEX/SIGNIA</link>
+      <guid isPermaLink="true">https://github.com/SIGNIAINDEX/SIGNIA</guid>
+      <pubDate>Thu, 29 Jan 2026 00:22:09 +0000</pubDate>
+      <description>
+        <![CDATA[
+      <h3>概要</h3><p>現実世界の資産をオンチェーンで表現・検証するためのコンパイラ。</p>
+      <h3>背景</h3><p>現実世界の構造物を検証可能なオンチェーン形式にコンパイルする技術。不動産やサプライチェーン等のアセットをブロックチェーン上で表現し、透明性と信頼性を高めることを目指しています。</p>
+      <h3>注目ポイント</h3><p>不動産やその他の物理的な資産を、改ざん不可能な形でブロックチェーン上に表現できる点が革新的です。これにより、資産の取引や管理の透明性と効率性が飛躍的に向上し、DeFiの可能性を広げます。</p>
+      <h3>技術スタック</h3><p>Solidity, Zero-Knowledge Proofs (推測), Smart Contracts, Web3</p>
+    ]]>
+      </description>
+    </item>
+    <item>
+      <title>
+        <![CDATA[[Go] rodydavis/agent-skills-generator]]>
+      </title>
+      <link>https://github.com/rodydavis/agent-skills-generator</link>
+      <guid isPermaLink="true">https://github.com/rodydavis/agent-skills-generator</guid>
+      <pubDate>Thu, 29 Jan 2026 00:22:09 +0000</pubDate>
+      <description>
+        <![CDATA[
+      <h3>概要</h3><p>ウェブサイトドキュメントからエージェントのスキルを自動生成するツール。</p>
+      <h3>背景</h3><p>ウェブサイトのドキュメントから自動的にエージェントのスキルを生成するツール。大規模言語モデル(LLM)を活用し、エージェントが実行可能なタスクを自動的に抽出・定義します。</p>
+      <h3>注目ポイント</h3><p>エージェント開発のボトルネックとなるスキル定義を自動化し、開発効率を大幅に向上させます。特に、多様なAPIやサービスに対応するエージェントを迅速に構築する際に有効です。</p>
+      <h3>技術スタック</h3><p>Python, Large Language Models (LLM), Web Scraping (Beautiful Soup), Natural Language Processing (NLP)</p>
+    ]]>
+      </description>
+    </item>
+    <item>
+      <title>
+        <![CDATA[[Python] softaworks/agent-toolkit]]>
+      </title>
+      <link>https://github.com/softaworks/agent-toolkit</link>
+      <guid isPermaLink="true">https://github.com/softaworks/agent-toolkit</guid>
+      <pubDate>Thu, 29 Jan 2026 00:22:09 +0000</pubDate>
+      <description>
+        <![CDATA[
+      <h3>概要</h3><p>AIコーディングエージェント向けスキルライブラリ</p>
+      <h3>背景</h3><p>AIコーディングエージェントの能力拡張を目指し、開発、ドキュメント、計画、専門的なワークフローを横断するスキル（指示とスクリプトのパッケージ）のコレクションを提供。モジュール化されたスキルを通じて、エージェントの汎用性と効率性を向上させる。</p>
+      <h3>注目ポイント</h3><p>AIエージェントの複雑なタスク遂行能力を、再利用可能なスキルという形で拡張するアプローチが斬新。特定ドメインに特化したスキルを容易に追加・組み合わせることで、エージェントの適応力を高め、ブラックボックス化を防ぐ。</p>
+      <h3>技術スタック</h3><p>Python, AI Agent, Skills, Workflows</p>
+    ]]>
+      </description>
+    </item>
+    <item>
+      <title>
+        <![CDATA[[TypeScript] waynesutton/opensync]]>
+      </title>
+      <link>https://github.com/waynesutton/opensync</link>
+      <guid isPermaLink="true">https://github.com/waynesutton/opensync</guid>
+      <pubDate>Thu, 29 Jan 2026 00:22:09 +0000</pubDate>
+      <description>
+        <![CDATA[
+      <h3>概要</h3><p>OpenCode/Claude Code向けクラウド同期ダッシュボード</p>
+      <h3>背景</h3><p>OpenCodeとClaude Codeの利用状況をクラウドで同期し、ダッシュボードで可視化。セッション追跡、セマンティック検索、評価データセットのエクスポートを可能にすることで、大規模言語モデル(LLM)の利用状況の分析と改善を支援する。</p>
+      <h3>注目ポイント</h3><p>LLMの利用状況を可視化し、セマンティック検索による高度な分析を可能にする点がユニーク。LLMのパフォーマンス評価データセットのエクスポート機能は、モデルの改善サイクルを加速させる可能性を秘めている。</p>
+      <h3>技術スタック</h3><p>JavaScript, React, LLM, OpenCode, Claude Code, Semantic Search</p>
+    ]]>
+      </description>
+    </item>
+    <item>
+      <title>
+        <![CDATA[[Python] muyen/meihua-yishu]]>
+      </title>
+      <link>https://github.com/muyen/meihua-yishu</link>
+      <guid isPermaLink="true">https://github.com/muyen/meihua-yishu</guid>
+      <pubDate>Thu, 29 Jan 2026 00:22:09 +0000</pubDate>
+      <description>
+        <![CDATA[
+      <h3>概要</h3><p>LLMに梅花易数の占術能力を付与するPythonプロジェクト</p>
+      <h3>背景</h3><p>LLM（大規模言語モデル）向けに、伝統的な易占である梅花易数を実装し、Claude、ChatGPTといったAIに占いの能力を与えるプロジェクト。単なる占いツールではなく、AIの推論能力と伝統文化の融合を試みる点が特徴。</p>
+      <h3>注目ポイント</h3><p>AIによる伝統文化の解釈というユニークなアプローチ。占いという不確実な領域に、LLMの推論能力を応用することで、新たなAIの可能性を切り開く。プロンプトエンジニアリングの高度な応用例としても注目される。</p>
+      <h3>技術スタック</h3><p>Python, LLM APIs (Claude, ChatGPT, Gemini, DeepSeek)</p>
+    ]]>
+      </description>
+    </item>
+    <item>
+      <title>
+        <![CDATA[[Python] voelspriet/aiwhisperer]]>
+      </title>
+      <link>https://github.com/voelspriet/aiwhisperer</link>
+      <guid isPermaLink="true">https://github.com/voelspriet/aiwhisperer</guid>
+      <pubDate>Thu, 29 Jan 2026 00:22:09 +0000</pubDate>
+      <description>
+        <![CDATA[
+      <h3>概要</h3><p>PDFファイルのAIアップロード向け縮小・サニタイズツール</p>
+      <h3>背景</h3><p>大規模PDFファイルをAIのアップロード制限に合わせるために縮小し、機密データを削除することで、AI利用時の情報漏洩リスクを軽減するツール。DPG Campus Toolとあるように、教育機関での利用を想定し、情報セキュリティと利便性の両立を目指す。</p>
+      <h3>注目ポイント</h3><p>機密情報を含む可能性のあるドキュメントをLLMに入力する際のリスクを軽減するという、非常に現実的な課題に対応。単なるファイル縮小だけでなく、サニタイズ機能により、情報漏洩のリスクを低減する点が優位。教育現場におけるニーズが高い。</p>
+      <h3>技術スタック</h3><p>Python, PDF processing libraries (e.g., PyPDF2), Data sanitization techniques</p>
+    ]]>
+      </description>
+    </item>
+    <item>
+      <title>
+        <![CDATA[[Python] richardwhiteii/rlm]]>
+      </title>
+      <link>https://github.com/richardwhiteii/rlm</link>
+      <guid isPermaLink="true">https://github.com/richardwhiteii/rlm</guid>
+      <pubDate>Thu, 29 Jan 2026 00:22:09 +0000</pubDate>
+      <description>
+        <![CDATA[
+      <h3>概要</h3><p>Claude Code向け、大規模コンテキスト対応RLMパターン実装</p>
+      <h3>背景</h3><p>Claude Code向けに、再帰的言語モデル(RLM)のパターンを実装。大規模なコンテキスト（10M+トークン）を外部変数として扱い、効率的に処理する。これにより、LLMが扱えるコンテキストサイズを大幅に拡張し、より複雑なタスクに対応可能にする。</p>
+      <h3>注目ポイント</h3><p>LLMのコンテキスト制限という根本的な課題に対し、再帰的な手法でアプローチ。大規模コンテキストを分割し、外部変数として扱うことで、LLMの処理能力を向上させる。従来の固定長コンテキストウィンドウを超える可能性を秘めている。</p>
+      <h3>技術スタック</h3><p>Python, Claude API, Recursive Language Model (RLM) patterns, Prompt Engineering</p>
+    ]]>
+      </description>
+    </item>
+    <item>
+      <title>
+        <![CDATA[[Rust] buyukakyuz/rig]]>
+      </title>
+      <link>https://github.com/buyukakyuz/rig</link>
+      <guid isPermaLink="true">https://github.com/buyukakyuz/rig</guid>
+      <pubDate>Thu, 29 Jan 2026 00:22:09 +0000</pubDate>
+      <description>
+        <![CDATA[
+      <h3>概要</h3><p>WiFi経由でLLM推論を分散実行するためのフレームワーク</p>
+      <h3>背景</h3><p>大規模言語モデル(LLM)の推論処理を、WiFiネットワーク上の複数マシンに分散させることで、単一マシンでは困難な処理能力を実現します。ローカル環境における分散推論のボトルネックを解消し、手軽にLLMの性能をスケールアウトする基盤を提供します。</p>
+      <h3>注目ポイント</h3><p>WiFi環境を活用したLLM分散推論という点が革新的。高価なGPUクラスタがなくても、手持ちのデバイスで大規模モデルを動かす道を開きます。今後の分散学習/推論技術の発展に重要な役割を果たす可能性を秘めています。</p>
+      <h3>技術スタック</h3><p>Python, gRPC, PyTorch, LLM Inference</p>
+    ]]>
+      </description>
+    </item>
+    <item>
+      <title>
+        <![CDATA[[Kotlin] six2dez/burp-ai-agent]]>
+      </title>
+      <link>https://github.com/six2dez/burp-ai-agent</link>
+      <guid isPermaLink="true">https://github.com/six2dez/burp-ai-agent</guid>
+      <pubDate>Thu, 29 Jan 2026 00:22:09 +0000</pubDate>
+      <description>
+        <![CDATA[
+      <h3>概要</h3><p>Burp SuiteをAIで強化し、高度な脆弱性診断を実現する拡張機能</p>
+      <h3>背景</h3><p>Webセキュリティ脆弱性診断ツールBurp Suiteの拡張機能。MCP(Multi-Channel Processing)ツールやAI支援分析を組み込み、診断効率と精度を向上させます。プライバシー制御機能や能動/受動スキャン機能も追加され、セキュリティエンジニアの作業負荷を軽減します。</p>
+      <h3>注目ポイント</h3><p>Burp SuiteにAI分析を統合し、脆弱性診断を高度化する点が魅力。MCPによるスキャン効率向上、プライバシー制御、AI支援分析など、多角的なアプローチで診断品質を高めます。セキュリティエンジニアの強い味方となるでしょう。</p>
+      <h3>技術スタック</h3><p>Python, Burp Suite API, AI/ML (推測), MCP (Multi-Channel Processing)</p>
+    ]]>
+      </description>
+    </item>
+    <item>
+      <title>
+        <![CDATA[[Python] andrewmoshu/diagram-mcp-server]]>
+      </title>
+      <link>https://github.com/andrewmoshu/diagram-mcp-server</link>
+      <guid isPermaLink="true">https://github.com/andrewmoshu/diagram-mcp-server</guid>
+      <pubDate>Thu, 29 Jan 2026 00:22:09 +0000</pubDate>
+      <description>
+        <![CDATA[
+      <h3>概要</h3><p>AWS、Azure、GCP、Kubernetesに対応したインフラストラクチャ図を自動生成するMCPサーバー</p>
+      <h3>背景</h3><p>クラウド環境の複雑化に伴い、インフラストラクチャの可視化が不可欠になっています。このリポジトリは、AWS、Azure、GCP、Kubernetesといった多様な環境に対応したインフラ図を自動生成し、運用効率の向上と属人化の排除を目指します。MCP (Model-based Configuration and Planning)の概念を基盤としています。</p>
+      <h3>注目ポイント</h3><p>インフラ図の自動生成は多くのツールで実現されていますが、MCPサーバーとして提供することで、構成管理と図の自動更新を統合的に行える点が強みです。IaCツールとの連携や、図の差分管理など、更なる発展が期待されます。</p>
+      <h3>技術スタック</h3><p>Python, MCP, AWS, Azure, GCP, Kubernetes, Diagram as Code</p>
+    ]]>
+      </description>
+    </item>
+    <item>
+      <title>
+        <![CDATA[[Rust] extrachatgpt-com/ananke]]>
+      </title>
+      <link>https://github.com/extrachatgpt-com/ananke</link>
+      <guid isPermaLink="true">https://github.com/extrachatgpt-com/ananke</guid>
+      <pubDate>Thu, 29 Jan 2026 00:22:09 +0000</pubDate>
+      <description>
+        <![CDATA[
+      <h3>概要</h3><p>MCPサーバーとAIスキルを視覚的に制御するコントロールプレーン</p>
+      <h3>背景</h3><p>anankeは、MCPサーバーとAIスキルを視覚的に制御するためのコントロールプレーンです。複雑化するAIアプリケーションやインフラ管理を、直感的なGUIを通じて簡素化し、運用・監視を効率化します。これにより、開発者はより創造的な作業に集中できます。</p>
+      <h3>注目ポイント</h3><p>AIスキルとMCPサーバーの管理を単一のGUIに統合することで、技術者はシステム全体の状況を把握しやすくなります。複雑な依存関係の可視化や、障害発生時の迅速な原因特定に役立ち、結果としてシステムの安定性向上に貢献します。</p>
+      <h3>技術スタック</h3><p>React, TypeScript, MCP, Visual Control Plane, AI Skills</p>
+    ]]>
+      </description>
+    </item>
+    <item>
+      <title>
+        <![CDATA[[Python] xiaotonng/lc2mcp]]>
+      </title>
+      <link>https://github.com/xiaotonng/lc2mcp</link>
+      <guid isPermaLink="true">https://github.com/xiaotonng/lc2mcp</guid>
+      <pubDate>Thu, 29 Jan 2026 00:22:09 +0000</pubDate>
+      <description>
+        <![CDATA[
+      <h3>概要</h3><p>LangChainツールをFastMCPツールに変換するコンバーター</p>
+      <h3>背景</h3><p>LangChainは強力なLLMオーケストレーションフレームワークですが、FastMCPのような特定の環境への統合は手間がかかります。lc2mcpは、LangChainツールをFastMCPツールに変換することで、これらのフレームワーク間の連携を円滑にし、AIアプリケーション開発の迅速化を図ります。</p>
+      <h3>注目ポイント</h3><p>LangChainツールの再利用性を高め、FastMCP環境への移行を容易にすることで、AIアプリケーション開発の効率を飛躍的に向上させます。異なるフレームワーク間のギャップを埋めるための橋渡し役として、重要な役割を果たします。</p>
+      <h3>技術スタック</h3><p>Python, LangChain, FastMCP, LLM, OpenAI API</p>
+    ]]>
+      </description>
+    </item>
+    <item>
+      <title>
+        <![CDATA[[TypeScript] nhevers/claude-recall]]>
+      </title>
+      <link>https://github.com/nhevers/claude-recall</link>
+      <guid isPermaLink="true">https://github.com/nhevers/claude-recall</guid>
+      <pubDate>Thu, 29 Jan 2026 00:22:09 +0000</pubDate>
+      <description>
+        <![CDATA[
+      <h3>概要</h3><p>Claudeの長期記憶レイヤー。プロジェクトのコンテキストを学習し、必要に応じて想起することで、Claudeの応答精度を向上させる。</p>
+      <h3>背景</h3><p>大規模言語モデル（LLM）であるClaudeの、プロジェクトコンテキストを長期的に記憶し、必要に応じて想起する機能を提供するレイヤーです。これにより、Claudeはより深い理解に基づいた応答が可能になり、開発者の生産性向上に貢献します。</p>
+      <h3>注目ポイント</h3><p>LLMの文脈理解能力のボトルネックであるコンテキスト長制限を、外部メモリと連携することで克服しようとする点。プロジェクトの変更履歴などを自動的に学習し、LLMが常に最新のコンテキストを把握できるようになる可能性を秘めている。</p>
+      <h3>技術スタック</h3><p>Python, Langchain, Vector Database (推定), Large Language Model (Claude)</p>
+    ]]>
+      </description>
+    </item>
+    <item>
+      <title>
+        <![CDATA[[TypeScript] Jane-xiaoer/skill-vision-control]]>
+      </title>
+      <link>https://github.com/Jane-xiaoer/skill-vision-control</link>
+      <guid isPermaLink="true">https://github.com/Jane-xiaoer/skill-vision-control</guid>
+      <pubDate>Thu, 29 Jan 2026 00:22:09 +0000</pubDate>
+      <description>
+        <![CDATA[
+      <h3>概要</h3><p>MCPスキルのバージョン管理システム。安全なアップデート、A/Bテスト、スマートマージにより、スキルの品質と開発効率を向上させる。</p>
+      <h3>背景</h3><p>MCP (Metaverse Content Platform) スキルの安全なバージョン管理システムです。アップデートの検出、A/Bテスト、スマートマージなどの機能を提供し、スキルの品質と安定性を維持しながら、迅速な開発サイクルを実現します。</p>
+      <h3>注目ポイント</h3><p>メタバース環境におけるコンテンツ配信の複雑さを、バージョン管理とA/Bテストによって制御しようとする点。スキル更新時のリスクを低減し、データに基づいた改善サイクルを回せるようにする仕組みが興味深い。</p>
+      <h3>技術スタック</h3><p>不明 (リポジトリから推測困難), Version Control System, A/B Testing Framework (推定), Metaverse Content Platform (MCP)</p>
+    ]]>
+      </description>
+    </item>
+    <item>
+      <title>
+        <![CDATA[[Go] gibram-io/gibram]]>
+      </title>
+      <link>https://github.com/gibram-io/gibram</link>
+      <guid isPermaLink="true">https://github.com/gibram-io/gibram</guid>
+      <pubDate>Thu, 29 Jan 2026 00:22:09 +0000</pubDate>
+      <description>
+        <![CDATA[
+      <h3>概要</h3><p>高速な知識グラフ検索によるLLM性能向上</p>
+      <h3>背景</h3><p>GibRAMは、RAG(Retrieval Augmented Generation)ワークフローに特化したインメモリ知識グラフサーバーです。複雑な知識構造を高速に処理し、LLMの精度と効率を向上させることを目指します。グラフ構造による関係性の表現が強み。</p>
+      <h3>注目ポイント</h3><p>従来のRAGシステムでは困難だった、複雑な関係性を考慮した推論を可能にします。インメモリ処理による高速なグラフ探索能力は、リアルタイムな応答が求められるアプリケーションで特に有効です。GraphRAGの性能を最大化。</p>
+      <h3>技術スタック</h3><p>Go, gRPC, Knowledge Graph, RAG</p>
+    ]]>
+      </description>
+    </item>
+    <item>
+      <title>
+        <![CDATA[[TypeScript] skorotkiewicz/llmnet]]>
+      </title>
+      <link>https://github.com/skorotkiewicz/llmnet</link>
+      <guid isPermaLink="true">https://github.com/skorotkiewicz/llmnet</guid>
+      <pubDate>Thu, 29 Jan 2026 00:22:09 +0000</pubDate>
+      <description>
+        <![CDATA[
+      <h3>概要</h3><p>オフラインLLM環境構築</p>
+      <h3>背景</h3><p>llmnetは、オフライン環境で大規模言語モデル(LLM)を活用するためのプロジェクトです。ローカルに保存されたドキュメントを基に、LLMが質問応答やテキスト生成などのタスクを実行できるようにします。インターネット接続なしにLLMを使用可能。</p>
+      <h3>注目ポイント</h3><p>インターネット接続が制限された環境や、機密性の高い情報を扱う場合に有効です。外部APIへの依存をなくすことで、セキュリティとプライバシーを強化しつつ、LLMの能力を活用できる点が革新的です。オフラインLLM推論を実現。</p>
+      <h3>技術スタック</h3><p>Python, LLM, Offline Processing, Vector Database (推測)</p>
+    ]]>
+      </description>
+    </item>
+    <item>
+      <title>
+        <![CDATA[[Rust] embedding-shapes/one-agent-one-browser]]>
+      </title>
+      <link>https://github.com/embedding-shapes/one-agent-one-browser</link>
+      <guid isPermaLink="true">https://github.com/embedding-shapes/one-agent-one-browser</guid>
+      <pubDate>Thu, 29 Jan 2026 00:22:09 +0000</pubDate>
+      <description>
+        <![CDATA[
+      <h3>概要</h3><p>AIエージェント制御による自律型ブラウザ</p>
+      <h3>背景</h3><p>人間の専門家とAIエージェントが協力して動作するブラウザをゼロから構築する試み。AIエージェントがブラウザを制御し、Webページの解析や操作を自動化することで、新しい形のWebインタラクションと自動化の可能性を探求している。</p>
+      <h3>注目ポイント</h3><p>従来のブラウザ自動化ツール（Selenium等）とは異なり、AIエージェントが自律的にWebタスクを実行できる点が革新的。複雑なタスクの自動化や、Webデータの高度な解析を可能にする潜在力を持つ。</p>
+      <h3>技術スタック</h3><p>TypeScript, Chromium, AI Agent Framework (推測)</p>
+    ]]>
+      </description>
+    </item>
+    <item>
+      <title>
+        <![CDATA[[JavaScript] avifenesh/awesome-slash]]>
+      </title>
+      <link>https://github.com/avifenesh/awesome-slash</link>
+      <guid isPermaLink="true">https://github.com/avifenesh/awesome-slash</guid>
+      <pubDate>Thu, 29 Jan 2026 00:22:09 +0000</pubDate>
+      <description>
+        <![CDATA[
+      <h3>概要</h3><p>LLMを活用した開発自動化エージェント集</p>
+      <h3>背景</h3><p>Claude Code, OpenCode, Codex CLI向けのプラグインとスキルのコレクション。自律エージェントを活用してワークフローの自動化、コードレビュー、問題検出、PR管理などを効率化。DevOpsやソフトウェア開発ライフサイクル全般における自動化を促進する。</p>
+      <h3>注目ポイント</h3><p>特定タスクに特化した自律エージェントを多数提供することで、開発ワークフローの様々な局面を自動化できる点が魅力。コード品質の向上や開発サイクルの短縮に貢献する可能性が高い。</p>
+      <h3>技術スタック</h3><p>Python (推測), LLM API (Claude, OpenAI), CLI Tools</p>
+    ]]>
+      </description>
+    </item>
+    <item>
+      <title>
+        <![CDATA[[TypeScript] vueuse/skills]]>
+      </title>
+      <link>https://github.com/vueuse/skills</link>
+      <guid isPermaLink="true">https://github.com/vueuse/skills</guid>
+      <pubDate>Thu, 29 Jan 2026 00:22:09 +0000</pubDate>
+      <description>
+        <![CDATA[
+      <h3>概要</h3><p>Vue.js開発支援AIエージェントスキル</p>
+      <h3>背景</h3><p>VueUseのエコシステムに組み込まれる、AIエージェント向けのスキル（機能拡張）集。Vue.jsアプリケーション開発における様々なタスクを、AIエージェントによって自動化することを目的とする。コンポーネント生成、コード補完、テスト生成などが考えられる。</p>
+      <h3>注目ポイント</h3><p>Vue.js開発に特化したAIエージェントスキルを提供することで、開発効率を大幅に向上させる可能性を秘めている。VueUseの既存のユーティリティ関数との連携により、強力な開発支援ツールとなることが期待される。</p>
+      <h3>技術スタック</h3><p>Vue.js, TypeScript, VueUse, AI Agent Framework (推測)</p>
+    ]]>
+      </description>
+    </item>
+    <item>
+      <title>
+        <![CDATA[[JavaScript] Kargatharaakash/stitch-mcp]]>
+      </title>
+      <link>https://github.com/Kargatharaakash/stitch-mcp</link>
+      <guid isPermaLink="true">https://github.com/Kargatharaakash/stitch-mcp</guid>
+      <pubDate>Thu, 29 Jan 2026 00:22:09 +0000</pubDate>
+      <description>
+        <![CDATA[
+      <h3>概要</h3><p>Google Stitch環境でAIエージェントとUIデザインを繋ぎ、AIによるUI操作を可能にするMCPサーバー。</p>
+      <h3>背景</h3><p>Google Stitch向けのUniversal MCP（Multi-Channel Platform）サーバー。AIエージェントとUIデザインを接続し、AIがUIを操作・制御するインターフェースを構築。従来のUI自動化の課題を、AIによる高度な制御で解決を目指す。</p>
+      <h3>注目ポイント</h3><p>AIエージェントがUIを直接操作可能にする点。ビジュアルインターフェースを介したAI制御という、次世代ヒューマン・コンピュータインタラクションの可能性を示唆。UI自動化の制約を超え、AIによる動的なUI制御への道を開く。</p>
+      <h3>技術スタック</h3><p>Python, Google Stitch, AI Agent Frameworks (推測), UI Automation Libraries (推測)</p>
+    ]]>
+      </description>
+    </item>
+    <item>
+      <title>
+        <![CDATA[[Python] agentfacts/agentfacts-py]]>
+      </title>
+      <link>https://github.com/agentfacts/agentfacts-py</link>
+      <guid isPermaLink="true">https://github.com/agentfacts/agentfacts-py</guid>
+      <pubDate>Thu, 29 Jan 2026 00:22:09 +0000</pubDate>
+      <description>
+        <![CDATA[
+      <h3>概要</h3><p>AIエージェントのアイデンティティ管理を行うためのPython SDK。エージェントの認証・認可を安全に実現。</p>
+      <h3>背景</h3><p>AIエージェントのアイデンティティ管理を行うためのPython SDK。エージェントが自身を証明し、安全な通信と認可を実現。分散型AIエージェント環境におけるセキュリティと信頼性の問題を解決。</p>
+      <h3>注目ポイント</h3><p>分散AIエージェントにおけるアイデンティティという、これまで見過ごされがちだったセキュリティ上の根本問題を解決する点。エージェント間の信頼関係を構築し、大規模なAIシステムにおける脆弱性を軽減。自己証明可能なエージェントの未来を拓く。</p>
+      <h3>技術スタック</h3><p>Python, Cryptographic Libraries (推測), Authentication/Authorization Protocols (推測), AI Agent Frameworks (推測)</p>
+    ]]>
+      </description>
+    </item>
+  </channel>
 </rss>
