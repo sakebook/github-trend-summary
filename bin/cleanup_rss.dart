@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:args/args.dart';
 import 'package:http/http.dart' as http;
@@ -45,7 +46,8 @@ void main(List<String> arguments) async {
         print('Error: Failed to fetch RSS. HTTP ${response.statusCode}');
         exit(1);
       }
-      xmlContent = response.body;
+      // IMPORTANT: Explicitly decode as UTF-8 to avoid encoding issues
+      xmlContent = utf8.decode(response.bodyBytes);
     } else {
       final file = File(targetPath);
       if (!file.existsSync()) {
