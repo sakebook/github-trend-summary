@@ -218,12 +218,12 @@ class HtmlPublisher implements Publisher {
                 
                 <div class="grid-sections">
                     <div class="section-item">
-                        <h3>背景 / Context</h3>
-                        <p>${_escapeHtml(s.background)}</p>
+                        <h3>活用シーン / Use Case</h3>
+                        <p>${_escapeHtml(s.useCase)}</p>
                     </div>
                     <div class="section-item">
-                        <h3>注目理由 / Why Trending</h3>
-                        <p>${_escapeHtml(s.whyHot)}</p>
+                        <h3>競合差別化 / Competitive Edge</h3>
+                        <p>${_escapeHtml(s.rivalComparison)}</p>
                     </div>
                 </div>
                 

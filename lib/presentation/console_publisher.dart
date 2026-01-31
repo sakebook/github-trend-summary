@@ -14,9 +14,9 @@ class ConsolePublisher implements Publisher {
         print('🚀 ${repo.owner}/${repo.name} (⭐ ${repo.stars})');
         print('🔗 ${repo.url}');
         print('📝 ${summary.summary}');
-        print('\n【背景】\n${summary.background}');
+        print('\n【活用シーン】\n${summary.useCase}');
         print('\n【技術スタック】\n${summary.techStack.join(', ')}');
-        print('\n【注目理由】\n${summary.whyHot}');
+        print('\n【競合差別化】\n${summary.rivalComparison}');
         print('\n${'-' * 40}\n');
       }
 

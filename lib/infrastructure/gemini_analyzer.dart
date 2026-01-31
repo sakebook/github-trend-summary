@@ -12,31 +12,13 @@ class GeminiAnalyzer implements TrendAnalyzer {
 
   GeminiAnalyzer({
     required this.apiKey,
-    this.model = 'gemini-2.0-flash',
+    this.model = 'gemini-3-flash-preview',
     http.Client? client,
   }) : _client = client ?? http.Client();
 
   @override
   Future<Result<JapaneseSummary, Exception>> analyze(
       Repository repository) async {
-    final result = await analyzeBatch([repository]);
-    switch (result) {
-      case Success(value: final list):
-        if (list.isEmpty) {
-          return Failure(
-              Exception('Gemini returned no analysis for the repository'));
-        }
-        return Success(list.first);
-      case Failure(error: final error):
-        return Failure(error);
-    }
-  }
-
-  @override
-  Future<Result<List<JapaneseSummary>, Exception>> analyzeBatch(
-      List<Repository> repositories) async {
-    if (repositories.isEmpty) return Success([]);
-
     const maxRetries = 3;
     int retryCount = 0;
 
@@ -45,36 +27,21 @@ class GeminiAnalyzer implements TrendAnalyzer {
         final url = Uri.parse(
             'https://generativelanguage.googleapis.com/v1beta/models/$model:generateContent?key=$apiKey');
 
-        final repoListText = repositories.asMap().entries.map((e) {
-          final i = e.key + 1;
-          final r = e.value;
-          return '$i. ${r.owner}/${r.name}: ${r.description ?? '説明なし'} (${r.url})';
-        }).join('\n');
-
         final prompt = '''
-以下の複数のGitHubリポジトリを分析し、開発者向けに日本語で技術解説してください。
-バッチ処理（複数同時）であっても、一度に1つずつ処理する場合と同等、あるいはそれ以上の「情報の密度」と「専門家としての洞察」を持って出力してください。
+以下のGitHubリポジトリを深く分析し、熟練のシニアエンジニアに向けて日本語で技術解説してください。
+表面的な説明ではなく、具体的な「利用シーン」と「競合優位性」を鋭く言語化し、技術的なインサイトを提供してください。
 
-分析のガイドライン：
-- **background**: 単なる説明の繰り返しではなく、そのリポジトリが解決しようとしている現代的な課題や、動作の内部的な仕組みを深く読み取ってください。Descriptionが短い場合でも、名称やURLから技術的コンテキストを推測し、専門家としてそのプロジェクトの「存在意義」を解説してください。
-- **techStack**: DescriptionやURLから特定できる、または合理的に推測できる技術（言語、フレームワーク、ライブラリ）を可能な限り具体的に列挙してください。
-- **whyHot**: 技術者の知的好奇心を刺激する核心部分や、既存の代替手段に対する優位性、将来的な発展性を鋭く指摘してください。「〜に役立つ」といった平凡な結論で終わらせず、そのプロジェクトが持つ独自の「エッジ」を具体的に言語化してください。
-- **summary**: プロジェクトの機能的本質を、技術者が即座に理解できる簡潔かつ正確な表現で記述してください。
+リポジトリ: ${repository.owner}/${repository.name}
+URL: ${repository.url}
+説明: ${repository.description ?? '説明なし'}
 
-リポジトリリスト:
-$repoListText
-
-出力フォーマット（JSON配列のみ）:
-[
-  {
-    "repo": "owner/name (入力リストのリポジトリ名と正確に一致させてください)",
-    "background": "技術的な背景・解決課題・詳細な仕組みの解説（250文字程度まで）",
-    "techStack": ["主要言語", "具体的なライブラリや技術キーワード"],
-    "whyHot": "技術的な独自性・注目すべき核心部分（250文字程度まで）",
-    "summary": "機能的本質を突いた正確な説明"
-  },
-  ...
-]
+出力フォーマット（JSONのみ）:
+{
+  "summary": "プロジェクトの機能的本質を突いた、簡潔かつ正確な要約（50文字程度）",
+  "techStack": ["主要言語", "推測されるフレームワーク", "ライブラリ", "アーキテクチャ名"],
+  "useCase": "【具体的な適用シーン】このツールが最も輝く具体的な開発シチュエーション（例：「大規模なマイクロサービスのログ集約」「個人のポートフォリオサイト構築」など具体的に）",
+  "rivalComparison": "【競合との差別化】既存の有名ツール（具体的名称を挙げること）と比較した際の明確な違いや、このプロジェクトが持つ独自の技術的エッジ"
+}
 ''';
 
         final requestBody = {
@@ -113,91 +80,23 @@ $repoListText
         }
 
         final dynamic decodedResponse = jsonDecode(response.body);
-        if (decodedResponse is! Map) {
-          return Failure(Exception(
-              'Root response is not a Map. Type: ${decodedResponse.runtimeType}'));
-        }
-        final data = Map<String, dynamic>.from(decodedResponse);
+        final content = decodedResponse['candidates'][0]['content']['parts'][0]['text'];
+        final jsonText = _cleanJson(content);
+        final Map<String, dynamic> data = jsonDecode(jsonText);
 
-        final candidates = data['candidates'];
-        if (candidates is! List || candidates.isEmpty) {
-          return Failure(Exception('No candidates found or not a list'));
-        }
+        final techStackData = data['techStack'];
+        final List<String> techStack = (techStackData is List)
+            ? techStackData.map((e) => e.toString()).toList()
+            : [];
 
-        final candidate = candidates.first;
-        if (candidate is! Map) {
-          return Failure(Exception('Candidate is not a Map'));
-        }
-
-        final content = candidate['content'];
-        if (content is! Map) {
-          return Failure(Exception('Content is not a Map'));
-        }
-
-        final parts = content['parts'];
-        if (parts is! List || parts.isEmpty) {
-          return Failure(Exception('Parts is not a List or empty'));
-        }
-
-        final part = parts.first;
-        if (part is! Map) {
-          return Failure(Exception('Part is not a Map'));
-        }
-
-        final text = part['text'];
-        if (text is! String) {
-          return Failure(Exception('Text part is not a String'));
-        }
-
-        final dynamic decoded = jsonDecode(_cleanJson(text));
-        if (decoded is! List) {
-          return Failure(Exception(
-              'Expected JSON array from Gemini batch request, but got: ${decoded.runtimeType}'));
-        }
-
-        final List<JapaneseSummary> resultSummaries = [];
-        for (var i = 0; i < decoded.length; i++) {
-          final item = decoded[i];
-          if (item is! Map) continue;
-
-          final responseJson = Map<String, dynamic>.from(item);
-          final repoName = responseJson['repo']?.toString();
-
-          // 名前でリポジトリを特定（名前が合わない場合はインデックスでフォールバック）
-          Repository? repository;
-          if (repoName != null) {
-            try {
-              repository = repositories.firstWhere(
-                (r) => '${r.owner}/${r.name}' == repoName,
-              );
-            } catch (_) {
-              // 名前でヒットしない場合はインデックス（念のため）
-              if (i < repositories.length) {
-                repository = repositories[i];
-              }
-            }
-          } else if (i < repositories.length) {
-            repository = repositories[i];
-          }
-
-          if (repository == null) continue;
-
-          final techStackData = responseJson['techStack'];
-          final List<String> techStack = (techStackData is List)
-              ? techStackData.map((e) => e.toString()).toList()
-              : [];
-
-          resultSummaries.add(JapaneseSummary(
-            repository: repository,
-            summary: responseJson['summary']?.toString() ?? 'No summary',
-            background:
-                responseJson['background']?.toString() ?? 'No background',
-            techStack: techStack,
-            whyHot: responseJson['whyHot']?.toString() ?? 'No reason provided',
-          ));
-        }
-
-        return Success(resultSummaries);
+        return Success(JapaneseSummary(
+          repository: repository,
+          summary: data['summary']?.toString() ?? 'No summary',
+          techStack: techStack,
+          useCase: data['useCase']?.toString() ?? 'No use case provided',
+          rivalComparison:
+              data['rivalComparison']?.toString() ?? 'No comparison provided',
+        ));
       } on SocketException catch (e) {
         if (retryCount < maxRetries) {
           retryCount++;
@@ -212,6 +111,24 @@ $repoListText
         return Failure(e is Exception ? e : Exception(e.toString()));
       }
     }
+  }
+
+  @override
+  Future<Result<List<JapaneseSummary>, Exception>> analyzeBatch(
+      List<Repository> repositories) async {
+    final results = <JapaneseSummary>[];
+    for (final repo in repositories) {
+      final result = await analyze(repo);
+      switch (result) {
+        case Success(value: final summary):
+          results.add(summary);
+        case Failure(error: final e):
+          print('    ⚠️ Failed to analyze ${repo.owner}/${repo.name}: $e');
+      }
+      // 個別分析の間隔を少し空ける（レート制限対応）
+      await Future.delayed(const Duration(milliseconds: 1000));
+    }
+    return Success(results);
   }
 
   String _cleanJson(String text) {

@@ -132,30 +132,22 @@ void main(List<String> arguments) async {
     exit(1);
   }
 
-  print('🤖 Analyzing ${repositoriesToAnalyze.length} repositories in batches...');
-  const batchSize = 3;
-  for (var i = 0; i < repositoriesToAnalyze.length; i += batchSize) {
-    final end = (i + batchSize < repositoriesToAnalyze.length)
-        ? i + batchSize
-        : repositoriesToAnalyze.length;
-    final batch = repositoriesToAnalyze.sublist(i, end);
-
-    print(
-        '  - Analyzing batch ${i ~/ batchSize + 1} (${batch.length} repositories)...');
-    final analyzeResult = await analyzer.analyzeBatch(batch);
-
-    // バッチ間のレート制限回避
-    await Future.delayed(const Duration(milliseconds: 3000));
+  print('🤖 Analyzing ${repositoriesToAnalyze.length} repositories individually...');
+  
+  for (final repo in repositoriesToAnalyze) {
+    print('  - Analyzing ${repo.owner}/${repo.name}...');
+    final analyzeResult = await analyzer.analyze(repo);
 
     switch (analyzeResult) {
-      case Success(value: final summaries):
-        allSummaries.addAll(summaries);
-        for (final s in summaries) {
-          print('    ✅ Analyzed ${s.repository.owner}/${s.repository.name}');
-        }
+      case Success(value: final summary):
+        allSummaries.add(summary);
+        print('    ✅ Analyzed ${summary.repository.owner}/${summary.repository.name}');
       case Failure(error: final e):
-        print('    ⚠️ Batch analysis failed: $e');
+        print('    ❌ Failed to analyze ${repo.owner}/${repo.name}: $e');
     }
+    
+    // APIレート制限への配慮（念のため）
+    await Future.delayed(const Duration(milliseconds: 1000));
   }
 
   if (allSummaries.isEmpty) {

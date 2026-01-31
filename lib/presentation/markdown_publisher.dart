@@ -22,12 +22,12 @@ class MarkdownFilePublisher implements Publisher {
         buffer.writeln('- **Stars**: ${repo.stars}');
         buffer.writeln('- **Language**: ${repo.language ?? "N/A"}\n');
         buffer.writeln('> ${summary.summary}\n');
-        buffer.writeln('### 背景');
-        buffer.writeln('${summary.background}\n');
+        buffer.writeln('### 活用シーン');
+        buffer.writeln('${summary.useCase}\n');
         buffer.writeln('### 技術スタック');
         buffer.writeln('${summary.techStack.map((s) => "`$s`").join(", ")}\n');
-        buffer.writeln('### 注目理由');
-        buffer.writeln('${summary.whyHot}\n');
+        buffer.writeln('### 競合差別化');
+        buffer.writeln('${summary.rivalComparison}\n');
         buffer.writeln('---\n');
       }
 

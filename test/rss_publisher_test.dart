@@ -59,9 +59,9 @@ void main() {
           language: 'Dart',
         ),
         summary: 'New Summary',
-        background: 'New Background',
+        useCase: 'New Use Case',
         techStack: ['Dart'],
-        whyHot: 'New Why',
+        rivalComparison: 'New Comparison',
       );
 
       await publisher.publish([newSummary]);
@@ -109,9 +109,9 @@ void main() {
           language: 'Dart',
         ),
         summary: 'New Summary',
-        background: 'New Background',
+        useCase: 'New Use Case',
         techStack: ['Dart'],
-        whyHot: 'New Why',
+        rivalComparison: 'New Comparison',
       );
 
       await publisher.publish([newSummary]);

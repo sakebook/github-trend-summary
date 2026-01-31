@@ -26,9 +26,9 @@ void main() {
             language: 'TypeScript',
           ),
           summary: 'テスト概要',
-          background: 'テスト背景',
+          useCase: 'テスト活用シーン',
           techStack: ['React', 'Node.js'],
-          whyHot: 'テスト注目ポイント',
+          rivalComparison: 'テスト競合比較',
         ),
       ];
 
@@ -60,9 +60,9 @@ void main() {
       final summary = JapaneseSummary(
         repository: repo,
         summary: 'summary & "quote"',
-        background: 'background < >',
+        useCase: 'useCase < >',
         techStack: ['<tag>'],
-        whyHot: 'hot',
+        rivalComparison: 'rivalComparison &',
       );
 
       final tempDir = Directory.systemTemp.createTempSync();
@@ -76,7 +76,7 @@ void main() {
       expect(html, contains('&lt;b&gt;script&lt;/b&gt;'));
       expect(html, contains('&lt;script&gt;alert(1)&lt;/script&gt;'));
       expect(html, contains('summary &amp; &quot;quote&quot;'));
-      expect(html, contains('background &lt; &gt;'));
+      expect(html, contains('useCase &lt; &gt;'));
       expect(html, contains('&lt;tag&gt;'));
       // Verify NOT containing raw scripts
       expect(html, isNot(contains('<script>')));
