@@ -1,12 +1,16 @@
 import 'dart:io';
 import 'package:args/args.dart';
+import 'package:http/http.dart' as http;
 import 'package:xml/xml.dart';
 
-void main(List<String> arguments) {
+void main(List<String> arguments) async {
   final parser = ArgParser()
-    ..addOption('target', defaultsTo: 'public/rss.xml', help: 'Path to the input RSS file')
-    ..addOption('before', help: 'Remove items published strictly BEFORE this date (YYYY-MM-DD)')
-    ..addOption('date', help: 'Remove items published ON this date (YYYY-MM-DD)')
+    ..addOption('target',
+        defaultsTo: 'public/rss.xml',
+        help: 'Path to save the cleaned RSS file')
+    ..addOption('url', help: 'URL of the RSS feed to clean (optional, auto-detected in GitHub Actions)')
+    ..addOption('before', help: 'Remove items published strictly BEFORE this date (YYYY-MM-DD in UTC)')
+    ..addOption('date', help: 'Remove items published ON this date (YYYY-MM-DD in UTC)')
     ..addFlag('help', abbr: 'h', negatable: false, help: 'Show usage information');
 
   try {
@@ -19,13 +23,40 @@ void main(List<String> arguments) {
     }
 
     final targetPath = results['target'] as String;
-    final file = File(targetPath);
-    if (!file.existsSync()) {
-      print('Error: Target file not found: $targetPath');
-      exit(1);
+    String? url = results['url'] as String?;
+
+    // Auto-detect history URL from GitHub Actions environment variables
+    if (url == null) {
+      final repo = Platform.environment['GITHUB_REPOSITORY'];
+      final owner = Platform.environment['GITHUB_REPOSITORY_OWNER'];
+      if (repo != null && owner != null && repo.contains('/')) {
+        final repoName = repo.split('/')[1];
+        url = 'https://$owner.github.io/$repoName/rss.xml';
+        print('🤖 Automatically detected live RSS URL: $url');
+      }
     }
 
-    final document = XmlDocument.parse(file.readAsStringSync());
+    // Fetch content from URL or local file
+    String xmlContent;
+    if (url != null) {
+      print('📥 Fetching RSS from: $url');
+      final response = await http.get(Uri.parse(url));
+      if (response.statusCode != 200) {
+        print('Error: Failed to fetch RSS. HTTP ${response.statusCode}');
+        exit(1);
+      }
+      xmlContent = response.body;
+    } else {
+      final file = File(targetPath);
+      if (!file.existsSync()) {
+        print('Error: No URL detected and local file not found: $targetPath');
+        print('Hint: Run in GitHub Actions or specify --url.');
+        exit(1);
+      }
+      xmlContent = file.readAsStringSync();
+    }
+
+    final document = XmlDocument.parse(xmlContent);
     final channel = document.findAllElements('channel').first;
     final items = channel.findElements('item').toList();
     
@@ -88,8 +119,8 @@ void main(List<String> arguments) {
     }
 
     if (removedCount > 0) {
-      file.writeAsStringSync(document.toXmlString(pretty: true)); // Re-save
-      print('Successfully removed $removedCount items.');
+      File(targetPath).writeAsStringSync(document.toXmlString(pretty: true));
+      print('✅ Successfully removed $removedCount items. Saved to: $targetPath');
     } else {
       print('No items matched the criteria.');
     }

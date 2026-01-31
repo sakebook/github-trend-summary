@@ -2,9 +2,6 @@ import 'dart:io';
 import 'package:test/test.dart';
 import 'package:xml/xml.dart';
 
-// We will test the logic by creating a temporary RSS file and running the script logic (or invoking it via process)
-// Invoking via Process is better for integration testing the CLI args.
-
 void main() {
   group('RSS Cleanup Script Tests', () {
     late Directory tempDir;
@@ -44,7 +41,6 @@ void main() {
     });
 
     test('Removes items strictly BEFORE 2026-01-29', () async {
-      // 2026-01-29 means 2026-01-29 00:00:00 UTC.
       // Item 1 (Jan 28 23:59:59) should be removed.
       // Item 2 (Jan 29 00:00:00) should remain.
       
@@ -54,7 +50,7 @@ void main() {
         '--before', '2026-01-29'
       ]);
 
-      expect(result.exitCode, 0);
+      expect(result.exitCode, 0, reason: 'stderr: ${result.stderr}');
       
       final content = await rssFile.readAsString();
       final doc = XmlDocument.parse(content);
@@ -75,7 +71,7 @@ void main() {
         '--date', '2026-01-29'
       ]);
 
-      expect(result.exitCode, 0, reason: result.stderr);
+      expect(result.exitCode, 0, reason: 'stderr: ${result.stderr}');
       
       final content = await rssFile.readAsString();
       final doc = XmlDocument.parse(content);
@@ -85,6 +81,33 @@ void main() {
       expect(titles, contains('Item 4 (Next Day)'));
       expect(titles, isNot(contains('Item 2 (Target Date Start)')));
       expect(titles, isNot(contains('Item 3 (Target Date Mid)')));
+    });
+
+    test('Shows error when no date option is provided', () async {
+      final result = await Process.run('dart', [
+        'bin/cleanup_rss.dart',
+        '--target', rssFile.path,
+      ]);
+
+      expect(result.exitCode, 1);
+      expect(result.stdout.toString(), contains('You must specify either --before or --date'));
+    });
+
+    test('Prints auto-detect message when GITHUB env vars are set', () async {
+      // This test simulates the GitHub Actions environment
+      final result = await Process.run(
+        'dart',
+        ['bin/cleanup_rss.dart', '--before', '2026-01-01'],
+        environment: {
+          'GITHUB_REPOSITORY': 'testowner/testrepo',
+          'GITHUB_REPOSITORY_OWNER': 'testowner',
+        },
+      );
+
+      // The script will try to fetch from the URL and fail (since it's fake),
+      // but we can verify it attempted auto-detection by checking the output.
+      expect(result.stdout.toString(), contains('Automatically detected live RSS URL'));
+      expect(result.stdout.toString(), contains('https://testowner.github.io/testrepo/rss.xml'));
     });
   });
 }
