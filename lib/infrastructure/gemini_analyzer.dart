@@ -52,7 +52,7 @@ $readmeContext
     "機能2: 具体的な機能説明",
     "機能3: 具体的な機能説明"
   ],
-  "maturity": "下記の中から最も適切なものを1つ選択: 'Experimental (実験的)', 'Active Development (開発中)', 'Stable (安定板)', 'Production Ready (本番導入可)', 'Legacy (レガシー)'"
+  "maturity": "下記の中から最も適切なものを1つ選択: 'Experimental (実験的)', 'Active Development (開発中)', 'Stable (安定版)', 'Production Ready (本番導入可)', 'Legacy (レガシー)'"
 }
 ''';
 
@@ -94,7 +94,17 @@ $readmeContext
         final dynamic decodedResponse = jsonDecode(response.body);
         final content = decodedResponse['candidates'][0]['content']['parts'][0]['text'];
         final jsonText = _cleanJson(content);
-        final Map<String, dynamic> data = jsonDecode(jsonText);
+        final dynamic decodedJson = jsonDecode(jsonText);
+        final Map<String, dynamic> data;
+        
+        if (decodedJson is Map<String, dynamic>) {
+          data = decodedJson;
+        } else if (decodedJson is List && decodedJson.isNotEmpty && decodedJson.first is Map<String, dynamic>) {
+           // Handle case where Gemini returns a list wrapping the object
+           data = decodedJson.first as Map<String, dynamic>;
+        } else {
+             throw Exception('Unexpected JSON format: $jsonText');
+        }
 
         final techStackData = data['techStack'];
         final List<String> techStack = (techStackData is List)

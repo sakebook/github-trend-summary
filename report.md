@@ -1,88 +1,103 @@
 # GitHub Trending Summary
-Generated on: 2026-01-30 03:10:24 (JST)
+Generated on: 2026-01-31 13:46:54 (JST)
 
-## [nhevers/claude-recall](https://github.com/nhevers/claude-recall)
-- **Stars**: 246
+## [Jane-xiaoer/skill-vision-control](https://github.com/Jane-xiaoer/skill-vision-control)
+- **Stars**: 56
 - **Language**: TypeScript
 
-> Claude Codeに長期記憶を実装し、開発の意思決定や文脈を自動蓄積・再利用可能にするMCPサーバー
+> MCPスキルの安全な更新、ABテスト、自動マージを実現するバージョン管理マネージャー。
 
 ### 活用シーン
-大規模なリファクタリングや機能追加において、セッションを跨いで『なぜこの設計にしたか』『既存の非自明な制約』をAIに継続的に認識させたい場合。特に、ドキュメント化されていない暗黙知が多いレガシープロジェクトの保守。
+AIエージェントに提供するMCPスキルの頻繁なアップデートが必要な環境で、不具合を抑えつつ新機能を安全にテスト・本番展開したい場合。
+
+### 主要機能
+- アップデート自動検知: 外部ソースからのMCPスキルの更新を監視し、変更点をリアルタイムで捕捉する機能
+- スキルABテスト: 異なるバージョンのスキルを特定の条件で出し分け、LLMの応答品質や成功率を比較検証可能
+- スマートマージ: スキル定義（JSON/YAML等）の不整合をインテリジェントに解決し、安全な統合を支援するロジック
+
+### 開発状況
+**Active Development**
 
 ### 技術スタック
-`TypeScript`, `Node.js`, `Model Context Protocol (MCP)`, `SQLite`, `Claude Code / MoltBot`
+`Node.js`, `TypeScript`, `Model Context Protocol (MCP) SDK`, `Git-like Versioning Logic`
 
 ### 競合差別化
-Cursor等のRAG（コードベースの静的検索）とは異なり、会話から得られた『開発者の意図』や『作業履歴』を動的に記憶する。単純なベクトル検索に依存せず、MCPを介してAIが能動的に記憶を書き込み・参照するため、文脈の精度と持続性が圧倒的に高い。
+標準的なMCPサーバー運用やGitHub Actionsによる単純なCI/CDと比較し、スキル単位でのABテスト機能やスマートマージ（構造的競合解決）を備えている点が独自のエッジ。
 
 ---
 
 ## [lucasgelfond/zerobrew](https://github.com/lucasgelfond/zerobrew)
-- **Stars**: 4328
+- **Stars**: 4568
 - **Language**: Rust
 
-> Ruby依存を排しRustで再構築。APIベースのメタデータ取得によりHomebrewを劇的に高速化する代替CLI。
+> Rust実装によりHomebrewを5〜20倍高速化する、ドロップイン互換の実験的パッケージマネージャ
 
 ### 活用シーン
-CI/CDパイプラインの初期化工程において、Brewコマンドのオーバーヘッド（Git同期やRuby実行）を排除し、バイナリインストール時間を極限まで短縮したいオートメーション環境。
+macOS/Linux環境において、Homebrewの動作（特にアップデートや依存解決）の遅さを解消し、CIや開発環境構築のリードタイムを極限まで短縮したい場合
+
+### 主要機能
+- Homebrewドロップイン互換: 既存のbrewコマンドの代替として、インターフェースを維持したままシームレスな移行を目指す
+- Rustによる圧倒的な高速化: インタプリタのオーバーヘッドを排除し、依存関係の解決やパッケージ展開を高度に最適化
+- 既存エコシステムの再利用: Homebrewが持つ膨大なパッケージ（Formulae）のリポジトリをそのまま利用可能
+
+### 開発状況
+**Experimental (実験的)**
 
 ### 技術スタック
-`Rust`, `Homebrew JSON API`, `Tokio (Async Runtime)`, `Reqwest`, `Serde`
+`Rust`, `Homebrew API`, `CLI`, `Parallel Processing`
 
 ### 競合差別化
-本家HomebrewがRubyインタプリタと巨大なGitリポジトリ（Formulae）に依存するのに対し、zerobrewはRustによる並列I/OとHomebrew公式JSON APIを直接叩くアーキテクチャを採用。ローカルでのGitクローンや索引構築をスキップすることで、既存のワークフローを維持したまま、依存解決とダウンロードにおいて5-20倍の圧倒的なスループットを実現している。
+本家Homebrew（Ruby実装）と比較し、Rustのネイティブな並列実行性能を活かすことで5〜20倍の高速化を謳う。Nixのような宣言型ツールへの完全な移行を必要とせず、既存のFormula資産をそのまま高速化できる点が独自のエッジ
 
 ---
 
-## [CloudAI-X/threejs-skills](https://github.com/CloudAI-X/threejs-skills)
-- **Stars**: 1120
-- **Language**: N/A
+## [antirez/flux2.c](https://github.com/antirez/flux2.c)
+- **Stars**: 1531
+- **Language**: C
 
-> Three.jsを用いた高度な視覚表現とシェーダー実装を即座に本番導入可能にする技術アセット・ボイラープレート
+> Flux 2画像生成モデルの推論を、外部ライブラリに依存せず純粋なC言語のみで実装した超軽量エンジン。
 
 ### 活用シーン
-【没入型ブランドエクスペリエンスの構築】ハイエンドなLPOや、WebGLを多用する3Dプロダクトコンフィギュレーター、メタバースフロントエンドにおける低遅延で複雑なエフェクト実装が必要なシーン。
+Python環境や重厚なMLフレームワークを構築できない制約のあるエッジ環境、またはモデルの内部挙動を低レイヤーで詳細に解析・学習する用途。
+
+### 主要機能
+- Zero Dependencies: PyTorchやCUDA、ランタイムを必要とせず、標準CライブラリとOSの基本APIのみで完結。
+- Architecture Minimalization: FluxモデルのTransformer構造やアテンション、VAEデコーダーを単一に近いソースコードで直接的に実装し、可読性を最大化。
+- Efficient Memory Management: 重みデータのメモリマッピング(mmap)等、OSレイヤーの機能を活用した効率的なメモリロードと推論処理。
+
+### 開発状況
+**Experimental (実験的)**
 
 ### 技術スタック
-`Three.js`, `GLSL (Shader)`, `TypeScript`, `React Three Fiber (R3F)`, `Vite`, `GSAP`, `Post-processing`
+`C`, `POSIX Threads`, `SIMD (AVX/NEON)`, `Pure C Inference`
 
 ### 競合差別化
-【実装効率と最適化のバランス】React-three-drei等の汎用ユーティリティ群に対し、本リポジトリは独自のカスタムシェーダーとレンダリングパイプラインの構成に強みを持つ。汎用ライブラリでは抽象化されすぎて手が届きにくい、ドローコール最適化や特殊なライティング表現を、シニアエンジニアが即座に調整・拡張可能な生の実装に近い形で提供している点がエッジである。
+Hugging Face Diffusers等のPython実装と比較し、依存関係が皆無でコンパイルが容易。実行バイナリのみで動作し、フレームワークのオーバーヘッドを排除した極限のポータビリティが独自のエッジ。
 
 ---
 
-## [dadbodgeoff/drift](https://github.com/dadbodgeoff/drift)
-- **Stars**: 477
-- **Language**: TypeScript
-
-> 既存コードのパターンや命名規則を抽出し、AIエージェントに最適化された文脈を提供するコンテキスト管理ツール
-
-### 活用シーン
-ドキュメント化されていない独自規約が多い大規模なレガシーコードベースにおいて、AIエージェントがそのプロジェクト固有のコーディングスタイルや抽象化レイヤーを正確に模倣してコード生成を行うシーン。
-
-### 技術スタック
-`Python`, `Model Context Protocol (MCP)`, `CLI`, `AST (Abstract Syntax Tree) Analysis`, `Claude/Cursor Integration`
-
-### 競合差別化
-CursorやGitHub Copilotの標準RAG（ベクトル検索）は「関連箇所の断片」を拾うだけだが、driftはコード構造を静的に解析して「一貫したパターン」を抽出する。これにより、AIが陥りがちな「文法は正しいがプロジェクトの設計思想に合わない提案」を、構造化された規約の注入によって抑制できる点が技術的な優位性である。
-
----
-
-## [jmuncor/sherlock](https://github.com/jmuncor/sherlock)
-- **Stars**: 465
+## [joeseesun/anything-to-notebooklm](https://github.com/joeseesun/anything-to-notebooklm)
+- **Stars**: 283
 - **Language**: Python
 
-> LLM通信を傍受し、トークン消費・コスト・プロンプト構成をTUIで即時可視化するローカル開発用プロキシ。
+> 多様なWebソースをClaudeで前処理し、NotebookLMでの活用に最適化された形式へ変換するツール。
 
 ### 活用シーン
-【自律型エージェントのループ監視】複雑なChainやAgentを実行する際、バックグラウンドで発生する膨大なAPI呼び出しの累積コストと、コンテキストウィンドウの消費率をリアルタイムに監視し、プロンプトの肥大化を即座に特定・抑制するデバッグ作業。
+分散したWeb記事、YouTube動画、PDF資料をClaudeを介してNotebookLMへ一括集約し、Podcast台本や学習クイズとして再構成する高度なリサーチ・コンテンツ制作フローの構築。
+
+### 主要機能
+- マルチソース・アグリゲーション: WeChat記事、YouTube、Webサイト、PDF、Markdown、検索結果など多岐にわたるソースを単一インターフェースで処理
+- コンテキスト最適化: NotebookLMでの活用を見据え、Claudeのスキルとしてコンテンツを抽出し、PodcastやPPT構成案、マインドマップ用に最適化
+- エンドツーエンドの変換フロー: 複雑なWeb構造のパースから、クイズや学習用資料といった具体的なアウトプット形式への変換をClaude上で完結
+
+### 開発状況
+**Active Development**
 
 ### 技術スタック
-`Go`, `goproxy`, `Bubble Tea (Charm CLI)`, `HTTP/HTTPS Proxy`, `OpenAI/Anthropic API Integration`
+`Claude (Anthropic)`, `Google NotebookLM`, `Claude Desktop Skills / MCP`, `LLM Prompt Engineering`, `Web Scraping`
 
 ### 競合差別化
-【非侵入型かつローカル完結の即時性】LangSmithやHelicone等のSaaS型はSDK導入や外部送信が必須だが、本ツールはプロキシ方式のためコード改修が一切不要（Zero-code change）。mitmproxy等の汎用ツールと違い、LLM特化のトークン計算やストリーミングレスポンスのパースに最適化されており、開発者のコンソール内で完結するUXが圧倒的に高い。
+NotebookLM標準のアップローダーと比較して、WeChatやYouTube、動的な検索結果を直接処理できる点が優位。特にClaudeの推論能力を前処理（構造化）に利用することで、インプット品質を向上させる技術的エッジを持つ。
 
 ---
 

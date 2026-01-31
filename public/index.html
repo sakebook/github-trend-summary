@@ -84,6 +84,19 @@
             align-items: center;
             margin-bottom: 20px;
         }
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .maturity-badge {
+            font-size: 0.75rem;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
         .repo-name {
             font-size: 1.5rem;
             font-weight: 800;
@@ -124,6 +137,9 @@
             grid-template-columns: 1fr 1fr;
             gap: 24px;
             margin-bottom: 24px;
+        }
+        .section-item.full-width {
+            grid-column: 1 / -1;
         }
         @media (max-width: 600px) {
             .grid-sections { grid-template-columns: 1fr; }
@@ -176,128 +192,140 @@
         <header>
             <h1>Trending Intelligence</h1>
             <p class="header-sub">Daily GitHub analysis powered by Gemini AI</p>
-            <div class="update-time">Last Updated: 2026-01-30 03:10:24 (JST)</div>
+            <div class="update-time">Last Updated: 2026-01-31 13:46:54 (JST)</div>
         </header>
 
         <main>
 
             <div class="repo-card">
                 <div class="repo-header">
-                    <a href="https://github.com/nhevers/claude-recall" class="repo-name" target="_blank">claude-recall</a>
-                    <span class="stars">⭐ 246</span>
+                    <div class="header-left">
+                        <a href="https://github.com/Jane-xiaoer/skill-vision-control" class="repo-name" target="_blank">skill-vision-control</a>
+                        
+                    </div>
+                    <span class="stars">⭐ 56</span>
                 </div>
-                <p class="repo-description">Long-term memory layer for MoltBot &amp; Claude Code that learns and recalls your project context automatically</p>
-                <div class="summary-box">Claude Codeに長期記憶を実装し、開発の意思決定や文脈を自動蓄積・再利用可能にするMCPサーバー</div>
+                <p class="repo-description">Safe MCP Skill version manager - detect updates, A/B testing, smart merge</p>
+                <div class="summary-box">MCPスキルの安全な更新、ABテスト、自動マージを実現するバージョン管理マネージャー。</div>
                 
                 <div class="grid-sections">
                     <div class="section-item">
                         <h3>活用シーン / Use Case</h3>
-                        <p>大規模なリファクタリングや機能追加において、セッションを跨いで『なぜこの設計にしたか』『既存の非自明な制約』をAIに継続的に認識させたい場合。特に、ドキュメント化されていない暗黙知が多いレガシープロジェクトの保守。</p>
+                        <p>AIエージェントに提供するMCPスキルの頻繁なアップデートが必要な環境で、不具合を抑えつつ新機能を安全にテスト・本番展開したい場合。</p>
                     </div>
                     <div class="section-item">
                         <h3>競合差別化 / Competitive Edge</h3>
-                        <p>Cursor等のRAG（コードベースの静的検索）とは異なり、会話から得られた『開発者の意図』や『作業履歴』を動的に記憶する。単純なベクトル検索に依存せず、MCPを介してAIが能動的に記憶を書き込み・参照するため、文脈の精度と持続性が圧倒的に高い。</p>
+                        <p>標準的なMCPサーバー運用やGitHub Actionsによる単純なCI/CDと比較し、スキル単位でのABテスト機能やスマートマージ（構造的競合解決）を備えている点が独自のエッジ。</p>
+                    </div>
+                    <div class="section-item full-width">
+                        <h3>主要機能 / Key Features</h3>
+                        <ul>
+                          <li>アップデート自動検知: 外部ソースからのMCPスキルの更新を監視し、変更点をリアルタイムで捕捉する機能</li><li>スキルABテスト: 異なるバージョンのスキルを特定の条件で出し分け、LLMの応答品質や成功率を比較検証可能</li><li>スマートマージ: スキル定義（JSON/YAML等）の不整合をインテリジェントに解決し、安全な統合を支援するロジック</li>
+                        </ul>
                     </div>
                 </div>
                 
                 <div class="tech-stack">
-                    <span class="tech-tag">TypeScript</span><span class="tech-tag">Node.js</span><span class="tech-tag">Model Context Protocol (MCP)</span><span class="tech-tag">SQLite</span><span class="tech-tag">Claude Code / MoltBot</span>
+                    <span class="tech-tag">Node.js</span><span class="tech-tag">TypeScript</span><span class="tech-tag">Model Context Protocol (MCP) SDK</span><span class="tech-tag">Git-like Versioning Logic</span>
                 </div>
             </div>
 
             <div class="repo-card">
                 <div class="repo-header">
-                    <a href="https://github.com/lucasgelfond/zerobrew" class="repo-name" target="_blank">zerobrew</a>
-                    <span class="stars">⭐ 4328</span>
+                    <div class="header-left">
+                        <a href="https://github.com/lucasgelfond/zerobrew" class="repo-name" target="_blank">zerobrew</a>
+                        <span class="maturity-badge" style="background:var(--accent-soft); color:var(--accent); border:1px solid var(--accent);">Experimental (実験的)</span>
+                    </div>
+                    <span class="stars">⭐ 4568</span>
                 </div>
                 <p class="repo-description">A drop-in, 5-20x faster, experimental Homebrew alternative</p>
-                <div class="summary-box">Ruby依存を排しRustで再構築。APIベースのメタデータ取得によりHomebrewを劇的に高速化する代替CLI。</div>
+                <div class="summary-box">Rust実装によりHomebrewを5〜20倍高速化する、ドロップイン互換の実験的パッケージマネージャ</div>
                 
                 <div class="grid-sections">
                     <div class="section-item">
                         <h3>活用シーン / Use Case</h3>
-                        <p>CI/CDパイプラインの初期化工程において、Brewコマンドのオーバーヘッド（Git同期やRuby実行）を排除し、バイナリインストール時間を極限まで短縮したいオートメーション環境。</p>
+                        <p>macOS/Linux環境において、Homebrewの動作（特にアップデートや依存解決）の遅さを解消し、CIや開発環境構築のリードタイムを極限まで短縮したい場合</p>
                     </div>
                     <div class="section-item">
                         <h3>競合差別化 / Competitive Edge</h3>
-                        <p>本家HomebrewがRubyインタプリタと巨大なGitリポジトリ（Formulae）に依存するのに対し、zerobrewはRustによる並列I/OとHomebrew公式JSON APIを直接叩くアーキテクチャを採用。ローカルでのGitクローンや索引構築をスキップすることで、既存のワークフローを維持したまま、依存解決とダウンロードにおいて5-20倍の圧倒的なスループットを実現している。</p>
+                        <p>本家Homebrew（Ruby実装）と比較し、Rustのネイティブな並列実行性能を活かすことで5〜20倍の高速化を謳う。Nixのような宣言型ツールへの完全な移行を必要とせず、既存のFormula資産をそのまま高速化できる点が独自のエッジ</p>
+                    </div>
+                    <div class="section-item full-width">
+                        <h3>主要機能 / Key Features</h3>
+                        <ul>
+                          <li>Homebrewドロップイン互換: 既存のbrewコマンドの代替として、インターフェースを維持したままシームレスな移行を目指す</li><li>Rustによる圧倒的な高速化: インタプリタのオーバーヘッドを排除し、依存関係の解決やパッケージ展開を高度に最適化</li><li>既存エコシステムの再利用: Homebrewが持つ膨大なパッケージ（Formulae）のリポジトリをそのまま利用可能</li>
+                        </ul>
                     </div>
                 </div>
                 
                 <div class="tech-stack">
-                    <span class="tech-tag">Rust</span><span class="tech-tag">Homebrew JSON API</span><span class="tech-tag">Tokio (Async Runtime)</span><span class="tech-tag">Reqwest</span><span class="tech-tag">Serde</span>
+                    <span class="tech-tag">Rust</span><span class="tech-tag">Homebrew API</span><span class="tech-tag">CLI</span><span class="tech-tag">Parallel Processing</span>
                 </div>
             </div>
 
             <div class="repo-card">
                 <div class="repo-header">
-                    <a href="https://github.com/CloudAI-X/threejs-skills" class="repo-name" target="_blank">threejs-skills</a>
-                    <span class="stars">⭐ 1120</span>
+                    <div class="header-left">
+                        <a href="https://github.com/antirez/flux2.c" class="repo-name" target="_blank">flux2.c</a>
+                        <span class="maturity-badge" style="background:var(--accent-soft); color:var(--accent); border:1px solid var(--accent);">Experimental (実験的)</span>
+                    </div>
+                    <span class="stars">⭐ 1531</span>
                 </div>
-                <p class="repo-description"></p>
-                <div class="summary-box">Three.jsを用いた高度な視覚表現とシェーダー実装を即座に本番導入可能にする技術アセット・ボイラープレート</div>
+                <p class="repo-description">Flux 2 image generation model pure C inference</p>
+                <div class="summary-box">Flux 2画像生成モデルの推論を、外部ライブラリに依存せず純粋なC言語のみで実装した超軽量エンジン。</div>
                 
                 <div class="grid-sections">
                     <div class="section-item">
                         <h3>活用シーン / Use Case</h3>
-                        <p>【没入型ブランドエクスペリエンスの構築】ハイエンドなLPOや、WebGLを多用する3Dプロダクトコンフィギュレーター、メタバースフロントエンドにおける低遅延で複雑なエフェクト実装が必要なシーン。</p>
+                        <p>Python環境や重厚なMLフレームワークを構築できない制約のあるエッジ環境、またはモデルの内部挙動を低レイヤーで詳細に解析・学習する用途。</p>
                     </div>
                     <div class="section-item">
                         <h3>競合差別化 / Competitive Edge</h3>
-                        <p>【実装効率と最適化のバランス】React-three-drei等の汎用ユーティリティ群に対し、本リポジトリは独自のカスタムシェーダーとレンダリングパイプラインの構成に強みを持つ。汎用ライブラリでは抽象化されすぎて手が届きにくい、ドローコール最適化や特殊なライティング表現を、シニアエンジニアが即座に調整・拡張可能な生の実装に近い形で提供している点がエッジである。</p>
+                        <p>Hugging Face Diffusers等のPython実装と比較し、依存関係が皆無でコンパイルが容易。実行バイナリのみで動作し、フレームワークのオーバーヘッドを排除した極限のポータビリティが独自のエッジ。</p>
+                    </div>
+                    <div class="section-item full-width">
+                        <h3>主要機能 / Key Features</h3>
+                        <ul>
+                          <li>Zero Dependencies: PyTorchやCUDA、ランタイムを必要とせず、標準CライブラリとOSの基本APIのみで完結。</li><li>Architecture Minimalization: FluxモデルのTransformer構造やアテンション、VAEデコーダーを単一に近いソースコードで直接的に実装し、可読性を最大化。</li><li>Efficient Memory Management: 重みデータのメモリマッピング(mmap)等、OSレイヤーの機能を活用した効率的なメモリロードと推論処理。</li>
+                        </ul>
                     </div>
                 </div>
                 
                 <div class="tech-stack">
-                    <span class="tech-tag">Three.js</span><span class="tech-tag">GLSL (Shader)</span><span class="tech-tag">TypeScript</span><span class="tech-tag">React Three Fiber (R3F)</span><span class="tech-tag">Vite</span><span class="tech-tag">GSAP</span><span class="tech-tag">Post-processing</span>
+                    <span class="tech-tag">C</span><span class="tech-tag">POSIX Threads</span><span class="tech-tag">SIMD (AVX/NEON)</span><span class="tech-tag">Pure C Inference</span>
                 </div>
             </div>
 
             <div class="repo-card">
                 <div class="repo-header">
-                    <a href="https://github.com/dadbodgeoff/drift" class="repo-name" target="_blank">drift</a>
-                    <span class="stars">⭐ 477</span>
+                    <div class="header-left">
+                        <a href="https://github.com/joeseesun/anything-to-notebooklm" class="repo-name" target="_blank">anything-to-notebooklm</a>
+                        
+                    </div>
+                    <span class="stars">⭐ 283</span>
                 </div>
-                <p class="repo-description">Codebase pattern detection for AI agents. Scans your code, learns conventions, feeds context to Claude/Cursor or any IDE MCP. Also works fully offline with CLI</p>
-                <div class="summary-box">既存コードのパターンや命名規則を抽出し、AIエージェントに最適化された文脈を提供するコンテキスト管理ツール</div>
+                <p class="repo-description">Claude Skill: Multi-source content processor for NotebookLM. Supports WeChat articles, web pages, YouTube, PDF, Markdown, search queries → Podcast/PPT/MindMap/Quiz etc.</p>
+                <div class="summary-box">多様なWebソースをClaudeで前処理し、NotebookLMでの活用に最適化された形式へ変換するツール。</div>
                 
                 <div class="grid-sections">
                     <div class="section-item">
                         <h3>活用シーン / Use Case</h3>
-                        <p>ドキュメント化されていない独自規約が多い大規模なレガシーコードベースにおいて、AIエージェントがそのプロジェクト固有のコーディングスタイルや抽象化レイヤーを正確に模倣してコード生成を行うシーン。</p>
+                        <p>分散したWeb記事、YouTube動画、PDF資料をClaudeを介してNotebookLMへ一括集約し、Podcast台本や学習クイズとして再構成する高度なリサーチ・コンテンツ制作フローの構築。</p>
                     </div>
                     <div class="section-item">
                         <h3>競合差別化 / Competitive Edge</h3>
-                        <p>CursorやGitHub Copilotの標準RAG（ベクトル検索）は「関連箇所の断片」を拾うだけだが、driftはコード構造を静的に解析して「一貫したパターン」を抽出する。これにより、AIが陥りがちな「文法は正しいがプロジェクトの設計思想に合わない提案」を、構造化された規約の注入によって抑制できる点が技術的な優位性である。</p>
+                        <p>NotebookLM標準のアップローダーと比較して、WeChatやYouTube、動的な検索結果を直接処理できる点が優位。特にClaudeの推論能力を前処理（構造化）に利用することで、インプット品質を向上させる技術的エッジを持つ。</p>
+                    </div>
+                    <div class="section-item full-width">
+                        <h3>主要機能 / Key Features</h3>
+                        <ul>
+                          <li>マルチソース・アグリゲーション: WeChat記事、YouTube、Webサイト、PDF、Markdown、検索結果など多岐にわたるソースを単一インターフェースで処理</li><li>コンテキスト最適化: NotebookLMでの活用を見据え、Claudeのスキルとしてコンテンツを抽出し、PodcastやPPT構成案、マインドマップ用に最適化</li><li>エンドツーエンドの変換フロー: 複雑なWeb構造のパースから、クイズや学習用資料といった具体的なアウトプット形式への変換をClaude上で完結</li>
+                        </ul>
                     </div>
                 </div>
                 
                 <div class="tech-stack">
-                    <span class="tech-tag">Python</span><span class="tech-tag">Model Context Protocol (MCP)</span><span class="tech-tag">CLI</span><span class="tech-tag">AST (Abstract Syntax Tree) Analysis</span><span class="tech-tag">Claude/Cursor Integration</span>
-                </div>
-            </div>
-
-            <div class="repo-card">
-                <div class="repo-header">
-                    <a href="https://github.com/jmuncor/sherlock" class="repo-name" target="_blank">sherlock</a>
-                    <span class="stars">⭐ 465</span>
-                </div>
-                <p class="repo-description">Intercept LLM API traffic and visualize token usage in a real-time terminal dashboard. Track costs,       debug prompts, and monitor context window usage across your AI development sessions.      </p>
-                <div class="summary-box">LLM通信を傍受し、トークン消費・コスト・プロンプト構成をTUIで即時可視化するローカル開発用プロキシ。</div>
-                
-                <div class="grid-sections">
-                    <div class="section-item">
-                        <h3>活用シーン / Use Case</h3>
-                        <p>【自律型エージェントのループ監視】複雑なChainやAgentを実行する際、バックグラウンドで発生する膨大なAPI呼び出しの累積コストと、コンテキストウィンドウの消費率をリアルタイムに監視し、プロンプトの肥大化を即座に特定・抑制するデバッグ作業。</p>
-                    </div>
-                    <div class="section-item">
-                        <h3>競合差別化 / Competitive Edge</h3>
-                        <p>【非侵入型かつローカル完結の即時性】LangSmithやHelicone等のSaaS型はSDK導入や外部送信が必須だが、本ツールはプロキシ方式のためコード改修が一切不要（Zero-code change）。mitmproxy等の汎用ツールと違い、LLM特化のトークン計算やストリーミングレスポンスのパースに最適化されており、開発者のコンソール内で完結するUXが圧倒的に高い。</p>
-                    </div>
-                </div>
-                
-                <div class="tech-stack">
-                    <span class="tech-tag">Go</span><span class="tech-tag">goproxy</span><span class="tech-tag">Bubble Tea (Charm CLI)</span><span class="tech-tag">HTTP/HTTPS Proxy</span><span class="tech-tag">OpenAI/Anthropic API Integration</span>
+                    <span class="tech-tag">Claude (Anthropic)</span><span class="tech-tag">Google NotebookLM</span><span class="tech-tag">Claude Desktop Skills / MCP</span><span class="tech-tag">LLM Prompt Engineering</span><span class="tech-tag">Web Scraping</span>
                 </div>
             </div>
 
