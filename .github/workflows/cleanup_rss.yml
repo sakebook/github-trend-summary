@@ -1,0 +1,52 @@
+name: Cleanup RSS History
+
+on:
+  workflow_dispatch:
+    inputs:
+      target_date:
+        description: 'Target Date (YYYY-MM-DD)'
+        required: true
+        type: string
+      mode:
+        description: 'Cleanup Mode'
+        required: true
+        default: 'before'
+        type: choice
+        options:
+        - before
+        - exact
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - uses: dart-lang/setup-dart@v1
+        with:
+          sdk: 'stable'
+
+      - name: Install dependencies
+        run: dart pub get
+        
+      - name: Run Cleanup Script (Before)
+        if: ${{ inputs.mode == 'before' }}
+        run: dart bin/cleanup_rss.dart --before "${{ inputs.target_date }}"
+        
+      - name: Run Cleanup Script (Exact)
+        if: ${{ inputs.mode == 'exact' }}
+        run: dart bin/cleanup_rss.dart --date "${{ inputs.target_date }}"
+
+      # Commit and push changes
+      - name: Commit and Push
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add public/rss.xml
+          # Only commit if there are changes
+          if git diff --staged --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "chore: cleanup RSS history ${{ inputs.mode }} ${{ inputs.target_date }}"
+            git push
+          fi
