@@ -136,7 +136,20 @@ void main(List<String> arguments) async {
   
   for (final repo in repositoriesToAnalyze) {
     print('  - Analyzing ${repo.owner}/${repo.name}...');
-    final analyzeResult = await analyzer.analyze(repo);
+    
+    // Analyze前にREADMEを取得して埋める
+    final readmeContent = await fetcher.fetchReadme(repo);
+    final repoWithReadme = (
+      name: repo.name,
+      owner: repo.owner,
+      description: repo.description,
+      url: repo.url,
+      stars: repo.stars,
+      language: repo.language,
+      readmeContent: readmeContent,
+    );
+
+    final analyzeResult = await analyzer.analyze(repoWithReadme);
 
     switch (analyzeResult) {
       case Success(value: final summary):
