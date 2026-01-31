@@ -24,9 +24,12 @@ void main() {
             url: 'https://github.com/test/repo',
             stars: 123,
             language: 'TypeScript',
+            readmeContent: null,
           ),
           summary: 'テスト概要',
           useCase: 'テスト活用シーン',
+          keyFeatures: ['機能1', '機能2'],
+          maturity: 'Experimental',
           techStack: ['React', 'Node.js'],
           rivalComparison: 'テスト競合比較',
         ),
@@ -55,12 +58,15 @@ void main() {
         stars: 100,
         url: 'https://github.com/owner/repo',
         language: 'Dart',
+        readmeContent: null,
       );
 
       final summary = JapaneseSummary(
         repository: repo,
         summary: 'summary & "quote"',
         useCase: 'useCase < >',
+        keyFeatures: ['<feature>'],
+        maturity: 'maturity &',
         techStack: ['<tag>'],
         rivalComparison: 'rivalComparison &',
       );

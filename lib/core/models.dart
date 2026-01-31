@@ -5,6 +5,7 @@ typedef Repository = ({
   String url,
   int stars,
   String? language,
+  String? readmeContent,
 });
 
 sealed class TrendSummary {
@@ -17,6 +18,8 @@ final class JapaneseSummary extends TrendSummary {
   final List<String> techStack;
   final String useCase;
   final String rivalComparison;
+  final List<String> keyFeatures;
+  final String maturity;
 
   const JapaneseSummary({
     required super.repository,
@@ -24,5 +27,7 @@ final class JapaneseSummary extends TrendSummary {
     required this.techStack,
     required this.useCase,
     required this.rivalComparison,
+    required this.keyFeatures,
+    required this.maturity,
   });
 }

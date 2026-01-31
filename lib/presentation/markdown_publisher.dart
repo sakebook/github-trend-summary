@@ -24,6 +24,10 @@ class MarkdownFilePublisher implements Publisher {
         buffer.writeln('> ${summary.summary}\n');
         buffer.writeln('### 活用シーン');
         buffer.writeln('${summary.useCase}\n');
+        buffer.writeln('### 主要機能');
+        buffer.writeln('${summary.keyFeatures.map((f) => "- $f").join("\n")}\n');
+        buffer.writeln('### 開発状況');
+        buffer.writeln('**${summary.maturity}**\n');
         buffer.writeln('### 技術スタック');
         buffer.writeln('${summary.techStack.map((s) => "`$s`").join(", ")}\n');
         buffer.writeln('### 競合差別化');

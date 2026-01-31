@@ -27,20 +27,32 @@ class GeminiAnalyzer implements TrendAnalyzer {
         final url = Uri.parse(
             'https://generativelanguage.googleapis.com/v1beta/models/$model:generateContent?key=$apiKey');
 
+
+        final readmeContext = repository.readmeContent != null
+            ? 'README.mdの内容:\n${repository.readmeContent!.length > 15000 ? repository.readmeContent!.substring(0, 15000) + "...(truncated)" : repository.readmeContent}'
+            : 'README.md: 取得できませんでした。';
+
         final prompt = '''
 以下のGitHubリポジトリを深く分析し、熟練のシニアエンジニアに向けて日本語で技術解説してください。
-表面的な説明ではなく、具体的な「利用シーン」と「競合優位性」を鋭く言語化し、技術的なインサイトを提供してください。
+READMEの内容（提供されている場合）を最優先の情報源とし、ファクトに基づいたレポートを作成してください。
 
 リポジトリ: ${repository.owner}/${repository.name}
 URL: ${repository.url}
 説明: ${repository.description ?? '説明なし'}
+$readmeContext
 
 出力フォーマット（JSONのみ）:
 {
   "summary": "プロジェクトの機能的本質を突いた、簡潔かつ正確な要約（50文字程度）",
   "techStack": ["主要言語", "推測されるフレームワーク", "ライブラリ", "アーキテクチャ名"],
   "useCase": "【具体的な適用シーン】このツールが最も輝く具体的な開発シチュエーション（例：「大規模なマイクロサービスのログ集約」「個人のポートフォリオサイト構築」など具体的に）",
-  "rivalComparison": "【競合との差別化】既存の有名ツール（具体的名称を挙げること）と比較した際の明確な違いや、このプロジェクトが持つ独自の技術的エッジ"
+  "rivalComparison": "【競合との差別化】既存の有名ツール（具体的名称を挙げること）と比較した際の明確な違いや、このプロジェクトが持つ独自の技術的エッジ",
+  "keyFeatures": [
+    "機能1: 具体的な機能説明",
+    "機能2: 具体的な機能説明",
+    "機能3: 具体的な機能説明"
+  ],
+  "maturity": "下記の中から最も適切なものを1つ選択: 'Experimental (実験的)', 'Active Development (開発中)', 'Stable (安定板)', 'Production Ready (本番導入可)', 'Legacy (レガシー)'"
 }
 ''';
 
@@ -88,6 +100,11 @@ URL: ${repository.url}
         final List<String> techStack = (techStackData is List)
             ? techStackData.map((e) => e.toString()).toList()
             : [];
+        
+        final keyFeaturesData = data['keyFeatures'];
+        final List<String> keyFeatures = (keyFeaturesData is List)
+            ? keyFeaturesData.map((e) => e.toString()).toList()
+            : [];
 
         return Success(JapaneseSummary(
           repository: repository,
@@ -96,6 +113,8 @@ URL: ${repository.url}
           useCase: data['useCase']?.toString() ?? 'No use case provided',
           rivalComparison:
               data['rivalComparison']?.toString() ?? 'No comparison provided',
+          keyFeatures: keyFeatures,
+          maturity: data['maturity']?.toString() ?? 'Unknown',
         ));
       } on SocketException catch (e) {
         if (retryCount < maxRetries) {

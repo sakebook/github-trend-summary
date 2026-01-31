@@ -18,7 +18,9 @@ void main() {
                       'summary': 'Summary 1',
                       'techStack': ['Dart'],
                       'useCase': 'Use Case 1',
-                      'rivalComparison': 'Comparison 1'
+                      'rivalComparison': 'Comparison 1',
+                      'keyFeatures': ['Feature A', 'Feature B'],
+                      'maturity': 'Stable'
                     })
                   }
                 ]
@@ -36,7 +38,8 @@ void main() {
           description: 'desc1',
           stars: 10,
           url: 'url1',
-          language: 'Dart'
+          language: 'Dart',
+          readmeContent: 'README Content'
         );
 
       final result = await analyzer.analyze(repo);
@@ -48,6 +51,8 @@ void main() {
       expect(summary.summary, 'Summary 1');
       expect(summary.useCase, 'Use Case 1');
       expect(summary.rivalComparison, 'Comparison 1');
+      expect(summary.keyFeatures, contains('Feature A'));
+      expect(summary.maturity, 'Stable');
     });
 
     test('should analyze batch by calling analyze individually', () async {
@@ -64,7 +69,9 @@ void main() {
                       'summary': 'Summary $requestCount',
                       'techStack': ['Dart'],
                       'useCase': 'Use Case $requestCount',
-                      'rivalComparison': 'Comparison $requestCount'
+                      'rivalComparison': 'Comparison $requestCount',
+                      'keyFeatures': ['Feature $requestCount'],
+                      'maturity': 'Experimental'
                     })
                   }
                 ]
@@ -83,7 +90,8 @@ void main() {
           description: 'desc1',
           stars: 10,
           url: 'url1',
-          language: 'Dart'
+          language: 'Dart',
+          readmeContent: null
         ),
         (
           name: 'repo2',
@@ -91,7 +99,8 @@ void main() {
           description: 'desc2',
           stars: 20,
           url: 'url2',
-          language: 'TypeScript'
+          language: 'TypeScript',
+          readmeContent: null
         ),
       ];
 
@@ -124,7 +133,9 @@ void main() {
                       'summary': 'Retry Success',
                       'techStack': ['Dart'],
                       'useCase': 'Retry Use Case',
-                      'rivalComparison': 'Retry Comparison'
+                      'rivalComparison': 'Retry Comparison',
+                      'keyFeatures': ['Retry Feature'],
+                      'maturity': 'Retry Maturity'
                     })
                   }
                 ]
@@ -142,7 +153,8 @@ void main() {
           description: 'desc1',
           stars: 10,
           url: 'url1',
-          language: 'Dart'
+          language: 'Dart',
+          readmeContent: null
         );
 
       final result = await analyzer.analyze(repo);

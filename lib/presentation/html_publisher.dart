@@ -222,6 +222,16 @@ class HtmlPublisher implements Publisher {
                         <p>${_escapeHtml(s.useCase)}</p>
                     </div>
                     <div class="section-item">
+                        <h3>主要機能 / Key Features</h3>
+                        <ul>
+                          ${s.keyFeatures.map((f) => "<li>${_escapeHtml(f)}</li>").join("")}
+                        </ul>
+                    </div>
+                    <div class="section-item">
+                        <h3>開発状況 / Maturity</h3>
+                         <span class="tech-tag" style="background:var(--accent-soft); border-color:var(--accent);">${_escapeHtml(s.maturity)}</span>
+                    </div>
+                    <div class="section-item">
                         <h3>競合差別化 / Competitive Edge</h3>
                         <p>${_escapeHtml(s.rivalComparison)}</p>
                     </div>

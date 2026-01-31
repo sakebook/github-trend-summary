@@ -57,11 +57,14 @@ void main() {
           stars: 100,
           description: 'New Description',
           language: 'Dart',
+          readmeContent: null
         ),
         summary: 'New Summary',
-        useCase: 'New Use Case',
+        useCase: 'New Background',
+        keyFeatures: ['Feature 1'],
+        maturity: 'Stable',
         techStack: ['Dart'],
-        rivalComparison: 'New Comparison',
+        rivalComparison: 'New Why',
       );
 
       await publisher.publish([newSummary]);
@@ -107,11 +110,14 @@ void main() {
           stars: 100,
           description: 'New Description',
           language: 'Dart',
+          readmeContent: null
         ),
         summary: 'New Summary',
-        useCase: 'New Use Case',
+        useCase: 'New Background',
+        keyFeatures: ['Feature 1'],
+        maturity: 'Stable',
         techStack: ['Dart'],
-        rivalComparison: 'New Comparison',
+        rivalComparison: 'New Why',
       );
 
       await publisher.publish([newSummary]);
