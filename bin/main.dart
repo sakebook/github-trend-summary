@@ -169,6 +169,7 @@ void main(List<String> arguments) async {
 
     final analyzeResult = await analyzer.analyze(repoWithReadme);
 
+    switch (analyzeResult) {
       case Success(value: final summary):
         allSummaries.add(summary);
         Logger.info('Analyzed ${summary.repository.owner}/${summary.repository.name}');
