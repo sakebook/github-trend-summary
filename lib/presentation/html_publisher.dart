@@ -33,15 +33,17 @@ class HtmlPublisher implements Publisher {
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Outfit:wght@700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #0b0f1a;
-            --card: #161b22;
-            --card-border: #30363d;
+            --bg: #0d1117;
+            --card: rgba(22, 27, 34, 0.7);
+            --card-border: rgba(48, 54, 61, 0.8);
             --text-main: #e6edf3;
-            --text-dim: #8b949e;
+            --text-dim: #9198a1;
             --accent: #58a6ff;
+            --accent-glow: rgba(88, 166, 255, 0.3);
             --accent-soft: rgba(88, 166, 255, 0.1);
-            --star: #e3b341;
-            --bg-gradient: radial-gradient(circle at top right, #161b22, #0b0f1a);
+            --star: #f0883e;
+            --bg-gradient: radial-gradient(circle at 50% -20%, #1e293b, #0d1117);
+            --glass-border: rgba(255, 255, 255, 0.05);
         }
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -52,11 +54,12 @@ class HtmlPublisher implements Publisher {
             margin: 0;
             padding: 0;
             min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
         }
         .container {
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
-            padding: 40px 20px;
+            padding: 60px 24px;
         }
         header {
             text-align: center;
@@ -89,18 +92,22 @@ class HtmlPublisher implements Publisher {
         }
         .repo-card {
             background: var(--card);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             border: 1px solid var(--card-border);
-            border-radius: 16px;
-            padding: 32px;
-            margin-bottom: 32px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-top: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 40px;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
             position: relative;
             overflow: hidden;
+            animation: fadeInUp 0.8s ease-out backwards;
         }
         .repo-card:hover {
-            transform: translateY(-4px);
+            transform: translateY(-6px) scale(1.01);
             border-color: var(--accent);
-            box-shadow: 0 12px 24px rgba(0,0,0,0.3);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4), 0 0 20px var(--accent-glow);
         }
         .repo-header {
             display: flex;
@@ -206,9 +213,18 @@ class HtmlPublisher implements Publisher {
             text-decoration: none;
         }
         @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-20px); }
+            from { opacity: 0; transform: translateY(-30px); }
             to { opacity: 1; transform: translateY(0); }
         }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .repo-card:nth-child(1) { animation-delay: 0.1s; }
+        .repo-card:nth-child(2) { animation-delay: 0.2s; }
+        .repo-card:nth-child(3) { animation-delay: 0.3s; }
+        .repo-card:nth-child(4) { animation-delay: 0.4s; }
+        .repo-card:nth-child(5) { animation-delay: 0.5s; }
     </style>
 </head>
 <body>

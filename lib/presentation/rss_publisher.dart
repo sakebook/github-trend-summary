@@ -5,6 +5,7 @@ import 'package:xml/xml.dart';
 import '../core/interfaces.dart';
 import '../core/models.dart';
 import '../core/result.dart';
+import '../core/logger.dart';
 
 class RssPublisher implements Publisher {
   final String outputPath;
@@ -144,7 +145,7 @@ class RssPublisher implements Publisher {
       }
       return filteredItems;
     } catch (e) {
-      print('  ⚠️ Could not merge history from $historyUrl: $e');
+      Logger.warning('Could not merge history from $historyUrl: $e');
       return [];
     }
   }
