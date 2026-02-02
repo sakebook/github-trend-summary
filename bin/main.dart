@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:args/args.dart';
 import 'package:github_trend_summary/github_trend_summary.dart';
+import 'package:github_trend_summary/core/logger.dart';
 
 void main(List<String> arguments) async {
   final parser = ArgParser()
@@ -32,7 +33,7 @@ void main(List<String> arguments) async {
   try {
     results = parser.parse(arguments);
   } catch (e) {
-    print('Error parsing arguments: $e');
+    Logger.error('Error parsing arguments: $e');
     print(parser.usage);
     exit(1);
   }
@@ -78,7 +79,7 @@ void main(List<String> arguments) async {
   if (repo != null && owner != null && repo.contains('/')) {
     final repoName = repo.split('/')[1];
     historyUrl = 'https://$owner.github.io/$repoName/rss.xml';
-    print('🤖 Automatically detected history URL: $historyUrl');
+    Logger.info('Automatically detected history URL: $historyUrl');
   }
 
   final fetcher = GitHubFetcher(apiToken: githubToken);
@@ -99,7 +100,7 @@ void main(List<String> arguments) async {
   }
 
   if (seenUrls.isNotEmpty) {
-    print('📚 Loaded ${seenUrls.length} previously reported repositories.');
+    Logger.info('Loaded ${seenUrls.length} previously reported repositories.');
   }
 
   // Fetch and Analyze for each language
@@ -110,7 +111,7 @@ void main(List<String> arguments) async {
   final candidatePool = <Repository>[];
 
   for (final lang in languages) {
-    print('🔍 Fetching trending $lang repositories...');
+    Logger.info('Fetching trending $lang repositories...');
     final fetchResult = await fetcher.fetchTrending(
       lang,
       minStars: minStars,
@@ -121,12 +122,12 @@ void main(List<String> arguments) async {
     if (fetchResult is Success<List<Repository>, Exception>) {
       candidatePool.addAll(fetchResult.value);
     } else if (fetchResult is Failure<List<Repository>, Exception>) {
-      print('  ⚠️ Failed to fetch $lang: ${fetchResult.error}');
+      Logger.warning('Failed to fetch $lang: ${fetchResult.error}');
     }
   }
 
   for (final topic in topics) {
-    print('🔍 Fetching trending topic:$topic repositories...');
+    Logger.info('Fetching trending topic:$topic repositories...');
     final fetchResult = await fetcher.fetchTrending(
       topic,
       minStars: minStars,
@@ -137,7 +138,7 @@ void main(List<String> arguments) async {
     if (fetchResult is Success<List<Repository>, Exception>) {
       candidatePool.addAll(fetchResult.value);
     } else if (fetchResult is Failure<List<Repository>, Exception>) {
-      print('  ⚠️ Failed to fetch topic:$topic: ${fetchResult.error}');
+      Logger.warning('Failed to fetch topic:$topic: ${fetchResult.error}');
     }
   }
 
@@ -145,14 +146,14 @@ void main(List<String> arguments) async {
   final repositoriesToAnalyze = _sampleRepositories(candidatePool, seenUrls, excludeRepos: config.excludeRepos);
 
   if (repositoriesToAnalyze.isEmpty) {
-    print('❌ No repositories to analyze. Exiting.');
+    Logger.warning('No repositories to analyze. Exiting.');
     exit(1);
   }
 
-  print('🤖 Analyzing ${repositoriesToAnalyze.length} repositories individually...');
+  Logger.info('Analyzing ${repositoriesToAnalyze.length} repositories individually...');
   
   for (final repo in repositoriesToAnalyze) {
-    print('  - Analyzing ${repo.owner}/${repo.name}...');
+    Logger.info('Analyzing ${repo.owner}/${repo.name}...');
     
     // Analyze前にREADMEを取得して埋める
     final readmeContent = await fetcher.fetchReadme(repo);
@@ -168,12 +169,11 @@ void main(List<String> arguments) async {
 
     final analyzeResult = await analyzer.analyze(repoWithReadme);
 
-    switch (analyzeResult) {
       case Success(value: final summary):
         allSummaries.add(summary);
-        print('    ✅ Analyzed ${summary.repository.owner}/${summary.repository.name}');
+        Logger.info('Analyzed ${summary.repository.owner}/${summary.repository.name}');
       case Failure(error: final e):
-        print('    ❌ Failed to analyze ${repo.owner}/${repo.name}: $e');
+        Logger.error('Failed to analyze ${repo.owner}/${repo.name}: $e');
     }
     
     // APIレート制限への配慮（念のため）
@@ -181,7 +181,7 @@ void main(List<String> arguments) async {
   }
 
   if (allSummaries.isEmpty) {
-    print('❌ No summaries were generated. Exiting.');
+    Logger.error('No summaries were generated. Exiting.');
     exit(1);
   }
 
@@ -192,16 +192,16 @@ void main(List<String> arguments) async {
     if (htmlPath != null) HtmlPublisher(outputPath: htmlPath),
   ];
 
-  print('\n📢 Publishing results...');
+  Logger.info('Publishing results...');
   for (final publisher in publishers) {
     final publishResult = await publisher.publish(allSummaries);
     if (publishResult is Failure) {
-      print('❌ Failed to publish with ${publisher.runtimeType}: ${(publishResult as Failure).error}');
+      Logger.error('Failed to publish with ${publisher.runtimeType}: ${(publishResult as Failure).error}');
       exit(1);
     }
   }
 
-  print('✅ Done!');
+  Logger.info('Done!');
 }
 
 List<Repository> _sampleRepositories(List<Repository> pool, Set<String> seenUrls, {List<String> excludeRepos = const []}) {

@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import '../core/interfaces.dart';
 import '../core/models.dart';
 import '../core/result.dart';
+import '../core/logger.dart';
 
 class GitHubFetcher implements RepositoryFetcher {
   final String? apiToken;
@@ -110,14 +111,13 @@ class GitHubFetcher implements RepositoryFetcher {
           return _extractKeySections(decoded);
         }
       } else if (response.statusCode == 404) {
-        print('    ⚠️ README not found for ${repo.owner}/${repo.name}');
+        Logger.warning('README not found for ${repo.owner}/${repo.name}');
       } else {
-        print(
-            '    ⚠️ Failed to fetch README for ${repo.owner}/${repo.name}: ${response.statusCode}');
+        Logger.warning('Failed to fetch README for ${repo.owner}/${repo.name}: ${response.statusCode}');
       }
       return null;
     } catch (e) {
-      print('    ⚠️ Error fetching README for ${repo.owner}/${repo.name}: $e');
+      Logger.error('Error fetching README for ${repo.owner}/${repo.name}: $e');
       return null;
     }
   }

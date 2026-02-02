@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import '../core/interfaces.dart';
 import '../core/models.dart';
 import '../core/result.dart';
+import '../core/logger.dart';
 
 class GeminiAnalyzer implements TrendAnalyzer {
   final String apiKey;
@@ -82,8 +83,7 @@ $readmeContext
           if (isTransient && retryCount < maxRetries) {
             retryCount++;
             final delaySeconds = 2 * retryCount;
-            print(
-                '    ⚠️ Transient error (${response.statusCode}). Retrying in $delaySeconds seconds... ($retryCount/$maxRetries)');
+            Logger.warning('Transient error (${response.statusCode}). Retrying in $delaySeconds seconds... ($retryCount/$maxRetries)');
             await Future.delayed(Duration(seconds: delaySeconds));
             continue;
           }
@@ -130,8 +130,7 @@ $readmeContext
         if (retryCount < maxRetries) {
           retryCount++;
           final delaySeconds = 2 * retryCount;
-          print(
-              '    ⚠️ Network error: $e. Retrying in $delaySeconds seconds... ($retryCount/$maxRetries)');
+          Logger.warning('Network error: $e. Retrying in $delaySeconds seconds... ($retryCount/$maxRetries)');
           await Future.delayed(Duration(seconds: delaySeconds));
           continue;
         }
@@ -152,7 +151,7 @@ $readmeContext
         case Success(value: final summary):
           results.add(summary);
         case Failure(error: final e):
-          print('    ⚠️ Failed to analyze ${repo.owner}/${repo.name}: $e');
+          Logger.error('Failed to analyze ${repo.owner}/${repo.name}: $e');
       }
       // 個別分析の間隔を少し空ける（レート制限対応）
       await Future.delayed(const Duration(milliseconds: 1000));
