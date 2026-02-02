@@ -16,11 +16,22 @@ GitHubのトレンドリポジトリを自動で収集し、Gemini AIを使っ�
 
 1.  [Gemini API Key](https://aistudio.google.com/app/apikey) を取得します。
 2.  (任意) GitHub APIのレート制限を回避するため、Personal Access Tokenを取得します。
+3.  (任意) `config.yaml` を編集して、監視したいトピックやプログラミング言語を設定します。
 
 ### 実行
 
 ```bash
 dart pub get
+
+# config.yamlの設定を使用する場合（推奨）
+dart bin/main.dart \
+  --gemini-key YOUR_GEMINI_KEY \
+  --github-token YOUR_GITHUB_TOKEN \
+  --output report.md \
+  --rss public/rss.xml \
+  --html public/index.html
+
+# CLI引数で設定を上書きする場合
 dart bin/main.dart \
   --lang all \
   --topic ai,llm,mcp,rag,agents \
@@ -31,6 +42,18 @@ dart bin/main.dart \
   --rss public/rss.xml \
   --html public/index.html
 ```
+
+## 設定ファイル
+
+プロジェクトルートの `config.yaml` で以下の設定が可能です：
+
+- **languages**: 監視するプログラミング言語（例: `[all]`, `[dart, typescript]`）
+- **topics**: 監視するトピック（例: `[ai, llm, mcp]`）
+- **minStars**: スター数の最小値（デフォルト: 10）
+- **maxStars**: スター数の最大値（オプション）
+- **newOnly**: 過去14日以内のリポジトリのみを対象とするか（デフォルト: true）
+- **geminiModel**: 使用するGeminiモデル（デフォルト: gemini-3-flash-preview）
+- **excludeRepos**: 除外するリポジトリのリスト（例: `["owner/repo"]`）
 
 ## 主要なコマンドラインオプション
 
