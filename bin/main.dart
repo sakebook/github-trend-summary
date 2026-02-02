@@ -4,10 +4,13 @@ import 'package:github_trend_summary/github_trend_summary.dart';
 
 void main(List<String> arguments) async {
   final parser = ArgParser()
+  ..addOption('config',
+        abbr: 'c',
+        help: 'Path to config.yaml',
+        defaultsTo: 'config.yaml')
     ..addOption('lang',
         abbr: 'l',
-        help: 'Target programming languages (comma separated, e.g. dart,typescript,all)',
-        defaultsTo: 'all')
+        help: 'Target programming languages (comma separated, e.g. dart,typescript,all)')
     ..addOption('topic',
         abbr: 't',
         help: 'Target topics (comma separated, e.g. ai,llm,flutter)')
@@ -16,8 +19,7 @@ void main(List<String> arguments) async {
     ..addOption('max-stars',
         help: 'Maximum star count to exclude giant projects (e.g. 50000)')
     ..addFlag('new-only',
-        help: 'Fetch only repositories created within the last 14 days',
-        negatable: false)
+        help: 'Fetch only repositories created within the last 14 days')
     ..addOption('github-token', help: 'GitHub Personal Access Token')
     ..addOption('gemini-key', help: 'Gemini API Key', mandatory: true)
     ..addOption('output', abbr: 'o', help: 'Output markdown file path')
@@ -41,18 +43,33 @@ void main(List<String> arguments) async {
     return;
   }
 
-  final languages = (results['lang'] as String).split(',').map((e) => e.trim()).where((e) => e.isNotEmpty).toList();
-  final topics = (results['topic'] as String?)?.split(',').map((e) => e.trim()).where((e) => e.isNotEmpty).toList() ?? [];
+  // Load config
+  final configPath = results['config'] as String;
+  final config = await AppConfig.load(configPath);
+
+  // CLI overrides
+  final languages = results['lang'] != null 
+      ? (results['lang'] as String).split(',').map((e) => e.trim()).toList() 
+      : config.languages;
+  final topics = results['topic'] != null 
+      ? (results['topic'] as String).split(',').map((e) => e.trim()).toList() 
+      : config.topics;
+  
   final githubToken = results['github-token'] as String?;
   final geminiKey = results['gemini-key'] as String;
   final outputPath = results['output'] as String?;
   final rssPath = results['rss'] as String?;
   final htmlPath = results['html'] as String?;
-  final minStarsStr = results['min-stars'] as String?;
-  final minStars = minStarsStr != null ? int.tryParse(minStarsStr) : null;
-  final maxStarsStr = results['max-stars'] as String?;
-  final maxStars = maxStarsStr != null ? int.tryParse(maxStarsStr) : null;
-  final newOnly = results['new-only'] as bool;
+  
+  final minStars = results['min-stars'] != null 
+      ? int.tryParse(results['min-stars'] as String) 
+      : config.minStars;
+  final maxStars = results['max-stars'] != null 
+      ? int.tryParse(results['max-stars'] as String) 
+      : config.maxStars;
+  final newOnly = results.wasParsed('new-only') 
+      ? results['new-only'] as bool 
+      : config.newOnly;
 
   // 自動的に履歴URLを構築 (GitHub Actions環境の場合)
   String? historyUrl;
@@ -65,7 +82,7 @@ void main(List<String> arguments) async {
   }
 
   final fetcher = GitHubFetcher(apiToken: githubToken);
-  final analyzer = GeminiAnalyzer(apiKey: geminiKey);
+  final analyzer = GeminiAnalyzer(apiKey: geminiKey, model: config.geminiModel);
   final allSummaries = <JapaneseSummary>[];
 
   // 既読リポジトリの読み込み
@@ -125,7 +142,7 @@ void main(List<String> arguments) async {
   }
 
   // グローバルサンプリング (合計5件)
-  final repositoriesToAnalyze = _sampleRepositories(candidatePool, seenUrls);
+  final repositoriesToAnalyze = _sampleRepositories(candidatePool, seenUrls, excludeRepos: config.excludeRepos);
 
   if (repositoriesToAnalyze.isEmpty) {
     print('❌ No repositories to analyze. Exiting.');
@@ -187,10 +204,16 @@ void main(List<String> arguments) async {
   print('✅ Done!');
 }
 
-List<Repository> _sampleRepositories(List<Repository> pool, Set<String> seenUrls) {
-  // 1. 重複除去 (URLベース)
+List<Repository> _sampleRepositories(List<Repository> pool, Set<String> seenUrls, {List<String> excludeRepos = const []}) {
+  // 1. 重複除去 (URLベース) および 除外設定の適用
   final uniquePool = <String, Repository>{};
+  final excludeSet = excludeRepos.map((e) => e.toLowerCase()).toSet();
+
   for (final repo in pool) {
+    final fullName = '${repo.owner}/${repo.name}'.toLowerCase();
+    if (excludeSet.contains(fullName)) {
+      continue;
+    }
     uniquePool[repo.url] = repo;
   }
   final candidates = uniquePool.values.toList();
