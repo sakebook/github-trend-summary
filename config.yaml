@@ -13,7 +13,7 @@ topics:
   - agents
 
 # スター数の最小値
-minStars: 10
+minStars: 50
 
 # スター数の最大値 (オプション)
 # maxStars: 5000
