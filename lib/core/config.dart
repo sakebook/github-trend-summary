@@ -55,7 +55,7 @@ class AppConfig {
     return AppConfig(
       languages: _toStringList(yaml['languages'] ?? ['all']),
       topics: _toStringList(yaml['topics'] ?? []),
-      minStars: yaml['minStars'] ?? 10,
+      minStars: yaml['minStars'] ?? 50,
       maxStars: yaml['maxStars'],
       newOnly: yaml['newOnly'] ?? true,
       geminiModel: yaml['geminiModel'] ?? 'gemini-3-flash-preview',
@@ -69,7 +69,7 @@ class AppConfig {
       return AppConfig(
         languages: ['all'],
         topics: ['ai', 'llm', 'mcp', 'rag', 'agents'],
-        minStars: 10,
+        minStars: 50,
         newOnly: true,
       );
     }
