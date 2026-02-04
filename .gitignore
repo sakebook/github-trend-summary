@@ -5,3 +5,6 @@
 github_trend_summary
 # Output files
 output*.md
+report.md
+mcp_report.md
+public/
