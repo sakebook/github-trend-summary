@@ -1,8 +1,28 @@
-# GitHub Trend Summary
+GitHubのトレンドリポジトリを自動で収集し、Gemini APIを用いて日本語で技術的な要約を生成するコマンドラインツールです。
 
-GitHubのトレンドリポジトリを自動で収集し、Gemini AIを使って日本語で要約を生成するプロジェクトです。
+## ライブレポート
 
-## 特徴
+このツールによって生成された最新のレポートは、以下からご確認いただけます：
+
+- 🌐 [Webレポート (HTML)](https://sakebook.github.io/github-trend-summary/)
+- 📡 [RSSフィード](https://sakebook.github.io/github-trend-summary/rss.xml)
+
+## システムアーキテクチャ
+
+```mermaid
+graph TD
+    A[GitHub API] -->|Fetch Trending| B(GitHubFetcher)
+    C[config.yaml] -->|Load Config| D(AppConfig)
+    B -->|Repositories| E(Main Logic)
+    D -->|Settings| E
+    E -->|Analyze README| F(GeminiAnalyzer)
+    F -->|Japanese Summaries| G(Publishers)
+    G -->|Markdown| H[report.md]
+    G -->|RSS| I[rss.xml]
+    G -->|HTML| J[index.html]
+```
+
+## 主な機能
 
 - **Rising Stars 抽出**: 過去14日以内の新着リポジトリに特化し、かつスター数が多すぎる「有名すぎる」プロジェクトを除外する、独自のトレンド抽出ロジック（Rising Stars）。
 - **既読スキップ (Seen Skip)**: 前回のレポート（公開済みRSS）を参照し、一度紹介したリポジトリは一定期間（14日間）紹介を控えることで、毎日新しい発見を提供。
