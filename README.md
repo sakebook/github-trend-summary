@@ -69,7 +69,7 @@ dart bin/main.dart \
 
 - **languages**: 監視するプログラミング言語（例: `[all]`, `[dart, typescript]`）
 - **topics**: 監視するトピック（例: `[ai, llm, mcp]`）
-- **minStars**: スター数の最小値（デフォルト: 10）
+- **minStars**: スター数の最小値（デフォルト: 50）
 - **maxStars**: スター数の最大値（オプション）
 - **newOnly**: 過去14日以内のリポジトリのみを対象とするか（デフォルト: true）
 - **geminiModel**: 使用するGeminiモデル（デフォルト: gemini-3-flash-preview）

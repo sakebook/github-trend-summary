@@ -1,6 +1,6 @@
 # GitHub Trend Summary Configuration
 
-# 対象とするプログラミング言語
+# 対象とするプログラミング言語 (例: [all] または [dart, typescript, go])
 languages:
   - all
 
