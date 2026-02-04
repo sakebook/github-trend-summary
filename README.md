@@ -69,7 +69,7 @@ dart bin/main.dart \
 
 - **languages**: 監視するプログラミング言語（例: `[all]`, `[dart, typescript]`）
 - **topics**: 監視するトピック（例: `[ai, llm, mcp]`）
-- **minStars**: スター数の最小値（デフォルト: 10）
+- **minStars**: スター数の最小値（デフォルト: 50）
 - **maxStars**: スター数の最大値（オプション）
 - **newOnly**: 過去14日以内のリポジトリのみを対象とするか（デフォルト: true）
 - **geminiModel**: 使用するGeminiモデル（デフォルト: gemini-3-flash-preview）
@@ -92,3 +92,26 @@ dart bin/main.dart \
     - **インテリジェンス生成**: 毎日実行され、幅広い言語とAI関連トピックのレポートを生成します。
     - **永続化**: 公開済みの `rss.xml` を自動的に「記憶」として読み込むことで、14日間にわたる内容の重複を回避します。
     - **公開**: 生成されたレポートは GitHub Actions のアーティファクトとして保存されるほか、GitHub Pages にも自動デプロイされます。
+
+## トラブルシューティング
+
+- **Gemini API Error (400/401)**: APIキーが正しいか、有効期限が切れていないか確認してください。
+- **GitHub API Rate Limit (403)**: `GITHUB_TOKEN` を設定していない場合、レート制限にかかりやすくなります。Personal Access Tokenを設定することを強く推奨します。
+- **YAML Parse Error**: `config.yaml` のインデントや書式が正しいか確認してください。
+
+## 開発者ガイド
+
+### 開発環境のセットアップ
+1.  Dart SDKがインストールされていることを確認します。
+2.  `dart pub get` で依存関係をインストールします。
+
+### テストの実行
+全てのテストを実行するには、以下のコマンドを使用します：
+```bash
+dart test
+```
+
+### コントリビューション
+- 新機能の追加やバグ修正は、必ず新しいブランチを作成してから行ってください。
+- コミットメッセージは [Conventional Commits](https://www.conventionalcommits.org/) に準拠することを推奨します。
+- 重要な変更を加えた場合は、`test/` ディレクトリに新しいテストを追加してください。
