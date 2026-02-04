@@ -36,27 +36,26 @@ jobs:
         env:
           GEMINI_KEY: ${{ secrets.GEMINI_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          INPUT_LANG: ${{ github.event.inputs.language }}
+          INPUT_TOPIC: ${{ github.event.inputs.topic }}
         run: |
           mkdir -p public
           
           # config.yamlをベースに、workflow_dispatchで指定があればCLI引数で上書き
-          if [ -n "${{ github.event.inputs.language }}" ]; then
-            LANG_ARG="--lang ${{ github.event.inputs.language }}"
-          else
-            LANG_ARG=""
+          # スペースを含む入力を安全に扱うため、ポ positional parameters ("$@") を使用
+          set --
+          if [ -n "$INPUT_LANG" ]; then
+            set -- "$@" "--lang=$INPUT_LANG"
           fi
           
-          if [ -n "${{ github.event.inputs.topic }}" ]; then
-            TOPIC_ARG="--topic ${{ github.event.inputs.topic }}"
-          else
-            TOPIC_ARG=""
+          if [ -n "$INPUT_TOPIC" ]; then
+            set -- "$@" "--topic=$INPUT_TOPIC"
           fi
           
           dart bin/main.dart \
-            $LANG_ARG \
-            $TOPIC_ARG \
-            --gemini-key $GEMINI_KEY \
-            --github-token $GITHUB_TOKEN \
+            "$@" \
+            --gemini-key "$GEMINI_KEY" \
+            --github-token "$GITHUB_TOKEN" \
             --rss public/rss.xml \
             --html public/index.html \
             --output public/report.md
