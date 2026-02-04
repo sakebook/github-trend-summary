@@ -1,6 +1,7 @@
 export 'core/interfaces.dart';
 export 'core/models.dart';
 export 'core/result.dart';
+export 'core/config.dart';
 export 'core/history_manager.dart';
 export 'infrastructure/github_fetcher.dart';
 export 'infrastructure/gemini_analyzer.dart';

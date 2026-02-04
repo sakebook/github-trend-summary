@@ -1,0 +1,29 @@
+# GitHub Trend Summary Configuration
+
+# 対象とするプログラミング言語
+languages:
+  - all
+
+# 注目するトピック
+topics:
+  - ai
+  - llm
+  - mcp
+  - rag
+  - agents
+
+# スター数の最小値
+minStars: 10
+
+# スター数の最大値 (オプション)
+# maxStars: 5000
+
+# 過去14日以内のリポジトリのみを対象とするか
+newOnly: true
+
+# 使用するGeminiモデル
+geminiModel: gemini-3-flash-preview
+
+# 除外するリポジトリ (owner/name)
+excludeRepos:
+  - "google/googletest"

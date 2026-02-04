@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import '../core/interfaces.dart';
 import '../core/models.dart';
 import '../core/result.dart';
+import '../core/logger.dart';
 
 class GitHubFetcher implements RepositoryFetcher {
   final String? apiToken;
@@ -106,18 +107,75 @@ class GitHubFetcher implements RepositoryFetcher {
         if (content != null) {
           // GitHub API returns Base64 encoded content with newlines
           final cleaned = content.replaceAll('\n', '');
-          return utf8.decode(base64.decode(cleaned));
+          final decoded = utf8.decode(base64.decode(cleaned));
+          return _extractKeySections(decoded);
         }
       } else if (response.statusCode == 404) {
-        print('    ⚠️ README not found for ${repo.owner}/${repo.name}');
+        Logger.warning('README not found for ${repo.owner}/${repo.name}');
       } else {
-        print(
-            '    ⚠️ Failed to fetch README for ${repo.owner}/${repo.name}: ${response.statusCode}');
+        Logger.warning('Failed to fetch README for ${repo.owner}/${repo.name}: ${response.statusCode}');
       }
       return null;
     } catch (e) {
-      print('    ⚠️ Error fetching README for ${repo.owner}/${repo.name}: $e');
+      Logger.error('Error fetching README for ${repo.owner}/${repo.name}: $e');
       return null;
     }
+  }
+
+  /// READMEの中から重要なセクションを優先的に抽出する
+  String _extractKeySections(String readme) {
+    const maxChars = 15000;
+    if (readme.length <= maxChars) return readme;
+
+    final lines = readme.split('\n');
+    final sectionHeaders = [
+      'features',
+      'key features',
+      'what is',
+      'introduction',
+      'getting started',
+      'usage',
+      'why',
+      'motivation',
+      'architecture',
+    ];
+
+    final Map<String, List<String>> sections = {};
+    String currentSection = 'intro';
+    sections[currentSection] = [];
+
+    for (final line in lines) {
+      final trimmed = line.trim().toLowerCase();
+      bool foundHeader = false;
+      if (trimmed.startsWith('#')) {
+        for (final header in sectionHeaders) {
+          if (trimmed.contains(header)) {
+            currentSection = header;
+            sections[currentSection] = [line];
+            foundHeader = true;
+            break;
+          }
+        }
+      }
+      if (!foundHeader) {
+        sections[currentSection]!.add(line);
+      }
+    }
+
+    final buffer = StringBuffer();
+    // Introduction (または冒頭) を最初に入れる
+    buffer.writeln(sections['intro']?.join('\n') ?? '');
+
+    // その他の重要セクションを追加
+    for (final header in sectionHeaders) {
+      if (header == 'intro') continue;
+      if (sections.containsKey(header)) {
+        buffer.writeln('\n' + sections[header]!.join('\n'));
+      }
+      if (buffer.length > maxChars) break;
+    }
+
+    final result = buffer.toString();
+    return result.length > maxChars ? result.substring(0, maxChars) : result;
   }
 }
