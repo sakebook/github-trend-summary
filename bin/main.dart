@@ -155,9 +155,10 @@ void main(List<String> arguments) async {
   for (final repo in repositoriesToAnalyze) {
     Logger.info('Analyzing ${repo.owner}/${repo.name}...');
     
-    // Analyze前にREADMEを取得して埋める
+    // Analyze前にREADMEやメタデータを取得して埋める
     final readmeContent = await fetcher.fetchReadme(repo);
-    final repoWithReadme = (
+    final metadataContent = await fetcher.fetchMetadata(repo);
+    final repoWithMetadata = (
       name: repo.name,
       owner: repo.owner,
       description: repo.description,
@@ -165,9 +166,10 @@ void main(List<String> arguments) async {
       stars: repo.stars,
       language: repo.language,
       readmeContent: readmeContent,
+      metadataContent: metadataContent,
     );
 
-    final analyzeResult = await analyzer.analyze(repoWithReadme);
+    final analyzeResult = await analyzer.analyze(repoWithMetadata);
 
     switch (analyzeResult) {
       case Success(value: final summary):
