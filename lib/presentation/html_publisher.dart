@@ -261,6 +261,10 @@ class HtmlPublisher implements Publisher {
                         <p>${_escapeHtml(s.rivalComparison)}</p>
                     </div>
                     <div class="section-item full-width">
+                        <h3>実装のこだわり / Implementation Flavor</h3>
+                        <p>${_escapeHtml(s.implementationFlavor)}</p>
+                    </div>
+                    <div class="section-item full-width">
                         <h3>主要機能 / Key Features</h3>
                         <ul>
                           ${s.keyFeatures.map((f) => "<li>${_escapeHtml(f)}</li>").join("")}
