@@ -25,6 +25,7 @@ void main() {
             stars: 123,
             language: 'TypeScript',
             readmeContent: null,
+            metadataContent: null,
           ),
           summary: 'テスト概要',
           useCase: 'テスト活用シーン',
@@ -32,6 +33,7 @@ void main() {
           maturity: 'Experimental',
           techStack: ['React', 'Node.js'],
           rivalComparison: 'テスト競合比較',
+          implementationFlavor: 'テスト実装のこだわり',
         ),
       ];
 
@@ -59,6 +61,7 @@ void main() {
         url: 'https://github.com/owner/repo',
         language: 'Dart',
         readmeContent: null,
+        metadataContent: null,
       );
 
       final summary = JapaneseSummary(
@@ -69,6 +72,7 @@ void main() {
         maturity: 'maturity &',
         techStack: ['<tag>'],
         rivalComparison: 'rivalComparison &',
+        implementationFlavor: 'flavor &',
       );
 
       final tempDir = Directory.systemTemp.createTempSync();

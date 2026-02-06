@@ -19,6 +19,7 @@ void main() {
                       'techStack': ['Dart'],
                       'useCase': 'Use Case 1',
                       'rivalComparison': 'Comparison 1',
+                      'implementationFlavor': 'Flavor 1',
                       'keyFeatures': ['Feature A', 'Feature B'],
                       'maturity': 'Stable'
                     })
@@ -39,7 +40,8 @@ void main() {
           stars: 10,
           url: 'url1',
           language: 'Dart',
-          readmeContent: 'README Content'
+          readmeContent: 'README Content',
+          metadataContent: 'pubspec.yaml Content',
         );
 
       final result = await analyzer.analyze(repo);
@@ -70,6 +72,7 @@ void main() {
                       'techStack': ['Dart'],
                       'useCase': 'Use Case $requestCount',
                       'rivalComparison': 'Comparison $requestCount',
+                      'implementationFlavor': 'Flavor $requestCount',
                       'keyFeatures': ['Feature $requestCount'],
                       'maturity': 'Experimental'
                     })
@@ -91,7 +94,8 @@ void main() {
           stars: 10,
           url: 'url1',
           language: 'Dart',
-          readmeContent: null
+          readmeContent: null,
+          metadataContent: null,
         ),
         (
           name: 'repo2',
@@ -100,7 +104,8 @@ void main() {
           stars: 20,
           url: 'url2',
           language: 'TypeScript',
-          readmeContent: null
+          readmeContent: null,
+          metadataContent: null,
         ),
       ];
 
@@ -134,6 +139,7 @@ void main() {
                       'techStack': ['Dart'],
                       'useCase': 'Retry Use Case',
                       'rivalComparison': 'Retry Comparison',
+                      'implementationFlavor': 'Retry Flavor',
                       'keyFeatures': ['Retry Feature'],
                       'maturity': 'Retry Maturity'
                     })
@@ -154,7 +160,8 @@ void main() {
           stars: 10,
           url: 'url1',
           language: 'Dart',
-          readmeContent: null
+          readmeContent: null,
+          metadataContent: null,
         );
 
       final result = await analyzer.analyze(repo);
