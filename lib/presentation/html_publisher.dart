@@ -61,7 +61,7 @@ class HtmlPublisher implements Publisher {
             margin: 0 auto;
             padding: 60px 24px;
         }
-        header {
+        .main-header {
             text-align: center;
             margin-bottom: 60px;
             animation: fadeInDown 0.8s ease-out;
@@ -258,7 +258,7 @@ class HtmlPublisher implements Publisher {
 </head>
 <body>
     <div class="container">
-        <header>
+        <header class="main-header">
             <h1>Trending Intelligence</h1>
             <p class="header-sub">Daily GitHub analysis powered by Gemini AI</p>
             <div class="update-time">Last Updated: ${DateTime.now().toUtc().add(const Duration(hours: 9)).toString().split('.')[0]} (JST)</div>
