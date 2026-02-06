@@ -11,6 +11,12 @@ abstract interface class RepositoryFetcher {
     bool newOnly = false,
     bool isTopic = false,
   });
+
+  /// リポジトリのREADMEを取得する。
+  Future<String?> fetchReadme(Repository repository);
+
+  /// リポジトリの技術構成ファイル（メタデータ）を取得する。
+  Future<String?> fetchMetadata(Repository repository);
 }
 
 /// リポジトリの内容を解析してサマリーを生成するためのインターフェース。
