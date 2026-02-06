@@ -92,100 +92,129 @@ class HtmlPublisher implements Publisher {
         }
         .repo-card {
             background: var(--card);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
             border: 1px solid var(--card-border);
             border-top: 1px solid var(--glass-border);
-            border-radius: 20px;
-            padding: 40px;
-            margin-bottom: 40px;
+            border-radius: 24px;
+            padding: 48px;
+            margin-bottom: 48px;
             transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
             position: relative;
             overflow: hidden;
             animation: fadeInUp 0.8s ease-out backwards;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         }
         .repo-card:hover {
-            transform: translateY(-6px) scale(1.01);
+            transform: translateY(-8px);
             border-color: var(--accent);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4), 0 0 20px var(--accent-glow);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.5), 0 0 20px var(--accent-glow);
+        }
+        /* New Layout Sections */
+        .card-inner {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 32px;
+        }
+        .main-info {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+        .metadata-section {
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 16px;
+            padding: 24px;
+            border: 1px solid var(--card-border);
+        }
+        .insight-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
+            background: var(--accent-soft);
+            color: var(--accent);
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
         .repo-header {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
+            align-items: flex-start;
+            margin-bottom: 8px;
         }
         .header-left {
             display: flex;
-            align-items: center;
+            flex-direction: column;
             gap: 12px;
-            flex-wrap: wrap;
         }
         .maturity-badge {
-            font-size: 0.75rem;
-            padding: 2px 8px;
-            border-radius: 4px;
+            font-size: 0.7rem;
+            padding: 2px 10px;
+            border-radius: 6px;
             font-weight: 600;
-            white-space: nowrap;
+            width: fit-content;
         }
         .repo-name {
-            font-size: 1.5rem;
+            font-size: 2rem;
             font-weight: 800;
             text-decoration: none;
-            color: var(--accent);
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            color: #fff;
+            letter-spacing: -0.02em;
+            transition: color 0.3s;
         }
-        .repo-name::before {
-            content: "🚀";
-            font-size: 1.2rem;
+        .repo-name:hover {
+            color: var(--accent);
         }
         .stars {
             color: var(--star);
-            font-weight: 600;
-            font-size: 0.9rem;
+            font-weight: 700;
+            font-size: 1.1rem;
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: 6px;
+            background: rgba(240, 136, 62, 0.1);
+            padding: 6px 14px;
+            border-radius: 12px;
         }
         .repo-description {
             color: var(--text-dim);
-            font-size: 0.95rem;
-            margin-bottom: 24px;
-            font-style: italic;
+            font-size: 1rem;
+            margin: 0;
+            line-height: 1.5;
         }
         .summary-box {
-            background: rgba(255,255,255,0.03);
-            border-left: 4px solid var(--accent);
-            padding: 16px 20px;
-            border-radius: 4px 12px 12px 4px;
-            margin-bottom: 24px;
-            font-weight: 600;
+            font-size: 1.1rem;
+            color: var(--text-main);
+            margin: 0;
+            line-height: 1.6;
         }
         .grid-sections {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 24px;
-            margin-bottom: 24px;
+            gap: 32px;
         }
-        .section-item.full-width {
-            grid-column: 1 / -1;
-        }
-        @media (max-width: 600px) {
+        @media (max-width: 768px) {
             .grid-sections { grid-template-columns: 1fr; }
+            .repo-card { padding: 32px; }
         }
         .section-item h3 {
             font-size: 0.75rem;
             text-transform: uppercase;
             letter-spacing: 0.1em;
-            color: var(--text-dim);
-            margin: 0 0 8px 0;
+            color: var(--accent);
+            margin: 0 0 12px 0;
+            opacity: 0.8;
         }
-        .section-item p {
+        .section-item p, .section-item li {
             margin: 0;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             color: var(--text-main);
+            line-height: 1.7;
         }
         .tech-stack {
             display: flex;
@@ -239,41 +268,57 @@ class HtmlPublisher implements Publisher {
 ''');
 
       for (final s in summaries) {
+        final repo = s.repository;
         buffer.writeln('''
             <div class="repo-card">
-                <div class="repo-header">
-                    <div class="header-left">
-                        <a href="${_escapeHtml(s.repository.url)}" class="repo-name" target="_blank">${_escapeHtml(s.repository.name)}</a>
-                        ${!s.maturity.contains('Active Development') ? '<span class="maturity-badge" style="background:var(--accent-soft); color:var(--accent); border:1px solid var(--accent);">${_escapeHtml(s.maturity)}</span>' : ''}
+                <div class="card-inner">
+                    <header class="repo-header">
+                        <div class="header-left">
+                            <div class="maturity-badge" style="background:${_getMaturityBg(s.maturity)}; color:${_getMaturityColor(s.maturity)}; border:1px solid ${_getMaturityColor(s.maturity)};">
+                                ${s.maturity}
+                            </div>
+                            <a href="${repo.url}" class="repo-name" target="_blank">${_escapeHtml(repo.owner)} / ${_escapeHtml(repo.name)}</a>
+                            <p class="repo-description">${_escapeHtml(repo.description ?? 'No description provided')}</p>
+                        </div>
+                        <span class="stars">⭐ ${repo.stars}</span>
+                    </header>
+
+                    <div class="main-info">
+                        <p class="summary-box">${_escapeHtml(s.summary)}</p>
+
+                        <div class="grid-sections">
+                            <div class="section-item">
+                                <h3>活用シーン / Use Case</h3>
+                                <p>${_escapeHtml(s.useCase)}</p>
+                            </div>
+                            <div class="section-item">
+                                <h3>競合差別化 / Competitive Edge</h3>
+                                <p>${_escapeHtml(s.rivalComparison)}</p>
+                            </div>
+                        </div>
                     </div>
-                    <span class="stars">⭐ ${s.repository.stars.toString()}</span>
-                </div>
-                <p class="repo-description">${_escapeHtml(s.repository.description ?? '')}</p>
-                <div class="summary-box">${_escapeHtml(s.summary)}</div>
-                
-                <div class="grid-sections">
-                    <div class="section-item">
-                        <h3>活用シーン / Use Case</h3>
-                        <p>${_escapeHtml(s.useCase)}</p>
+
+                    <div class="metadata-section">
+                        <div class="insight-tag">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+                            Deep Technical Insight
+                        </div>
+                        <div class="section-item">
+                            <h3>実装のこだわり / Implementation Flavor</h3>
+                            <p>${_escapeHtml(s.implementationFlavor)}</p>
+                        </div>
+                        
+                        <div class="section-item" style="margin-top: 24px;">
+                            <h3>主要機能 / Key Features</h3>
+                            <ul style="margin-top: 8px; padding-left: 20px;">
+                              ${s.keyFeatures.map((f) => "<li>${_escapeHtml(f)}</li>").join("")}
+                            </ul>
+                        </div>
+
+                        <div class="tech-stack">
+                            ${s.techStack.map((tag) => '<span class="tech-tag">${_escapeHtml(tag)}</span>').join('')}
+                        </div>
                     </div>
-                    <div class="section-item">
-                        <h3>競合差別化 / Competitive Edge</h3>
-                        <p>${_escapeHtml(s.rivalComparison)}</p>
-                    </div>
-                    <div class="section-item full-width">
-                        <h3>実装のこだわり / Implementation Flavor</h3>
-                        <p>${_escapeHtml(s.implementationFlavor)}</p>
-                    </div>
-                    <div class="section-item full-width">
-                        <h3>主要機能 / Key Features</h3>
-                        <ul>
-                          ${s.keyFeatures.map((f) => "<li>${_escapeHtml(f)}</li>").join("")}
-                        </ul>
-                    </div>
-                </div>
-                
-                <div class="tech-stack">
-                    ${s.techStack.map((t) => '<span class="tech-tag">${_escapeHtml(t)}</span>').join('')}
                 </div>
             </div>
 ''');
@@ -301,5 +346,23 @@ class HtmlPublisher implements Publisher {
     } catch (e) {
       return Failure(e is Exception ? e : Exception(e.toString()));
     }
+  }
+
+  String _getMaturityBg(String maturity) {
+    if (maturity.contains('Production Ready') || maturity.contains('Stable')) {
+      return 'rgba(46, 160, 67, 0.1)';
+    } else if (maturity.contains('Experimental')) {
+      return 'rgba(210, 153, 34, 0.1)';
+    }
+    return 'var(--accent-soft)';
+  }
+
+  String _getMaturityColor(String maturity) {
+    if (maturity.contains('Production Ready') || maturity.contains('Stable')) {
+      return '#3fb950';
+    } else if (maturity.contains('Experimental')) {
+      return '#d29922';
+    }
+    return 'var(--accent)';
   }
 }
