@@ -25,6 +25,7 @@ void main() {
             stars: 123,
             language: 'TypeScript',
             readmeContent: null,
+            metadataContent: null,
           ),
           summary: 'テスト概要',
           useCase: 'テスト活用シーン',
@@ -32,6 +33,7 @@ void main() {
           maturity: 'Experimental',
           techStack: ['React', 'Node.js'],
           rivalComparison: 'テスト競合比較',
+          implementationFlavor: 'テスト実装のこだわり',
         ),
       ];
 
@@ -56,9 +58,10 @@ void main() {
         owner: 'owner',
         description: '<script>alert(1)</script>',
         stars: 100,
-        url: 'https://github.com/owner/repo',
+        url: 'https://github.com/owner/repo?q="quote"&a=b',
         language: 'Dart',
         readmeContent: null,
+        metadataContent: null,
       );
 
       final summary = JapaneseSummary(
@@ -69,6 +72,7 @@ void main() {
         maturity: 'maturity &',
         techStack: ['<tag>'],
         rivalComparison: 'rivalComparison &',
+        implementationFlavor: 'flavor &',
       );
 
       final tempDir = Directory.systemTemp.createTempSync();
@@ -81,8 +85,10 @@ void main() {
       // Verify escaped content
       expect(html, contains('&lt;b&gt;script&lt;/b&gt;'));
       expect(html, contains('&lt;script&gt;alert(1)&lt;/script&gt;'));
+      expect(html, contains('href="https://github.com/owner/repo?q=&quot;quote&quot;&amp;a=b"'));
       expect(html, contains('summary &amp; &quot;quote&quot;'));
       expect(html, contains('useCase &lt; &gt;'));
+      expect(html, contains('maturity &amp;'));
       expect(html, contains('&lt;tag&gt;'));
       // Verify NOT containing raw scripts
       expect(html, isNot(contains('<script>')));

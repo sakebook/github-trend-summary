@@ -1,105 +1,95 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:gs="https://github.com/sakebook/github-trend-summary">
-  <channel>
-    <title>GitHub Trending Intelligence</title>
-    <link>https://github.com/trending</link>
-    <description>Daily curated GitHub trends with Gemini analysis.</description>
-    <language>ja</language>
-    <lastBuildDate>Sun, 01 Feb 2026 00:25:16 +0000</lastBuildDate>
-    <item>
-      <title>
-        <![CDATA[[Swift] tldev/posturr]]>
-      </title>
-      <link>https://github.com/tldev/posturr</link>
-      <guid isPermaLink="true">https://github.com/tldev/posturr</guid>
-      <pubDate>Sun, 01 Feb 2026 00:25:16 +0000</pubDate>
-      <gs:stars>1684</gs:stars>
-      <description>
-        <![CDATA[
-      <h3>概要</h3><p>Vision FrameworkとAirPodsを用いて姿勢を監視し、猫背時に画面を動的にぼかすmacOS向け姿勢矯正ツール。</p>
-      <h3>活用シーン</h3><p>長時間のデスクワークにおいて、外部センサーを導入することなく、Macの内蔵カメラや手持ちのAirPodsを姿勢検知デバイスとして転用し、作業に没頭しながら無意識に姿勢を正したい場合。</p>
-      <h3>主要機能</h3><ul><li>Visionフレームワークによる体幹・顔認識：カメラ経由で頭部の垂直位置をリアルタイム解析し、設定したベースラインからの逸脱を検知。</li><li>AirPodsモーションセンシング：AirPods Pro/Maxのジャイロセンサーから頭部のピッチ角（傾き）を直接取得し、低負荷かつプライバシーに配慮したトラッキングが可能。</li><li>プログレッシブ・ブラー：猫背の度合いに応じて画面のぼかし強度を段階的に高める視覚的フィードバック機能（マルチディスプレイ対応）。</li></ul>
-      <h3>開発状況</h3><p>Active Development</p>
-      <h3>競合差別化</h3><p>Postures（iOS版）などのモバイル競合と比較し、macOSのCoreGraphicsプライベートAPIを叩くことで、全ディスプレイの最前面を動的にぼかすという「OS統合型の強制フィードバック」を実現している点。また、カメラを使わずAirPodsのIMU（慣性計測装置）のみで姿勢判定を行うハイブリッドな実装も独自のエッジ。 </p>
-      <h3>技術スタック</h3><p>Swift, Vision Framework, CoreGraphics (Private API), Core Motion (CMHeadphoneMotionManager), SwiftUI, AppKit</p>
-    ]]>
-      </description>
-    </item>
-    <item>
-      <title>
-        <![CDATA[[TypeScript] TNT-Likely/PanWatch]]>
-      </title>
-      <link>https://github.com/TNT-Likely/PanWatch</link>
-      <guid isPermaLink="true">https://github.com/TNT-Likely/PanWatch</guid>
-      <pubDate>Sun, 01 Feb 2026 00:25:16 +0000</pubDate>
-      <gs:stars>78</gs:stars>
-      <description>
-        <![CDATA[
-      <h3>概要</h3><p>AIエージェントが株式市場を常時監視し、多角的なテクニカル分析と戦略提案を行うセルフホスト型投資支援ツール</p>
-      <h3>活用シーン</h3><p>【具体的な適用シーン】個人投資家が自身のポートフォリオ情報をクラウドサービスに預けることなく、自宅のサーバーやNAS上でAIエージェントを稼働させ、24時間体制でA株・港株・米国株の市場シグナルを検知・通知する場合。</p>
-      <h3>主要機能</h3><ul><li>知能的Agentシステム: 盤前分析から盤中のテクニカル共振監視、盤後の収支復習までを自動実行する4種の特化型エージェント。</li><li>高度なテクニカル分析エンジン: MA/MACD/RSI等の標準指標に加え、K線形態認識（包み足等）や支持・抵抗線の自動算出を実装。</li><li>マルチプラットフォーム通知: Telegram、飛書(Feishu)、DingTalk、Barkなど多様なWebhookを活用したリアルタイムな異動検知プッシュ。</li></ul>
-      <h3>開発状況</h3><p>Active Development</p>
-      <h3>競合差別化</h3><p>【競合との差別化】TradingViewや一般的な証券アプリと比較し、単なる数値アラートではなく「LLMによる文脈理解」に基づいた助言が特徴。また、OpenAIだけでなくDeepSeekやOllama（ローカルLLM）を切り替え可能な柔軟性と、データ秘匿性が高い自律分散型の設計が独自のエッジとなっている。</p>
-      <h3>技術スタック</h3><p>FastAPI, SQLAlchemy, APScheduler, OpenAI SDK, React 18, TypeScript, Tailwind CSS, shadcn/ui, Docker, PWA</p>
-    ]]>
-      </description>
-    </item>
-    <item>
-      <title>
-        <![CDATA[[TypeScript] coollabsio/jean]]>
-      </title>
-      <link>https://github.com/coollabsio/jean</link>
-      <guid isPermaLink="true">https://github.com/coollabsio/jean</guid>
-      <pubDate>Sun, 01 Feb 2026 00:25:16 +0000</pubDate>
-      <gs:stars>176</gs:stars>
-      <description>
-        <![CDATA[
-      <h3>概要</h3><p>git worktreeを活用し、AIエージェントを隔離環境で並列実行・自動管理する高度な開発支援ツール</p>
-      <h3>活用シーン</h3><p>複数のGitHub Issue対応やPRレビューを、現在のブランチを汚さず、独立したワークツリー上でAIに並列処理させる開発シーン</p>
-      <h3>主要機能</h3><ul><li>git worktreeの自動管理: 複数のタスクを独立した隔離ディレクトリで並列実行し、開発コンテキストの衝突を防止</li><li>自動コンテキスト抽出: GitHubのIssueやPR、過去のセッションから情報を自動取得し、AIの実行コンテキストを構築</li><li>Gitオペレーションの自動化: コミット、PR作成、競合解消、さらには作業状態のアーカイブと復元までを自動で完結</li></ul>
-      <h3>開発状況</h3><p>Active Development</p>
-      <h3>競合差別化</h3><p>CursorやGitHub Copilotがエディタ中心なのに対し、Jeanはgit worktreeによる物理的な環境分離と、アーカイブ・復元を含む高度なGitワークフローの自動化に特化している点</p>
-      <h3>技術スタック</h3><p>Rust, Node.js, TypeScript, Claude CLI, git worktree, GitHub API</p>
-    ]]>
-      </description>
-    </item>
-    <item>
-      <title>
-        <![CDATA[[JavaScript] Kargatharaakash/stitch-mcp]]>
-      </title>
-      <link>https://github.com/Kargatharaakash/stitch-mcp</link>
-      <guid isPermaLink="true">https://github.com/Kargatharaakash/stitch-mcp</guid>
-      <pubDate>Sun, 01 Feb 2026 00:25:16 +0000</pubDate>
-      <gs:stars>41</gs:stars>
-      <description>
-        <![CDATA[
-      <h3>概要</h3><p>Google Stitch APIを活用し、AIエージェントによるUIデザインの抽出・生成を可能にするMCPサーバー。</p>
-      <h3>活用シーン</h3><p>既存のデザイン資産からスタイルガイドを自動抽出し、Cursor等のIDE上でデザインの一貫性を維持したまま新規UIコンポーネントや画面を高速生成するシチュエーション。</p>
-      <h3>主要機能</h3><ul><li>extract_design_context: 既存の画面からフォント、カラーパレット、レイアウト等の「デザインDNA」を解析・抽出する機能</li><li>generate_screen_from_text: 抽出されたデザインコンテキストを基に、指示に沿った一貫性のある新規画面をAI生成する機能</li><li>fetch_screen_code: 生成または既存のUIデザインから、実装に直結するフロントエンドのHTML/CSSコードを直接取得する機能</li></ul>
+<channel>
+  <title>GitHub Trending Intelligence</title>
+  <link>https://github.com/trending</link>
+  <description>Daily curated GitHub trends with Gemini analysis.</description>
+  <language>ja</language>
+  <lastBuildDate>Fri, 06 Feb 2026 11:46:19 +0000</lastBuildDate>
+  <item>
+    <title><![CDATA[[TypeScript] vueuse/skills]]></title>
+    <link>https://github.com/vueuse/skills</link>
+    <guid isPermaLink="true">https://github.com/vueuse/skills</guid>
+    <pubDate>Fri, 06 Feb 2026 11:46:19 +0000</pubDate>
+    <gs:stars>304</gs:stars>
+    <description><![CDATA[
+      <h3>概要</h3><p>VueUseのメタデータをAIエージェント向けに最適化し、トークン節約と精度向上を図る「エージェント用スキル」</p>
+      <h3>活用シーン</h3><p>AIエージェント（Claude Code等）がVueUseの膨大な関数群を正確に理解し、ハルシネーションを抑えつつ、最小限のトークン消費でVue/Nuxtのコードを生成・修正する開発環境。</p>
+      <h3>実装のこだわり</h3><p>【メタデータの二次加工】@vueuse/metadataをソースに、AIが理解しやすい形式へ変換する独自ビルド（build.ts）を採用。【コンテキスト制御】AGENTS.mdやプロンプトによる関数呼び出しルールのカスタマイズを許容。本家VueUseリポジトリをサブディレクトリとして保持し、常に最新の公式定義に同期させる強固なデータ構造。</p>
+      <h3>主要機能</h3><ul><li>Progressive Disclosure: 関数概要を先に送り、詳細な型や使用法はオンデマンドで読み込む段階的情報提供</li><li>Minimal Token Usage: エージェントが必要な情報のみを抽出・加工し、コンテキスト窓の消費を最小化</li><li>Offline-first Design: インターネット接続や外部権限なしで、ローカルの定義ファイルから正確なAPI参照が可能</li><li>Hallucination Reduction: 存在しないAPIの捏造を防ぐため、厳密なメタデータに基づいた実在する関数情報を提供</li></ul>
+      <h3>開発状況</h3><p>Experimental (実験的)</p>
+      <h3>競合差別化</h3><p>従来のRAG（検索）や巨大なコンテキスト注入とは異なり、関数の「概要」と「詳細（型・使用法）」を段階的に提供するProgressive Disclosureを採用し、コストと精度を両立させている点。</p>
+      <h3>技術スタック</h3><p>TypeScript, Node.js (tsx), pnpm Workspace, @vueuse/metadata, Claude Code Marketplace, LLM Agent Skills</p>
+    ]]></description>
+  </item>
+
+  <item>
+    <title><![CDATA[[JavaScript] dwzhu-pku/PaperBanana]]></title>
+    <link>https://github.com/dwzhu-pku/PaperBanana</link>
+    <guid isPermaLink="true">https://github.com/dwzhu-pku/PaperBanana</guid>
+    <pubDate>Fri, 06 Feb 2026 11:46:19 +0000</pubDate>
+    <gs:stars>2083</gs:stars>
+    <description><![CDATA[
+      <h3>概要</h3><p>AI論文向けの複雑な学術図解（アーキテクチャ図等）を自動生成し、研究者の製図負荷を軽減するツール</p>
+      <h3>活用シーン</h3><p>論文執筆時において、テキストベースのモデル解説や数式から、トップ会議（CVPR/NeurIPS等）に耐えうる高品質なアーキテクチャ図を生成するシーン</p>
+      <h3>実装のこだわり</h3><p>「Datasetを公開予定」という点から、単なるプロンプトエンジニアリングではなく、学術図解の構造を理解させるためのファインチューニングや、専門的なRAG（検索拡張生成）の実装が示唆される</p>
+      <h3>主要機能</h3><ul><li>学術図解の自動生成: 論文の抄録や手法説明から、視覚的なダイアグラムを自動構築</li><li>AI研究者特化: ニューラルネットワークの階層構造やデータフローなど、専門的な表現に最適化</li><li>専用データセットの活用: 質の高い論文図解から学習したモデルによる、学術的コンテキストの維持</li></ul>
       <h3>開発状況</h3><p>Active Development (開発中)</p>
-      <h3>競合差別化</h3><p>v0.devやScreenshot-to-Codeが独立したWebサービスであるのに対し、本ツールはMCP経由でIDEへ直接統合可能。Google Stitch独自の「Design DNA」抽出機能により、プロンプトで細かく指定せずとも既存デザインを正確に踏襲できる点が最大の強み。</p>
-      <h3>技術スタック</h3><p>Node.js, TypeScript, Model Context Protocol (MCP), Google Cloud Platform, Google Stitch API</p>
-    ]]>
-      </description>
-    </item>
-    <item>
-      <title>
-        <![CDATA[[TypeScript] youware-labs/figma-pilot]]>
-      </title>
-      <link>https://github.com/youware-labs/figma-pilot</link>
-      <guid isPermaLink="true">https://github.com/youware-labs/figma-pilot</guid>
-      <pubDate>Sun, 01 Feb 2026 00:25:16 +0000</pubDate>
-      <gs:stars>21</gs:stars>
-      <description>
-        <![CDATA[
-      <h3>概要</h3><p>AIエージェントがJSコード実行を介してFigmaを直接操作・自動化可能にするMCPサーバー実装。</p>
-      <h3>活用シーン</h3><p>自然言語からのランディングページ生成や、数百のデザイン要素に対する一括プロパティ変更・アクセシビリティ修正。</p>
-      <h3>主要機能</h3><ul><li>最小限のツール設計: figma_executeにより、単一のツールで広範なFigma APIを制御しコンテキスト肥大化を防止</li><li>双方向ブリッジ通信: MCPサーバーとFigmaプラグイン間をHTTPで接続し、AIクライアントからデスクトップFigmaをリアルタイム制御</li><li>設計スキル統合: 構造化されたAPIドキュメント（Skills）をAIに読み込ませることで、高精度なコード生成とエラー回避を両立</li></ul>
+      <h3>競合差別化</h3><p>汎用的な画像生成AI（DALL-E等）が苦手とする「学術的な正確性」と「編集可能なベクトル形式（TikZ等）」の提供による、実用的なワークフローへの統合</p>
+      <h3>技術スタック</h3><p>Python, Large Language Models (LLMs), LaTeX/TikZ (推測), Vector Graphics Generation, Diffusion Models (推測)</p>
+    ]]></description>
+  </item>
+
+  <item>
+    <title><![CDATA[[Swift] tldev/posturr]]></title>
+    <link>https://github.com/tldev/posturr</link>
+    <guid isPermaLink="true">https://github.com/tldev/posturr</guid>
+    <pubDate>Fri, 06 Feb 2026 11:46:19 +0000</pubDate>
+    <gs:stars>1883</gs:stars>
+    <description><![CDATA[
+      <h3>概要</h3><p>VisionとAirPodsのモーションセンサーを活用し、OSレベルの動的ブラーで姿勢を正すmacOS専用ツール。</p>
+      <h3>活用シーン</h3><p>長時間のコーディング中に無意識に猫背になるのを防ぐため、通知ではなく「視覚情報の制限」という物理的なフィードバックで姿勢を矯正したいシチュエーション。</p>
+      <h3>実装のこだわり</h3><p>デフォルトでPrivate CoreGraphics APIを選択し、低負荷かつマルチディスプレイ対応のシステムブラーを実現するこだわり。また、/tmp/posturr-command を介したファイルベースのIPCにより外部制御を可能にするなど、ハッカーライクな拡張性が組み込まれている。SwiftPMによるモジュール分離（Core/App）でテスト容易性も考慮されている。</p>
+      <h3>主要機能</h3><ul><li>ハイブリッド・トラッキング: Visionによる画像解析（鼻/頭の位置）とCoreMotionによるAirPodsの頭部傾斜検知の両立。</li><li>プログレッシブ・フィードバック: 姿勢の悪化に連動してブラーの強度を段階的に高める、自然かつ効果的なユーザー体験。</li><li>堅牢なフォールバック設計: プライベートAPIが動作しない環境向けに、NSVisualEffectViewを用いた互換モードを標準搭載。</li></ul>
       <h3>開発状況</h3><p>Active Development</p>
-      <h3>競合差別化</h3><p>個別APIを大量にツール定義する既存MCPに対し、コード実行（Code Execution）に集約することでトークン消費を90%削減し、複雑なループや条件分岐を伴う一括操作を実現した点。</p>
-      <h3>技術スタック</h3><p>TypeScript, Node.js, Bun, Model Context Protocol (MCP), Figma Plugin API</p>
-    ]]>
-      </description>
-    </item>
-  </channel>
+      <h3>競合差別化</h3><p>通知のみの既存ツールに対し、CoreGraphicsのプライベートAPIを用いたシステム全体の動的ブラーによる強制力と、AirPodsのジャイロを利用したカメラ不要の追跡機能で差別化。</p>
+      <h3>技術スタック</h3><p>Swift 5.9, Vision Framework, CoreMotion, CoreGraphics (Private API), SwiftUI, AppKit, Swift Package Manager</p>
+    ]]></description>
+  </item>
+
+  <item>
+    <title><![CDATA[[Go] NeptuneHub/AudioMuse-AI-NV-plugin]]></title>
+    <link>https://github.com/NeptuneHub/AudioMuse-AI-NV-plugin</link>
+    <guid isPermaLink="true">https://github.com/NeptuneHub/AudioMuse-AI-NV-plugin</guid>
+    <pubDate>Fri, 06 Feb 2026 11:46:19 +0000</pubDate>
+    <gs:stars>63</gs:stars>
+    <description><![CDATA[
+      <h3>概要</h3><p>WASMとExtism PDKを採用し、NavidromeにAIレコメンデーション機能を統合するプラグイン</p>
+      <h3>活用シーン</h3><p>セルフホスト型音楽サーバーNavidromeにおいて、既存の静的なタグ管理を超え、AIによる楽曲・アーティストの類似度に基づいた動的な音楽発見体験を実現する際。</p>
+      <h3>実装のこだわり</h3><p>【WASMネイティブ】TinyGoとExtismを採用し、プラグインを.ndp (WASMバイナリ) として配布する近代的な設計。 【疎結合なAI連携】重い処理はFlaskベースの外部コアに逃がし、プラグイン側はNavidromeのPlugin Development Kit (PDK) に準拠したブリッジに徹する責務分離の徹底。 【Subsonic API互換性】getSimilarSongs2等の標準的なAPIにマッピングすることで、既存のモバイルクライアント側への変更を最小限に抑える設計思想。</p>
+      <h3>主要機能</h3><ul><li>Instant Mix: 楽曲の類似性をAIで判定し、関連性の高い楽曲によるインスタントプレイリストを生成</li><li>Radio Mode: 特定のアーティストに類似したアーティストを抽出し、パーソナライズされたラジオ機能を提供</li><li>Artist Info Enrichment: 外部のAudioMuse-AIコアから類似アーティスト情報を取得し、メタデータを拡張</li></ul>
+      <h3>開発状況</h3><p>Active Development</p>
+      <h3>競合差別化</h3><p>従来のLast.fmやSpotify等の外部API依存のメタデータ補完とは異なり、独自のAudioMuse-AIコア（Flask/Worker構成）と連携。WASMによるサンドボックス実行により、ホスト環境を汚染せず高セキュアかつポータブルなプラグイン導入が可能。</p>
+      <h3>技術スタック</h3><p>Go / TinyGo, WebAssembly (WASM), Extism PDK, Navidrome Plugin SDK, Flask (AudioMuse-AI Core)</p>
+    ]]></description>
+  </item>
+
+  <item>
+    <title><![CDATA[[TypeScript] m1heng/clawdbot-feishu]]></title>
+    <link>https://github.com/m1heng/clawdbot-feishu</link>
+    <guid isPermaLink="true">https://github.com/m1heng/clawdbot-feishu</guid>
+    <pubDate>Fri, 06 Feb 2026 11:46:19 +0000</pubDate>
+    <gs:stars>2640</gs:stars>
+    <description><![CDATA[
+      <h3>概要</h3><p>OpenClawを飛書/Larkへ統合し、ユーザー毎の隔離された環境と高度なツール群を提供するプラグイン。</p>
+      <h3>活用シーン</h3><p>企業内飛書環境において、ユーザー間でファイルやメモリを完全に分離・隔離した、セキュアなマルチテナント型AIエージェントを構築・提供するシーン。</p>
+      <h3>実装のこだわり</h3><p>飛書のAPIレート制限を考慮し「安定性のためにあえて非ストリーミング（complete-then-send）」を選択。WebSocket採用による疎結合なデプロイ、および`workspaceTemplate`を用いたファイルシステムレベルでのコンテキスト隔離に、エンタープライズ運用を強く意識した設計思想が表れている。</p>
+      <h3>主要機能</h3><ul><li>WebSocket（長接続）とWebhookの両モードに対応した柔軟な接続性</li><li>dynamicAgentCreationによる、ユーザー毎の独立したWorkspace/MEMORY.mdの動的生成</li><li>飛書Doc/Drive/Wiki/Bitableへアクセスする高度なSkills（Agentツール）群の提供</li><li>Markdownの構造解析に基づく、リッチテキストカードとプレーンテキストの自動切り替え描画</li><li>権限エラーを検知し、ユーザーへ認可URLを自動提示するセルフサービス型のエラーハンドリング</li></ul>
+      <h3>開発状況</h3><p>Active Development</p>
+      <h3>競合差別化</h3><p>単なるチャットIFではなく、Wiki/Bitable/Drive等の飛書エコシステムへのCRUD操作を標準提供。さらにOpenIDに基づいた動的なAgent/ディレクトリ生成により、物理的なマルチテナント分離を実現している点が独自のエッジ。</p>
+      <h3>技術スタック</h3><p>TypeScript, Node.js (ESM), @larksuiteoapi/node-sdk, OpenClaw Framework, TypeBox, Zod</p>
+    ]]></description>
+  </item>
+
+</channel>
 </rss>

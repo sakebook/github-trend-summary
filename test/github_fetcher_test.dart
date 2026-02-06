@@ -69,4 +69,71 @@ void main() {
       expect(q, contains('created:>='));
     });
   });
+
+  group('GitHubFetcher Metadata Tests', () {
+    test('should fetch correct metadata file for Dart', () async {
+      var capturedUri = Uri();
+      final client = MockClient((request) async {
+        capturedUri = request.url;
+        return http.Response(jsonEncode({'content': base64Encode(utf8.encode('name: test_project'))}), 200);
+      });
+
+      final fetcher = GitHubFetcher(client: client);
+      final repo = (
+        name: 'test',
+        owner: 'owner',
+        url: 'url',
+        stars: 1,
+        language: 'Dart',
+        description: null,
+        readmeContent: null,
+        metadataContent: null,
+      );
+
+      await fetcher.fetchMetadata(repo);
+
+      expect(capturedUri.path, contains('pubspec.yaml'));
+    });
+
+    test('should fetch correct metadata file for TypeScript', () async {
+      var capturedUri = Uri();
+      final client = MockClient((request) async {
+        capturedUri = request.url;
+        return http.Response(jsonEncode({'content': base64Encode(utf8.encode('{"name": "test"}'))}), 200);
+      });
+
+      final fetcher = GitHubFetcher(client: client);
+      final repo = (
+        name: 'test',
+        owner: 'owner',
+        url: 'url',
+        stars: 1,
+        language: 'TypeScript',
+        description: null,
+        readmeContent: null,
+        metadataContent: null,
+      );
+
+      await fetcher.fetchMetadata(repo);
+
+      expect(capturedUri.path, contains('package.json'));
+    });
+
+    test('should return null for unknown language metadata', () async {
+      final fetcher = GitHubFetcher();
+      final repo = (
+        name: 'test',
+        owner: 'owner',
+        url: 'url',
+        stars: 1,
+        language: 'UnknownLang',
+        description: null,
+        readmeContent: null,
+        metadataContent: null,
+      );
+
+      final result = await fetcher.fetchMetadata(repo);
+      expect(result, isNull);
+    });
+  });
 }

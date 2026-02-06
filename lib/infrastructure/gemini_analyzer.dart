@@ -33,21 +33,29 @@ class GeminiAnalyzer implements TrendAnalyzer {
             ? 'README.mdの内容:\n${repository.readmeContent!.length > 15000 ? repository.readmeContent!.substring(0, 15000) + "...(truncated)" : repository.readmeContent}'
             : 'README.md: 取得できませんでした。';
 
+        final metadataContext = repository.metadataContent != null
+            ? '技術構成ファイル（メタデータ）の内容:\n${repository.metadataContent!}'
+            : '';
+
         final prompt = '''
 以下のGitHubリポジトリを深く分析し、熟練のシニアエンジニアに向けて日本語で技術解説してください。
-READMEの内容（提供されている場合）を最優先の情報源とし、ファクトに基づいたレポートを作成してください。
+READMEの内容および技術構成ファイル（提供されている場合）を最優先の情報源とし、ファクトに基づいたレポートを作成してください。
+
+特に、設定ファイルから読み取れる「実装のこだわり（味付け）」や「特定の技術選定の意図」を重点的に分析してください。
 
 リポジトリ: ${repository.owner}/${repository.name}
 URL: ${repository.url}
 説明: ${repository.description ?? '説明なし'}
 $readmeContext
+$metadataContext
 
 出力フォーマット（JSONのみ）:
 {
   "summary": "プロジェクトの機能的本質を突いた、簡潔かつ正確な要約（50文字程度）",
   "techStack": ["主要言語", "推測されるフレームワーク", "ライブラリ", "アーキテクチャ名"],
-  "useCase": "【具体的な適用シーン】このツールが最も輝く具体的な開発シチュエーション（例：「大規模なマイクロサービスのログ集約」「個人のポートフォリオサイト構築」など具体的に）",
-  "rivalComparison": "【競合との差別化】既存の有名ツール（具体的名称を挙げること）と比較した際の明確な違いや、このプロジェクトが持つ独自の技術的エッジ",
+  "useCase": "【具体的な適用シーン】このツールが最も輝く具体的な開発シチュエーション",
+  "rivalComparison": "【競合との差別化】既存ツールと比較した際の技術的エッジ",
+  "implementationFlavor": "【実装のこだわり】設定ファイルやREADMEから読み取れる、実装上の工夫や特殊な技術選定、設計思想（例: Rustによる高速化、独自のキャッシュ戦略、疎結合な設計など）",
   "keyFeatures": [
     "機能1: 具体的な機能説明",
     "機能2: 具体的な機能説明",
@@ -123,6 +131,8 @@ $readmeContext
           useCase: data['useCase']?.toString() ?? 'No use case provided',
           rivalComparison:
               data['rivalComparison']?.toString() ?? 'No comparison provided',
+          implementationFlavor:
+              data['implementationFlavor']?.toString() ?? 'No implementation flavors identified',
           keyFeatures: keyFeatures,
           maturity: data['maturity']?.toString() ?? 'Unknown',
         ));

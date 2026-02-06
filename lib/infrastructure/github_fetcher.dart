@@ -78,7 +78,8 @@ class GitHubFetcher implements RepositoryFetcher {
           url: map['html_url'] as String,
           stars: map['stargazers_count'] as int,
           language: map['language'] as String?,
-          readmeContent: null, // 初期値はnull、後でfetchReadmeで埋める
+          readmeContent: null,
+          metadataContent: null,
         );
       }).toList();
 
@@ -120,6 +121,58 @@ class GitHubFetcher implements RepositoryFetcher {
       Logger.error('Error fetching README for ${repo.owner}/${repo.name}: $e');
       return null;
     }
+  }
+
+  /// 技術的な特性を読み解くために、メタデータファイル（package.json, pubspec.yaml等）を取得する
+  Future<String?> fetchMetadata(Repository repo) async {
+    final language = repo.language?.toLowerCase();
+    final fileName = _getMetadataFileName(language);
+    if (fileName == null) return null;
+
+    try {
+      final url = Uri.https('api.github.com', '/repos/${repo.owner}/${repo.name}/contents/$fileName');
+      
+      final headers = {
+        'Accept': 'application/vnd.github+json',
+        if (apiToken != null && apiToken!.isNotEmpty)
+          'Authorization': 'token $apiToken',
+      };
+
+      final response = await _client.get(url, headers: headers);
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        final content = data['content'] as String?;
+        if (content != null) {
+          final cleaned = content.replaceAll('\n', '');
+          final decoded = utf8.decode(base64.decode(cleaned));
+          // メタデータは10000文字程度に制限（大きすぎるのを防ぐ）
+          return decoded.length > 10000 ? decoded.substring(0, 10000) : decoded;
+        }
+      }
+      return null;
+    } catch (e) {
+      Logger.warning('Failed to fetch metadata ($fileName) for ${repo.owner}/${repo.name}: $e');
+      return null;
+    }
+  }
+
+  String? _getMetadataFileName(String? language) {
+    if (language == null) return null;
+    return switch (language) {
+      'dart' => 'pubspec.yaml',
+      'flutter' => 'pubspec.yaml',
+      'javascript' => 'package.json',
+      'typescript' => 'package.json',
+      'go' => 'go.mod',
+      'python' => 'pyproject.toml', // or requirements.txt if preferred
+      'rust' => 'Cargo.toml',
+      'swift' => 'Package.swift',
+      'ruby' => 'Gemfile',
+      'kotlin' => 'build.gradle.kts',
+      'java' => 'pom.xml',
+      _ => null,
+    };
   }
 
   /// READMEの中から重要なセクションを優先的に抽出する

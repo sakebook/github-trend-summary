@@ -9,15 +9,17 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Outfit:wght@700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #0b0f1a;
-            --card: #161b22;
-            --card-border: #30363d;
+            --bg: #0d1117;
+            --card: rgba(22, 27, 34, 0.7);
+            --card-border: rgba(48, 54, 61, 0.8);
             --text-main: #e6edf3;
-            --text-dim: #8b949e;
+            --text-dim: #9198a1;
             --accent: #58a6ff;
+            --accent-glow: rgba(88, 166, 255, 0.3);
             --accent-soft: rgba(88, 166, 255, 0.1);
-            --star: #e3b341;
-            --bg-gradient: radial-gradient(circle at top right, #161b22, #0b0f1a);
+            --star: #f0883e;
+            --bg-gradient: radial-gradient(circle at 50% -20%, #1e293b, #0d1117);
+            --glass-border: rgba(255, 255, 255, 0.05);
         }
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -28,11 +30,12 @@
             margin: 0;
             padding: 0;
             min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
         }
         .container {
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
-            padding: 40px 20px;
+            padding: 60px 24px;
         }
         header {
             text-align: center;
@@ -65,18 +68,22 @@
         }
         .repo-card {
             background: var(--card);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             border: 1px solid var(--card-border);
-            border-radius: 16px;
-            padding: 32px;
-            margin-bottom: 32px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-top: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 40px;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
             position: relative;
             overflow: hidden;
+            animation: fadeInUp 0.8s ease-out backwards;
         }
         .repo-card:hover {
-            transform: translateY(-4px);
+            transform: translateY(-6px) scale(1.01);
             border-color: var(--accent);
-            box-shadow: 0 12px 24px rgba(0,0,0,0.3);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4), 0 0 20px var(--accent-glow);
         }
         .repo-header {
             display: flex;
@@ -182,9 +189,18 @@
             text-decoration: none;
         }
         @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-20px); }
+            from { opacity: 0; transform: translateY(-30px); }
             to { opacity: 1; transform: translateY(0); }
         }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .repo-card:nth-child(1) { animation-delay: 0.1s; }
+        .repo-card:nth-child(2) { animation-delay: 0.2s; }
+        .repo-card:nth-child(3) { animation-delay: 0.3s; }
+        .repo-card:nth-child(4) { animation-delay: 0.4s; }
+        .repo-card:nth-child(5) { animation-delay: 0.5s; }
     </style>
 </head>
 <body>
@@ -192,7 +208,7 @@
         <header>
             <h1>Trending Intelligence</h1>
             <p class="header-sub">Daily GitHub analysis powered by Gemini AI</p>
-            <div class="update-time">Last Updated: 2026-01-31 13:46:54 (JST)</div>
+            <div class="update-time">Last Updated: 2026-02-06 20:46:19 (JST)</div>
         </header>
 
         <main>
@@ -200,132 +216,185 @@
             <div class="repo-card">
                 <div class="repo-header">
                     <div class="header-left">
-                        <a href="https://github.com/Jane-xiaoer/skill-vision-control" class="repo-name" target="_blank">skill-vision-control</a>
-                        
-                    </div>
-                    <span class="stars">⭐ 56</span>
-                </div>
-                <p class="repo-description">Safe MCP Skill version manager - detect updates, A/B testing, smart merge</p>
-                <div class="summary-box">MCPスキルの安全な更新、ABテスト、自動マージを実現するバージョン管理マネージャー。</div>
-                
-                <div class="grid-sections">
-                    <div class="section-item">
-                        <h3>活用シーン / Use Case</h3>
-                        <p>AIエージェントに提供するMCPスキルの頻繁なアップデートが必要な環境で、不具合を抑えつつ新機能を安全にテスト・本番展開したい場合。</p>
-                    </div>
-                    <div class="section-item">
-                        <h3>競合差別化 / Competitive Edge</h3>
-                        <p>標準的なMCPサーバー運用やGitHub Actionsによる単純なCI/CDと比較し、スキル単位でのABテスト機能やスマートマージ（構造的競合解決）を備えている点が独自のエッジ。</p>
-                    </div>
-                    <div class="section-item full-width">
-                        <h3>主要機能 / Key Features</h3>
-                        <ul>
-                          <li>アップデート自動検知: 外部ソースからのMCPスキルの更新を監視し、変更点をリアルタイムで捕捉する機能</li><li>スキルABテスト: 異なるバージョンのスキルを特定の条件で出し分け、LLMの応答品質や成功率を比較検証可能</li><li>スマートマージ: スキル定義（JSON/YAML等）の不整合をインテリジェントに解決し、安全な統合を支援するロジック</li>
-                        </ul>
-                    </div>
-                </div>
-                
-                <div class="tech-stack">
-                    <span class="tech-tag">Node.js</span><span class="tech-tag">TypeScript</span><span class="tech-tag">Model Context Protocol (MCP) SDK</span><span class="tech-tag">Git-like Versioning Logic</span>
-                </div>
-            </div>
-
-            <div class="repo-card">
-                <div class="repo-header">
-                    <div class="header-left">
-                        <a href="https://github.com/lucasgelfond/zerobrew" class="repo-name" target="_blank">zerobrew</a>
+                        <a href="https://github.com/vueuse/skills" class="repo-name" target="_blank">skills</a>
                         <span class="maturity-badge" style="background:var(--accent-soft); color:var(--accent); border:1px solid var(--accent);">Experimental (実験的)</span>
                     </div>
-                    <span class="stars">⭐ 4568</span>
+                    <span class="stars">⭐ 304</span>
                 </div>
-                <p class="repo-description">A drop-in, 5-20x faster, experimental Homebrew alternative</p>
-                <div class="summary-box">Rust実装によりHomebrewを5〜20倍高速化する、ドロップイン互換の実験的パッケージマネージャ</div>
+                <p class="repo-description">Agent Skills for VueUse</p>
+                <div class="summary-box">VueUseのメタデータをAIエージェント向けに最適化し、トークン節約と精度向上を図る「エージェント用スキル」</div>
                 
                 <div class="grid-sections">
                     <div class="section-item">
                         <h3>活用シーン / Use Case</h3>
-                        <p>macOS/Linux環境において、Homebrewの動作（特にアップデートや依存解決）の遅さを解消し、CIや開発環境構築のリードタイムを極限まで短縮したい場合</p>
+                        <p>AIエージェント（Claude Code等）がVueUseの膨大な関数群を正確に理解し、ハルシネーションを抑えつつ、最小限のトークン消費でVue/Nuxtのコードを生成・修正する開発環境。</p>
                     </div>
                     <div class="section-item">
                         <h3>競合差別化 / Competitive Edge</h3>
-                        <p>本家Homebrew（Ruby実装）と比較し、Rustのネイティブな並列実行性能を活かすことで5〜20倍の高速化を謳う。Nixのような宣言型ツールへの完全な移行を必要とせず、既存のFormula資産をそのまま高速化できる点が独自のエッジ</p>
+                        <p>従来のRAG（検索）や巨大なコンテキスト注入とは異なり、関数の「概要」と「詳細（型・使用法）」を段階的に提供するProgressive Disclosureを採用し、コストと精度を両立させている点。</p>
+                    </div>
+                    <div class="section-item full-width">
+                        <h3>実装のこだわり / Implementation Flavor</h3>
+                        <p>【メタデータの二次加工】@vueuse/metadataをソースに、AIが理解しやすい形式へ変換する独自ビルド（build.ts）を採用。【コンテキスト制御】AGENTS.mdやプロンプトによる関数呼び出しルールのカスタマイズを許容。本家VueUseリポジトリをサブディレクトリとして保持し、常に最新の公式定義に同期させる強固なデータ構造。</p>
                     </div>
                     <div class="section-item full-width">
                         <h3>主要機能 / Key Features</h3>
                         <ul>
-                          <li>Homebrewドロップイン互換: 既存のbrewコマンドの代替として、インターフェースを維持したままシームレスな移行を目指す</li><li>Rustによる圧倒的な高速化: インタプリタのオーバーヘッドを排除し、依存関係の解決やパッケージ展開を高度に最適化</li><li>既存エコシステムの再利用: Homebrewが持つ膨大なパッケージ（Formulae）のリポジトリをそのまま利用可能</li>
+                          <li>Progressive Disclosure: 関数概要を先に送り、詳細な型や使用法はオンデマンドで読み込む段階的情報提供</li><li>Minimal Token Usage: エージェントが必要な情報のみを抽出・加工し、コンテキスト窓の消費を最小化</li><li>Offline-first Design: インターネット接続や外部権限なしで、ローカルの定義ファイルから正確なAPI参照が可能</li><li>Hallucination Reduction: 存在しないAPIの捏造を防ぐため、厳密なメタデータに基づいた実在する関数情報を提供</li>
                         </ul>
                     </div>
                 </div>
                 
                 <div class="tech-stack">
-                    <span class="tech-tag">Rust</span><span class="tech-tag">Homebrew API</span><span class="tech-tag">CLI</span><span class="tech-tag">Parallel Processing</span>
+                    <span class="tech-tag">TypeScript</span><span class="tech-tag">Node.js (tsx)</span><span class="tech-tag">pnpm Workspace</span><span class="tech-tag">@vueuse/metadata</span><span class="tech-tag">Claude Code Marketplace</span><span class="tech-tag">LLM Agent Skills</span>
                 </div>
             </div>
 
             <div class="repo-card">
                 <div class="repo-header">
                     <div class="header-left">
-                        <a href="https://github.com/antirez/flux2.c" class="repo-name" target="_blank">flux2.c</a>
-                        <span class="maturity-badge" style="background:var(--accent-soft); color:var(--accent); border:1px solid var(--accent);">Experimental (実験的)</span>
-                    </div>
-                    <span class="stars">⭐ 1531</span>
-                </div>
-                <p class="repo-description">Flux 2 image generation model pure C inference</p>
-                <div class="summary-box">Flux 2画像生成モデルの推論を、外部ライブラリに依存せず純粋なC言語のみで実装した超軽量エンジン。</div>
-                
-                <div class="grid-sections">
-                    <div class="section-item">
-                        <h3>活用シーン / Use Case</h3>
-                        <p>Python環境や重厚なMLフレームワークを構築できない制約のあるエッジ環境、またはモデルの内部挙動を低レイヤーで詳細に解析・学習する用途。</p>
-                    </div>
-                    <div class="section-item">
-                        <h3>競合差別化 / Competitive Edge</h3>
-                        <p>Hugging Face Diffusers等のPython実装と比較し、依存関係が皆無でコンパイルが容易。実行バイナリのみで動作し、フレームワークのオーバーヘッドを排除した極限のポータビリティが独自のエッジ。</p>
-                    </div>
-                    <div class="section-item full-width">
-                        <h3>主要機能 / Key Features</h3>
-                        <ul>
-                          <li>Zero Dependencies: PyTorchやCUDA、ランタイムを必要とせず、標準CライブラリとOSの基本APIのみで完結。</li><li>Architecture Minimalization: FluxモデルのTransformer構造やアテンション、VAEデコーダーを単一に近いソースコードで直接的に実装し、可読性を最大化。</li><li>Efficient Memory Management: 重みデータのメモリマッピング(mmap)等、OSレイヤーの機能を活用した効率的なメモリロードと推論処理。</li>
-                        </ul>
-                    </div>
-                </div>
-                
-                <div class="tech-stack">
-                    <span class="tech-tag">C</span><span class="tech-tag">POSIX Threads</span><span class="tech-tag">SIMD (AVX/NEON)</span><span class="tech-tag">Pure C Inference</span>
-                </div>
-            </div>
-
-            <div class="repo-card">
-                <div class="repo-header">
-                    <div class="header-left">
-                        <a href="https://github.com/joeseesun/anything-to-notebooklm" class="repo-name" target="_blank">anything-to-notebooklm</a>
+                        <a href="https://github.com/dwzhu-pku/PaperBanana" class="repo-name" target="_blank">PaperBanana</a>
                         
                     </div>
-                    <span class="stars">⭐ 283</span>
+                    <span class="stars">⭐ 2083</span>
                 </div>
-                <p class="repo-description">Claude Skill: Multi-source content processor for NotebookLM. Supports WeChat articles, web pages, YouTube, PDF, Markdown, search queries → Podcast/PPT/MindMap/Quiz etc.</p>
-                <div class="summary-box">多様なWebソースをClaudeで前処理し、NotebookLMでの活用に最適化された形式へ変換するツール。</div>
+                <p class="repo-description">PaperBanana: Automating Academic Illustration For AI Scientists</p>
+                <div class="summary-box">AI論文向けの複雑な学術図解（アーキテクチャ図等）を自動生成し、研究者の製図負荷を軽減するツール</div>
                 
                 <div class="grid-sections">
                     <div class="section-item">
                         <h3>活用シーン / Use Case</h3>
-                        <p>分散したWeb記事、YouTube動画、PDF資料をClaudeを介してNotebookLMへ一括集約し、Podcast台本や学習クイズとして再構成する高度なリサーチ・コンテンツ制作フローの構築。</p>
+                        <p>論文執筆時において、テキストベースのモデル解説や数式から、トップ会議（CVPR/NeurIPS等）に耐えうる高品質なアーキテクチャ図を生成するシーン</p>
                     </div>
                     <div class="section-item">
                         <h3>競合差別化 / Competitive Edge</h3>
-                        <p>NotebookLM標準のアップローダーと比較して、WeChatやYouTube、動的な検索結果を直接処理できる点が優位。特にClaudeの推論能力を前処理（構造化）に利用することで、インプット品質を向上させる技術的エッジを持つ。</p>
+                        <p>汎用的な画像生成AI（DALL-E等）が苦手とする「学術的な正確性」と「編集可能なベクトル形式（TikZ等）」の提供による、実用的なワークフローへの統合</p>
+                    </div>
+                    <div class="section-item full-width">
+                        <h3>実装のこだわり / Implementation Flavor</h3>
+                        <p>「Datasetを公開予定」という点から、単なるプロンプトエンジニアリングではなく、学術図解の構造を理解させるためのファインチューニングや、専門的なRAG（検索拡張生成）の実装が示唆される</p>
                     </div>
                     <div class="section-item full-width">
                         <h3>主要機能 / Key Features</h3>
                         <ul>
-                          <li>マルチソース・アグリゲーション: WeChat記事、YouTube、Webサイト、PDF、Markdown、検索結果など多岐にわたるソースを単一インターフェースで処理</li><li>コンテキスト最適化: NotebookLMでの活用を見据え、Claudeのスキルとしてコンテンツを抽出し、PodcastやPPT構成案、マインドマップ用に最適化</li><li>エンドツーエンドの変換フロー: 複雑なWeb構造のパースから、クイズや学習用資料といった具体的なアウトプット形式への変換をClaude上で完結</li>
+                          <li>学術図解の自動生成: 論文の抄録や手法説明から、視覚的なダイアグラムを自動構築</li><li>AI研究者特化: ニューラルネットワークの階層構造やデータフローなど、専門的な表現に最適化</li><li>専用データセットの活用: 質の高い論文図解から学習したモデルによる、学術的コンテキストの維持</li>
                         </ul>
                     </div>
                 </div>
                 
                 <div class="tech-stack">
-                    <span class="tech-tag">Claude (Anthropic)</span><span class="tech-tag">Google NotebookLM</span><span class="tech-tag">Claude Desktop Skills / MCP</span><span class="tech-tag">LLM Prompt Engineering</span><span class="tech-tag">Web Scraping</span>
+                    <span class="tech-tag">Python</span><span class="tech-tag">Large Language Models (LLMs)</span><span class="tech-tag">LaTeX/TikZ (推測)</span><span class="tech-tag">Vector Graphics Generation</span><span class="tech-tag">Diffusion Models (推測)</span>
+                </div>
+            </div>
+
+            <div class="repo-card">
+                <div class="repo-header">
+                    <div class="header-left">
+                        <a href="https://github.com/tldev/posturr" class="repo-name" target="_blank">posturr</a>
+                        
+                    </div>
+                    <span class="stars">⭐ 1883</span>
+                </div>
+                <p class="repo-description">A macOS app that blurs your screen when you slouch.</p>
+                <div class="summary-box">VisionとAirPodsのモーションセンサーを活用し、OSレベルの動的ブラーで姿勢を正すmacOS専用ツール。</div>
+                
+                <div class="grid-sections">
+                    <div class="section-item">
+                        <h3>活用シーン / Use Case</h3>
+                        <p>長時間のコーディング中に無意識に猫背になるのを防ぐため、通知ではなく「視覚情報の制限」という物理的なフィードバックで姿勢を矯正したいシチュエーション。</p>
+                    </div>
+                    <div class="section-item">
+                        <h3>競合差別化 / Competitive Edge</h3>
+                        <p>通知のみの既存ツールに対し、CoreGraphicsのプライベートAPIを用いたシステム全体の動的ブラーによる強制力と、AirPodsのジャイロを利用したカメラ不要の追跡機能で差別化。</p>
+                    </div>
+                    <div class="section-item full-width">
+                        <h3>実装のこだわり / Implementation Flavor</h3>
+                        <p>デフォルトでPrivate CoreGraphics APIを選択し、低負荷かつマルチディスプレイ対応のシステムブラーを実現するこだわり。また、/tmp/posturr-command を介したファイルベースのIPCにより外部制御を可能にするなど、ハッカーライクな拡張性が組み込まれている。SwiftPMによるモジュール分離（Core/App）でテスト容易性も考慮されている。</p>
+                    </div>
+                    <div class="section-item full-width">
+                        <h3>主要機能 / Key Features</h3>
+                        <ul>
+                          <li>ハイブリッド・トラッキング: Visionによる画像解析（鼻/頭の位置）とCoreMotionによるAirPodsの頭部傾斜検知の両立。</li><li>プログレッシブ・フィードバック: 姿勢の悪化に連動してブラーの強度を段階的に高める、自然かつ効果的なユーザー体験。</li><li>堅牢なフォールバック設計: プライベートAPIが動作しない環境向けに、NSVisualEffectViewを用いた互換モードを標準搭載。</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="tech-stack">
+                    <span class="tech-tag">Swift 5.9</span><span class="tech-tag">Vision Framework</span><span class="tech-tag">CoreMotion</span><span class="tech-tag">CoreGraphics (Private API)</span><span class="tech-tag">SwiftUI</span><span class="tech-tag">AppKit</span><span class="tech-tag">Swift Package Manager</span>
+                </div>
+            </div>
+
+            <div class="repo-card">
+                <div class="repo-header">
+                    <div class="header-left">
+                        <a href="https://github.com/NeptuneHub/AudioMuse-AI-NV-plugin" class="repo-name" target="_blank">AudioMuse-AI-NV-plugin</a>
+                        
+                    </div>
+                    <span class="stars">⭐ 63</span>
+                </div>
+                <p class="repo-description">AudioMuse-AI Navidrome Plugin</p>
+                <div class="summary-box">WASMとExtism PDKを採用し、NavidromeにAIレコメンデーション機能を統合するプラグイン</div>
+                
+                <div class="grid-sections">
+                    <div class="section-item">
+                        <h3>活用シーン / Use Case</h3>
+                        <p>セルフホスト型音楽サーバーNavidromeにおいて、既存の静的なタグ管理を超え、AIによる楽曲・アーティストの類似度に基づいた動的な音楽発見体験を実現する際。</p>
+                    </div>
+                    <div class="section-item">
+                        <h3>競合差別化 / Competitive Edge</h3>
+                        <p>従来のLast.fmやSpotify等の外部API依存のメタデータ補完とは異なり、独自のAudioMuse-AIコア（Flask/Worker構成）と連携。WASMによるサンドボックス実行により、ホスト環境を汚染せず高セキュアかつポータブルなプラグイン導入が可能。</p>
+                    </div>
+                    <div class="section-item full-width">
+                        <h3>実装のこだわり / Implementation Flavor</h3>
+                        <p>【WASMネイティブ】TinyGoとExtismを採用し、プラグインを.ndp (WASMバイナリ) として配布する近代的な設計。 【疎結合なAI連携】重い処理はFlaskベースの外部コアに逃がし、プラグイン側はNavidromeのPlugin Development Kit (PDK) に準拠したブリッジに徹する責務分離の徹底。 【Subsonic API互換性】getSimilarSongs2等の標準的なAPIにマッピングすることで、既存のモバイルクライアント側への変更を最小限に抑える設計思想。</p>
+                    </div>
+                    <div class="section-item full-width">
+                        <h3>主要機能 / Key Features</h3>
+                        <ul>
+                          <li>Instant Mix: 楽曲の類似性をAIで判定し、関連性の高い楽曲によるインスタントプレイリストを生成</li><li>Radio Mode: 特定のアーティストに類似したアーティストを抽出し、パーソナライズされたラジオ機能を提供</li><li>Artist Info Enrichment: 外部のAudioMuse-AIコアから類似アーティスト情報を取得し、メタデータを拡張</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="tech-stack">
+                    <span class="tech-tag">Go / TinyGo</span><span class="tech-tag">WebAssembly (WASM)</span><span class="tech-tag">Extism PDK</span><span class="tech-tag">Navidrome Plugin SDK</span><span class="tech-tag">Flask (AudioMuse-AI Core)</span>
+                </div>
+            </div>
+
+            <div class="repo-card">
+                <div class="repo-header">
+                    <div class="header-left">
+                        <a href="https://github.com/m1heng/clawdbot-feishu" class="repo-name" target="_blank">clawdbot-feishu</a>
+                        
+                    </div>
+                    <span class="stars">⭐ 2640</span>
+                </div>
+                <p class="repo-description"></p>
+                <div class="summary-box">OpenClawを飛書/Larkへ統合し、ユーザー毎の隔離された環境と高度なツール群を提供するプラグイン。</div>
+                
+                <div class="grid-sections">
+                    <div class="section-item">
+                        <h3>活用シーン / Use Case</h3>
+                        <p>企業内飛書環境において、ユーザー間でファイルやメモリを完全に分離・隔離した、セキュアなマルチテナント型AIエージェントを構築・提供するシーン。</p>
+                    </div>
+                    <div class="section-item">
+                        <h3>競合差別化 / Competitive Edge</h3>
+                        <p>単なるチャットIFではなく、Wiki/Bitable/Drive等の飛書エコシステムへのCRUD操作を標準提供。さらにOpenIDに基づいた動的なAgent/ディレクトリ生成により、物理的なマルチテナント分離を実現している点が独自のエッジ。</p>
+                    </div>
+                    <div class="section-item full-width">
+                        <h3>実装のこだわり / Implementation Flavor</h3>
+                        <p>飛書のAPIレート制限を考慮し「安定性のためにあえて非ストリーミング（complete-then-send）」を選択。WebSocket採用による疎結合なデプロイ、および`workspaceTemplate`を用いたファイルシステムレベルでのコンテキスト隔離に、エンタープライズ運用を強く意識した設計思想が表れている。</p>
+                    </div>
+                    <div class="section-item full-width">
+                        <h3>主要機能 / Key Features</h3>
+                        <ul>
+                          <li>WebSocket（長接続）とWebhookの両モードに対応した柔軟な接続性</li><li>dynamicAgentCreationによる、ユーザー毎の独立したWorkspace/MEMORY.mdの動的生成</li><li>飛書Doc/Drive/Wiki/Bitableへアクセスする高度なSkills（Agentツール）群の提供</li><li>Markdownの構造解析に基づく、リッチテキストカードとプレーンテキストの自動切り替え描画</li><li>権限エラーを検知し、ユーザーへ認可URLを自動提示するセルフサービス型のエラーハンドリング</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="tech-stack">
+                    <span class="tech-tag">TypeScript</span><span class="tech-tag">Node.js (ESM)</span><span class="tech-tag">@larksuiteoapi/node-sdk</span><span class="tech-tag">OpenClaw Framework</span><span class="tech-tag">TypeBox</span><span class="tech-tag">Zod</span>
                 </div>
             </div>
 

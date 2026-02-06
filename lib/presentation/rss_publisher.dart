@@ -92,6 +92,7 @@ class RssPublisher implements Publisher {
     buffer.writeln('    <description><![CDATA[');
     buffer.writeln('      <h3>概要</h3><p>${_sanitizeCdata(s.summary)}</p>');
     buffer.writeln('      <h3>活用シーン</h3><p>${_sanitizeCdata(s.useCase)}</p>');
+    buffer.writeln('      <h3>実装のこだわり</h3><p>${_sanitizeCdata(s.implementationFlavor)}</p>');
     buffer.writeln('      <h3>主要機能</h3><ul>${s.keyFeatures.map((f) => "<li>${_sanitizeCdata(f)}</li>").join("")}</ul>');
     buffer.writeln('      <h3>開発状況</h3><p>${_sanitizeCdata(s.maturity)}</p>');
     buffer.writeln('      <h3>競合差別化</h3><p>${_sanitizeCdata(s.rivalComparison)}</p>');
