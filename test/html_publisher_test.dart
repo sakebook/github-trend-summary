@@ -58,7 +58,7 @@ void main() {
         owner: 'owner',
         description: '<script>alert(1)</script>',
         stars: 100,
-        url: 'https://github.com/owner/repo',
+        url: 'https://github.com/owner/repo?q="quote"&a=b',
         language: 'Dart',
         readmeContent: null,
         metadataContent: null,
@@ -85,6 +85,7 @@ void main() {
       // Verify escaped content
       expect(html, contains('&lt;b&gt;script&lt;/b&gt;'));
       expect(html, contains('&lt;script&gt;alert(1)&lt;/script&gt;'));
+      expect(html, contains('href="https://github.com/owner/repo?q=&quot;quote&quot;&amp;a=b"'));
       expect(html, contains('summary &amp; &quot;quote&quot;'));
       expect(html, contains('useCase &lt; &gt;'));
       expect(html, contains('maturity &amp;'));

@@ -277,7 +277,7 @@ class HtmlPublisher implements Publisher {
                             <div class="maturity-badge" style="background:${_getMaturityBg(s.maturity)}; color:${_getMaturityColor(s.maturity)}; border:1px solid ${_getMaturityColor(s.maturity)};">
                                 ${_escapeHtml(s.maturity)}
                             </div>
-                            <a href="${repo.url}" class="repo-name" target="_blank">${_escapeHtml(repo.owner)} / ${_escapeHtml(repo.name)}</a>
+                            <a href="${_escapeHtml(repo.url)}" class="repo-name" target="_blank">${_escapeHtml(repo.owner)} / ${_escapeHtml(repo.name)}</a>
                             <p class="repo-description">${_escapeHtml(repo.description ?? 'No description provided')}</p>
                         </div>
                         <span class="stars">⭐ ${repo.stars}</span>
