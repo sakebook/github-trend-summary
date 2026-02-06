@@ -87,6 +87,7 @@ void main() {
       expect(html, contains('&lt;script&gt;alert(1)&lt;/script&gt;'));
       expect(html, contains('summary &amp; &quot;quote&quot;'));
       expect(html, contains('useCase &lt; &gt;'));
+      expect(html, contains('maturity &amp;'));
       expect(html, contains('&lt;tag&gt;'));
       // Verify NOT containing raw scripts
       expect(html, isNot(contains('<script>')));
