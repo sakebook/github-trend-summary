@@ -46,10 +46,14 @@ void main() {
       final content = file.readAsStringSync();
       expect(content, contains('<!DOCTYPE html>'));
       expect(content, contains('<html lang="ja">'));
-      expect(content, contains('class="repo-name"'));
+      
+      // Check for structural Neo-Brutalism elements that were added
+      expect(content, contains('class="card"'));
+      expect(content, contains('class="repo-title"'));
       expect(content, contains('test-repo'));
       expect(content, contains('⭐ 123'));
       expect(content, contains('<span class="tech-tag">React</span>'));
+      expect(content, contains('class="badge"')); // Added badge class check
     });
 
     test('should escape HTML special characters', () async {
