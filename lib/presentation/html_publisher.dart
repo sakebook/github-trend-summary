@@ -30,239 +30,297 @@ class HtmlPublisher implements Publisher {
     <title>GitHub Trending Intelligence</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Outfit:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@700;900&family=Lexend:wght@500;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #0d1117;
-            --card: rgba(22, 27, 34, 0.7);
-            --card-border: rgba(48, 54, 61, 0.8);
-            --text-main: #e6edf3;
-            --text-dim: #9198a1;
-            --accent: #58a6ff;
-            --accent-glow: rgba(88, 166, 255, 0.3);
-            --accent-soft: rgba(88, 166, 255, 0.1);
-            --star: #f0883e;
-            --bg-gradient: radial-gradient(circle at 50% -20%, #1e293b, #0d1117);
-            --glass-border: rgba(255, 255, 255, 0.05);
+            --bg: #e0e5ec;
+            --card-w: #ffffff;
+            --card-accent: #f4f0e6;
+            --text: #171717;
+            --border: #171717;
+            --accent-red: #ff5e5e;
+            --accent-blue: #a3cbf1;
+            --accent-yellow: #fde047;
+            --accent-green: #86efac;
+            --accent-purple: #c4b5fd;
+            --shadow-sm: 3px 3px 0px var(--border);
+            --shadow-md: 6px 6px 0px var(--border);
+            --shadow-lg: 10px 10px 0px var(--border);
+            --bw: 3px;
+            --space-sm: 12px;
+            --space-md: 24px;
+            --space-lg: 40px;
         }
+
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: 'Lexend', ui-sans-serif, system-ui, -apple-system, sans-serif;
             background-color: var(--bg);
-            background-image: var(--bg-gradient);
-            color: var(--text-main);
-            line-height: 1.6;
+            background-image: radial-gradient(var(--border) 1px, transparent 1px);
+            background-size: 24px 24px;
+            color: var(--text);
             margin: 0;
-            padding: 0;
-            min-height: 100vh;
+            padding: 80px 20px 100px;
+            line-height: 1.6;
+            overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
         }
+
         .container {
-            max-width: 900px;
+            max-width: 850px;
             margin: 0 auto;
-            padding: 60px 24px;
-        }
-        .main-header {
-            text-align: center;
-            margin-bottom: 60px;
-            animation: fadeInDown 0.8s ease-out;
-        }
-        h1 {
-            font-family: 'Outfit', sans-serif;
-            font-size: 3rem;
-            background: linear-gradient(135deg, #fff 0%, var(--accent) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin: 0;
-            letter-spacing: -0.02em;
-        }
-        .header-sub {
-            color: var(--text-dim);
-            font-size: 1.1rem;
-            margin-top: 8px;
-        }
-        .update-time {
-            display: inline-block;
-            margin-top: 16px;
-            padding: 4px 12px;
-            background: var(--accent-soft);
-            border-radius: 100px;
-            font-size: 0.8rem;
-            color: var(--accent);
-            border: 1px solid rgba(88, 166, 255, 0.2);
-        }
-        .repo-card {
-            background: var(--card);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid var(--card-border);
-            border-top: 1px solid var(--glass-border);
-            border-radius: 24px;
-            padding: 48px;
-            margin-bottom: 48px;
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
             position: relative;
-            overflow: hidden;
-            animation: fadeInUp 0.8s ease-out backwards;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         }
-        .repo-card:hover {
-            transform: translateY(-8px);
-            border-color: var(--accent);
-            box-shadow: 0 30px 60px rgba(0,0,0,0.5), 0 0 20px var(--accent-glow);
+
+        h1, h2, h3 {
+            font-family: 'Public Sans', sans-serif;
+            font-weight: 900;
+            color: var(--text);
         }
-        /* New Layout Sections */
-        .card-inner {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 32px;
+
+        .header-wrapper {
+            position: relative;
+            margin-bottom: var(--space-lg);
         }
-        .main-info {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 20px;
+
+        .header {
+            padding: var(--space-lg);
+            background: var(--accent-purple);
+            border: var(--bw) solid var(--border);
+            box-shadow: var(--shadow-lg);
+            text-align: center;
+            position: relative;
+            z-index: 2;
+            border-radius: 8px;
         }
-        .metadata-section {
-            background: rgba(255, 255, 255, 0.02);
-            border-radius: 16px;
-            padding: 24px;
-            border: 1px solid var(--card-border);
-        }
-        .insight-tag {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 4px 12px;
-            background: var(--accent-soft);
-            color: var(--accent);
-            border-radius: 100px;
-            font-size: 0.75rem;
-            font-weight: 700;
-            margin-bottom: 12px;
+
+        .header h1 {
+            font-size: clamp(2.5rem, 6vw, 4rem);
             text-transform: uppercase;
-            letter-spacing: 0.05em;
+            margin: 0;
+            letter-spacing: -2px;
+            line-height: 1.1;
         }
-        .repo-header {
+
+        .update-time {
+            font-weight: 700;
+            margin: 16px 0 0 0;
+            font-size: 1.2rem;
+            background: var(--bg);
+            display: inline-block;
+            padding: 4px 12px;
+            border: var(--bw) solid var(--border);
+            color: var(--text);
+            box-shadow: var(--shadow-sm);
+            border-radius: 6px;
+        }
+
+        .card {
+            background: var(--card-w);
+            border: var(--bw) solid var(--border);
+            padding: var(--space-lg);
+            margin-bottom: 60px;
+            box-shadow: var(--shadow-lg);
+            position: relative;
+            z-index: 10;
+            border-radius: 12px;
+        }
+
+        .card-header {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            margin-bottom: 8px;
+            margin-bottom: var(--space-md);
+            border-bottom: var(--bw) solid var(--border);
+            padding-bottom: var(--space-md);
+            gap: var(--space-md);
+            flex-wrap: wrap;
         }
+
         .header-left {
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            align-items: flex-start;
+            gap: 8px;
         }
-        .maturity-badge {
-            font-size: 0.7rem;
-            padding: 2px 10px;
-            border-radius: 6px;
-            font-weight: 600;
-            width: fit-content;
-        }
-        .repo-name {
-            font-size: 2rem;
-            font-weight: 800;
+
+        .repo-title {
+            font-size: clamp(1.4rem, 4vw, 2rem);
+            font-weight: 900;
+            color: var(--text);
             text-decoration: none;
-            color: #fff;
-            letter-spacing: -0.02em;
-            transition: color 0.3s;
+            background: var(--accent-yellow);
+            border: var(--bw) solid var(--border);
+            padding: 8px 16px;
+            box-shadow: var(--shadow-sm);
+            margin-top: 8px;
+            transition: all 0.15s ease-out;
+            font-family: 'Public Sans', sans-serif;
+            align-self: flex-start;
+            border-radius: 6px;
+            display: inline-block;
         }
-        .repo-name:hover {
-            color: var(--accent);
+
+        .repo-title:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: var(--shadow-md);
         }
+
+        .repo-title:active {
+            transform: translate(3px, 3px);
+            box-shadow: 0px 0px 0 var(--border);
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text);
+            border: var(--bw) solid var(--border);
+            padding: 4px 12px;
+            font-weight: 900;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            box-shadow: var(--shadow-sm);
+            border-radius: 9999px;
+            cursor: default;
+            letter-spacing: 0.5px;
+        }
+
         .stars {
-            color: var(--star);
-            font-weight: 700;
-            font-size: 1.1rem;
+            background: var(--card-w);
+            border: var(--bw) solid var(--border);
+            padding: 8px 16px;
+            font-weight: 900;
+            font-size: 1.2rem;
+            box-shadow: var(--shadow-sm);
             display: flex;
             align-items: center;
             gap: 6px;
-            background: rgba(240, 136, 62, 0.1);
-            padding: 6px 14px;
-            border-radius: 12px;
+            border-radius: 9999px;
         }
-        .repo-description {
-            color: var(--text-dim);
-            font-size: 1rem;
-            margin: 0;
-            line-height: 1.5;
-        }
-        .summary-box {
-            font-size: 1.1rem;
-            color: var(--text-main);
-            margin: 0;
+
+        .desc {
+            font-size: 1.15rem;
+            font-weight: 500;
+            margin-bottom: var(--space-lg);
+            margin-top: 0;
+            background: var(--card-accent);
+            display: block;
+            padding: var(--space-md);
+            border: var(--bw) solid var(--border);
             line-height: 1.6;
+            border-radius: 8px;
+            box-shadow: var(--shadow-sm);
         }
-        .grid-sections {
+
+        .grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 32px;
+            gap: var(--space-md);
+            margin-top: var(--space-md);
         }
+
         @media (max-width: 768px) {
-            .grid-sections { grid-template-columns: 1fr; }
-            .repo-card { padding: 32px; }
+            .grid { grid-template-columns: 1fr; }
+            .card { padding: 24px; }
         }
-        .section-item h3 {
-            font-size: 0.75rem;
+
+        .section {
+            border: var(--bw) solid var(--border);
+            padding: var(--space-md);
+            background: #fff;
+            box-shadow: var(--shadow-sm);
+            border-radius: 8px;
+        }
+
+        .section h3 {
+            font-size: 1rem;
             text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: var(--accent);
-            margin: 0 0 12px 0;
-            opacity: 0.8;
+            margin: 0 0 var(--space-sm) 0;
+            padding-bottom: 8px;
+            border-bottom: var(--bw) solid var(--border);
+            letter-spacing: 1px;
         }
-        .section-item p, .section-item li {
+
+        .section.highlight {
+            background: var(--card-accent);
+        }
+
+        .section p, .section ul {
             margin: 0;
-            font-size: 0.95rem;
-            color: var(--text-main);
+            font-size: 1rem;
+            font-weight: 500;
             line-height: 1.7;
+            color: #333;
         }
+
+        .section ul {
+            padding-left: 20px;
+        }
+
+        .section li {
+            margin-bottom: 8px;
+        }
+
+        .tech-container {
+            margin-top: var(--space-lg);
+        }
+
+        .tech-container h3 {
+            font-size: 1rem;
+            text-transform: uppercase;
+            margin: 0 0 var(--space-sm) 0;
+            letter-spacing: 1px;
+        }
+
         .tech-stack {
             display: flex;
             flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 12px;
+            gap: 12px;
         }
+
         .tech-tag {
-            background: #21262d;
-            border: 1px solid var(--card-border);
-            color: var(--text-main);
-            padding: 4px 12px;
+            background: #fff;
+            border: var(--bw) solid var(--border);
+            color: var(--text);
+            padding: 6px 14px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            box-shadow: var(--shadow-sm);
             border-radius: 6px;
-            font-size: 0.75rem;
-            font-weight: 500;
+            cursor: default;
         }
+
         footer {
             text-align: center;
-            padding: 60px 0;
-            color: var(--text-dim);
-            font-size: 0.9rem;
+            padding: 40px 0;
+            font-weight: 700;
         }
+
         footer a {
-            color: var(--accent);
+            color: var(--text);
             text-decoration: none;
+            border-bottom: var(--bw) solid var(--border);
+            padding-bottom: 2px;
+            transition: all 0.15s ease-out;
+            font-family: 'Public Sans', sans-serif;
+            text-transform: uppercase;
         }
-        @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-30px); }
-            to { opacity: 1; transform: translateY(0); }
+
+        footer a:hover {
+            background: var(--accent-yellow);
         }
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .repo-card:nth-child(1) { animation-delay: 0.1s; }
-        .repo-card:nth-child(2) { animation-delay: 0.2s; }
-        .repo-card:nth-child(3) { animation-delay: 0.3s; }
-        .repo-card:nth-child(4) { animation-delay: 0.4s; }
-        .repo-card:nth-child(5) { animation-delay: 0.5s; }
     </style>
 </head>
 <body>
     <div class="container">
-        <header class="main-header">
-            <h1>Trending Intelligence</h1>
-            <p class="header-sub">Daily GitHub analysis powered by Gemini AI</p>
-            <div class="update-time">Last Updated: ${DateTime.now().toUtc().add(const Duration(hours: 9)).toString().split('.')[0]} (JST)</div>
-        </header>
+        <div class="header-wrapper">
+            <header class="header">
+                <h1>Trending Intelligence</h1>
+                <p class="update-time">Daily GitHub analysis powered by Gemini AI<br>
+                <span style="font-size: 0.9rem; font-weight: 500;">Last Updated: ${DateTime.now().toUtc().add(const Duration(hours: 9)).toString().split('.')[0]} (JST)</span></p>
+            </header>
+        </div>
 
         <main>
 ''');
@@ -270,54 +328,49 @@ class HtmlPublisher implements Publisher {
       for (final s in summaries) {
         final repo = s.repository;
         buffer.writeln('''
-            <div class="repo-card">
-                <div class="card-inner">
-                    <header class="repo-header">
-                        <div class="header-left">
-                            <div class="maturity-badge" style="background:${_getMaturityBg(s.maturity)}; color:${_getMaturityColor(s.maturity)}; border:1px solid ${_getMaturityColor(s.maturity)};">
-                                ${_escapeHtml(s.maturity)}
-                            </div>
-                            <a href="${_escapeHtml(repo.url)}" class="repo-name" target="_blank">${_escapeHtml(repo.owner)} / ${_escapeHtml(repo.name)}</a>
-                            <p class="repo-description">${_escapeHtml(repo.description ?? 'No description provided')}</p>
-                        </div>
-                        <span class="stars">⭐ ${repo.stars}</span>
-                    </header>
-
-                    <div class="main-info">
-                        <p class="summary-box">${_escapeHtml(s.summary)}</p>
-
-                        <div class="grid-sections">
-                            <div class="section-item">
-                                <h3>活用シーン / Use Case</h3>
-                                <p>${_escapeHtml(s.useCase)}</p>
-                            </div>
-                            <div class="section-item">
-                                <h3>競合差別化 / Competitive Edge</h3>
-                                <p>${_escapeHtml(s.rivalComparison)}</p>
-                            </div>
-                        </div>
+            <div class="card">
+                <header class="card-header">
+                    <div class="header-left">
+                        <span class="badge" style="background:${_getMaturityBg(s.maturity)};">
+                            ${_escapeHtml(s.maturity)}
+                        </span>
+                        <a href="${_escapeHtml(repo.url)}" class="repo-title" target="_blank">${_escapeHtml(repo.owner)} / ${_escapeHtml(repo.name)}</a>
                     </div>
+                    <span class="stars">⭐ ${repo.stars}</span>
+                </header>
 
-                    <div class="metadata-section">
-                        <div class="insight-tag">
-                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
-                            Deep Technical Insight
-                        </div>
-                        <div class="section-item">
-                            <h3>実装のこだわり / Implementation Flavor</h3>
-                            <p>${_escapeHtml(s.implementationFlavor)}</p>
-                        </div>
-                        
-                        <div class="section-item" style="margin-top: 24px;">
-                            <h3>主要機能 / Key Features</h3>
-                            <ul style="margin-top: 8px; padding-left: 20px;">
-                              ${s.keyFeatures.map((f) => "<li>${_escapeHtml(f)}</li>").join("")}
-                            </ul>
-                        </div>
+                <p class="desc">${_escapeHtml(repo.description ?? 'No description provided')}</p>
 
-                        <div class="tech-stack">
-                            ${s.techStack.map((tag) => '<span class="tech-tag">${_escapeHtml(tag)}</span>').join('')}
-                        </div>
+                <div class="section highlight" style="margin-bottom: var(--space-md);">
+                    <h3>Summary</h3>
+                    <p>${_escapeHtml(s.summary)}</p>
+                </div>
+
+                <div class="grid">
+                    <div class="section">
+                        <h3>活用シーン / Use Case</h3>
+                        <p>${_escapeHtml(s.useCase)}</p>
+                    </div>
+                    <div class="section">
+                        <h3>競合差別化 / Competitive Edge</h3>
+                        <p>${_escapeHtml(s.rivalComparison)}</p>
+                    </div>
+                    <div class="section">
+                        <h3>実装のこだわり / Flavor</h3>
+                        <p>${_escapeHtml(s.implementationFlavor)}</p>
+                    </div>
+                    <div class="section">
+                        <h3>主要機能 / Key Features</h3>
+                        <ul style="margin-top: 8px;">
+                          ${s.keyFeatures.map((f) => "<li>${_escapeHtml(f)}</li>").join("")}
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="tech-container">
+                    <h3>Tech Stack</h3>
+                    <div class="tech-stack">
+                        ${s.techStack.map((tag) => '<span class="tech-tag">${_escapeHtml(tag)}</span>').join('')}
                     </div>
                 </div>
             </div>
@@ -350,19 +403,10 @@ class HtmlPublisher implements Publisher {
 
   String _getMaturityBg(String maturity) {
     if (maturity.contains('Production Ready') || maturity.contains('Stable')) {
-      return 'rgba(46, 160, 67, 0.1)';
+      return 'var(--accent-green)';
     } else if (maturity.contains('Experimental')) {
-      return 'rgba(210, 153, 34, 0.1)';
+      return 'var(--accent-blue)';
     }
-    return 'var(--accent-soft)';
-  }
-
-  String _getMaturityColor(String maturity) {
-    if (maturity.contains('Production Ready') || maturity.contains('Stable')) {
-      return '#3fb950';
-    } else if (maturity.contains('Experimental')) {
-      return '#d29922';
-    }
-    return 'var(--accent)';
+    return 'var(--accent-purple)'; // Fallback color that fits the scheme
   }
 }
